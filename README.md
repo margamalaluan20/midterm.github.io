@@ -25,5 +25,5 @@ You can access the live website here: [Genshin Impact Archive](https://margamala
 
 ## 👤 Author
 **Marga Malaluan** 
-*DIT 2-1*
+**DIT 2-1**
 
