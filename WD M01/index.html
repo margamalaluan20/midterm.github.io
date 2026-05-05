@@ -1,493 +1,902 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
+<!doctype html> 
+<html lang="en">   
+  <head>     
+    <meta charset="utf-8">     
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Genshin Impact Archive</title>
+    <meta name="referrer" content="no-referrer">
     
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
-    
-    <style>
-      :root {
-        /* BLUE THEME PALETTE */
-        --theme-dark: #0a1128;        
-        --theme-card: #162447;       
-        --theme-accent: #00b4d8;      
-        --theme-accent-hover: #90e0ef;
-        --text-light: #f8fafc;        
-      }
-      
-      body {
-        background-color: var(--theme-dark);
-        color: var(--text-light);
-        font-family: 'Inter', sans-serif;
-        min-height: 100vh;
+    <title>Genshin Impact Archive</title>          
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">     
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">     
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">          
+    <style>       
+      :root {         
+        /* BLUE THEME PALETTE */         
+        --theme-dark: #0a1128;                 
+        --theme-card: #162447;                
+        --theme-accent: #00b4d8;               
+        --theme-accent-hover: #90e0ef;         
+        --text-light: #f8fafc;             
+      }              
+      body {         
+        background-color: var(--theme-dark);         
+        color: var(--text-light);         
+        font-family: 'Inter', sans-serif;         
+        min-height: 100vh;         
+        display: flex;         
+        flex-direction: column;         
+        background-color: transparent !important;       
+      }       
+      h1, h2, h3, .navbar-brand, .nav-link {         
+        font-family: 'Montserrat', sans-serif;       
+      }       
+      .navbar {         
+        background-color: rgba(10, 17, 40, 0.95) !important;         
+        border-bottom: 2px solid var(--theme-accent);       
+      }       
+      .navbar-brand {         
+        color: var(--theme-accent) !important;         
+        font-size: 1.8rem;         
+        font-weight: 700;       
+      }       
+      .nav-link {         
+        color: var(--text-light) !important;         
+        transition: color 0.3s;         
+        cursor: pointer;         
+        font-weight: 600;       
+      }       
+      .nav-link:hover, .nav-link.active {         
+        color: var(--theme-accent-hover) !important;       
+      }       
+      .hero {         
+        background: radial-gradient(circle, var(--theme-card) 0%, var(--theme-dark) 100%);         
+        padding: 3rem 0;         
+        text-align: center;         
+        border-bottom: 1px solid rgba(0, 180, 216, 0.3); /* Transparent accent */         
+        background: transparent !important;       
+      }       
+      .genshin-card {         
+        background-color: var(--theme-card);         
+        border: 1px solid rgba(0, 180, 216, 0.3);         
+        border-radius: 12px;         
+        transition: transform 0.3s ease, box-shadow 0.3s ease;         
+        height: 100%;         
+        text-align: center;         
+        padding: 1.5rem 1rem;         
+        background-color: rgba(22, 36, 71, 0.7) !important;         
+        backdrop-filter: blur(10px);         
+        transition: all 0.3s ease;
         display: flex;
         flex-direction: column;
-      }
-
-      h1, h2, h3, .navbar-brand, .nav-link {
-        font-family: 'Montserrat', sans-serif;
-      }
-
-      .navbar {
-        background-color: rgba(10, 17, 40, 0.95) !important;
-        border-bottom: 2px solid var(--theme-accent);
-      }
-
-      .navbar-brand {
-        color: var(--theme-accent) !important;
-        font-size: 1.8rem;
-        font-weight: 700;
-      }
-
-      .nav-link {
-        color: var(--text-light) !important;
-        transition: color 0.3s;
-        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+      }       
+      .genshin-card:hover {         
+        transform: translateY(-5px);         
+        border-color: var(--theme-accent);         
+        box-shadow: 0 8px 20px rgba(0, 180, 216, 0.2);       
+      }       
+      .item-icon {         
+        width: 100px;         
+        height: 100px;         
+        object-fit: contain;         
+        margin-bottom: 1rem;         
+        border-radius: 50%;         
+        background-color: rgba(0,0,0,0.3);         
+        padding: 5px;         
+        animation: float 3s ease-in-out infinite;          
+        transition: all 0.3s ease;       
+      }       
+      .genshin-card:hover .item-icon {         
+        animation: float 1.5s ease-in-out infinite;          
+        transform: scale(1.1);         
+        filter: drop-shadow(0 0 15px var(--theme-accent));       
+      }       
+      .item-name {         
+        color: var(--theme-accent);         
+        font-family: 'Montserrat', sans-serif;         
+        text-transform: capitalize;         
+        font-size: 1.1rem;         
         font-weight: 600;
+        margin-bottom: 0;
+      }       
+      #loader { display: none; color: var(--theme-accent); }       
+      .video-bg-container {         
+        position: fixed;         
+        top: 0;         
+        left: 0;         
+        width: 100%;         
+        height: 100%;         
+        z-index: -2;         
+        overflow: hidden;         
+        background-color: #0a1128;       
+      }       
+      #bgVideo {         
+        width: 100vw;         
+        height: 100vh;         
+        object-fit: cover;         
+        filter: brightness(45%) contrast(110%);         
+        position: absolute;         
+        top: 50%;         
+        left: 50%;         
+        transform: translate(-50%, -50%);       
+      }       
+      /* Detail View Styles */       
+      .detail-container {         
+        background-color: rgba(22, 36, 71, 0.9);         
+        backdrop-filter: blur(15px);         
+        border-radius: 20px;         
+        padding: 2rem;         
+        border: 1px solid var(--theme-accent);         
+        animation: fadeIn 0.5s ease-in-out;       
+      }       
+      .detail-img {         
+        width: 200px;         
+        height: 200px;         
+        object-fit: contain;         
+        filter: drop-shadow(0 0 15px var(--theme-accent));         
+        animation: float 4s ease-in-out infinite, breathingGlow 4s infinite;       
+      }       
+      .stat-label {         
+        color: var(--theme-accent);         
+        font-weight: bold;         
+        text-transform: uppercase;         
+        font-size: 0.9rem;       
+      }       
+      .back-btn {         
+        background-color: transparent;         
+        color: var(--theme-accent);         
+        border: 1px solid var(--theme-accent);         
+        border-radius: 30px;         
+        padding: 0.4rem 1.5rem;         
+        font-size: 0.85rem;         
+        font-weight: 600;         
+        text-transform: uppercase;         
+        letter-spacing: 1px;         
+        transition: all 0.3s ease;         
+        display: inline-flex;         
+        align-items: center;         
+        justify-content: center;         
+        gap: 8px;       
+      }       
+      .back-btn:hover {         
+        background-color: var(--theme-accent);         
+        color: var(--theme-dark);         
+        box-shadow: 0 0 15px rgba(0, 180, 216, 0.6);         
+        transform: translateX(-5px);       
+      }       
+      @keyframes fadeIn {         
+        from { opacity: 0; transform: translateY(20px); }         
+        to { opacity: 1; transform: translateY(0); }       
+      }       
+      @keyframes float {         
+        0% { transform: translateY(0px) rotate(0deg); }         
+        50% { transform: translateY(-10px) rotate(2deg); }         
+        100% { transform: translateY(0px) rotate(0deg); }       
+      }       
+      @keyframes breathingGlow {         
+        0% { filter: drop-shadow(0 0 5px var(--theme-accent)); }         
+        50% { filter: drop-shadow(0 0 20px var(--theme-accent-hover)); }         
+        100% { filter: drop-shadow(0 0 5px var(--theme-accent)); }       
+      }       
+      .notable-people-badge {         
+        background: rgba(0, 180, 216, 0.1);         
+        border: 1px solid var(--theme-accent);         
+        color: var(--theme-accent-hover);         
+        padding: 5px 15px;         
+        border-radius: 20px;         
+        display: inline-block;         
+        margin: 5px;         
+        font-size: 0.85rem;         
+        transition: all 0.3s ease;       
+      }       
+      .notable-people-badge:hover {         
+        background: var(--theme-accent);         
+        color: var(--theme-dark);       
+      }       
+      .reaction-box {         
+        background: rgba(10, 17, 40, 0.6);         
+        border-radius: 10px;         
+        padding: 15px;         
+        margin-top: 10px;         
+        border: 1px dashed var(--theme-accent);       
+      }       
+      .view-all-btn {         
+        color: var(--theme-accent);         
+        border: 1px solid var(--theme-accent);         
+        background: transparent;         
+        border-radius: 30px;         
+        padding: 0.3rem 1.2rem;         
+        font-size: 0.85rem;         
+        font-weight: 600;         
+        text-transform: uppercase;         
+        letter-spacing: 1px;         
+        transition: all 0.3s ease;       
+      }       
+      .view-all-btn:hover {         
+        background: var(--theme-accent);         
+        color: var(--theme-dark);         
+        box-shadow: 0 0 15px rgba(0, 180, 216, 0.6);         
+        transform: translateX(5px);       
+      }       
+      .ancient-modern-title {         
+        font-family: 'Cinzel Decorative', serif !important;         
+        background: linear-gradient(45deg, var(--theme-accent), #ffffff, var(--theme-accent-hover));         
+        -webkit-background-clip: text;         
+        -webkit-text-fill-color: transparent;         
+        text-shadow: 0 0 20px rgba(0, 180, 216, 0.5);         
+        letter-spacing: 2px;         
+        font-weight: 700;         
+        transition: all 0.3s ease;       
+      }       
+      .ancient-modern-title:hover {         
+        text-shadow: 0 0 30px rgba(144, 224, 239, 0.8);         
+        transform: scale(1.02);       
       }
-
-      .nav-link:hover, .nav-link.active {
-        color: var(--theme-accent-hover) !important;
+      /* Custom Scrollbar for inner character description boxes */
+      .custom-scroll::-webkit-scrollbar {
+        width: 6px;
       }
-
-      .hero {
-        background: radial-gradient(circle, var(--theme-card) 0%, var(--theme-dark) 100%);
-        padding: 3rem 0;
-        text-align: center;
-        border-bottom: 1px solid rgba(0, 180, 216, 0.3); /* Transparent accent */
+      .custom-scroll::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2); 
+        border-radius: 10px;
       }
-
-      .genshin-card {
-        background-color: var(--theme-card);
-        border: 1px solid rgba(0, 180, 216, 0.3);
-        border-radius: 12px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        height: 100%;
-        text-align: center;
-        padding: 1.5rem 1rem;
+      .custom-scroll::-webkit-scrollbar-thumb {
+        background: var(--theme-accent); 
+        border-radius: 10px;
       }
-
-      .genshin-card:hover {
-        transform: translateY(-5px);
-        border-color: var(--theme-accent);
-        box-shadow: 0 8px 20px rgba(0, 180, 216, 0.2);
+      .custom-scroll::-webkit-scrollbar-thumb:hover {
+        background: var(--theme-accent-hover); 
       }
-
-      .item-icon {
-        width: 100px;
-        height: 100px;
-        object-fit: contain;
-        margin-bottom: 1rem;
-        border-radius: 50%;
-        background-color: rgba(0,0,0,0.3);
-        padding: 5px;
-      }
-
-      .item-name {
-        color: var(--theme-accent);
-        font-family: 'Montserrat', sans-serif;
-        text-transform: capitalize;
-        font-size: 1.1rem;
-        font-weight: 600;
-      }
-
-      #loader { display: none; color: var(--theme-accent); }
-
-      .video-bg-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
-    overflow: hidden;
-    background-color: #0a1128; 
-}
-
-#bgVideo {
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover; 
-    filter: brightness(45%) contrast(110%); 
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-
-.genshin-card {
-    background-color: rgba(22, 36, 71, 0.7) !important;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(0, 180, 216, 0.3);
-    transition: all 0.3s ease;
-}
-
-body {
-    background-color: transparent !important;
-}
-
-.hero {
-    background: transparent !important;
-}
-/* Detail View Styles */
-.detail-container {
-    background-color: rgba(22, 36, 71, 0.9);
-    backdrop-filter: blur(15px);
-    border-radius: 20px;
-    padding: 2rem;
-    border: 1px solid var(--theme-accent);
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-.detail-img {
-    width: 250px;
-    height: 250px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 15px var(--theme-accent));
-}
-
-.stat-label {
-    color: var(--theme-accent);
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-}
-
-.back-btn {
-    background-color: transparent;
-    color: var(--text-light);
-    border: 1px solid var(--theme-accent);
-    transition: all 0.3s ease;
-}
-
-.back-btn:hover {
-    background-color: var(--theme-accent);
-    color: var(--theme-dark);
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes float {
-    0% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-10px) rotate(2deg); }
-    100% { transform: translateY(0px) rotate(0deg); }
-}
-
-@keyframes breathingGlow {
-    0% { filter: drop-shadow(0 0 5px var(--theme-accent)); }
-    50% { filter: drop-shadow(0 0 20px var(--theme-accent-hover)); }
-    100% { filter: drop-shadow(0 0 5px var(--theme-accent)); }
-}
-
-.item-icon {
-    animation: float 3s ease-in-out infinite; /* Continuous na paggalaw */
-    transition: all 0.3s ease;
-}
-
-.genshin-card:hover .item-icon {
-    animation: float 1.5s ease-in-out infinite; /* Bibilis ang galaw */
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 15px var(--theme-accent));
-}
-
-.detail-img {
-    animation: float 4s ease-in-out infinite, breathingGlow 4s infinite;
-}
-.notable-people-badge {
-    background: rgba(0, 180, 216, 0.1);
-    border: 1px solid var(--theme-accent);
-    color: var(--theme-accent-hover);
-    padding: 5px 15px;
-    border-radius: 20px;
-    display: inline-block;
-    margin: 5px;
-    font-size: 0.85rem;
-    transition: all 0.3s ease;
-}
-
-.notable-people-badge:hover {
-    background: var(--theme-accent);
-    color: var(--theme-dark);
-}
-
-.reaction-box {
-    background: rgba(10, 17, 40, 0.6);
-    border-radius: 10px;
-    padding: 15px;
-    margin-top: 10px;
-    border: 1px dashed var(--theme-accent);
-}
-    </style>
-  </head>
-  <body>
-
-    <div class="video-bg-container">
-    <video autoplay muted loop playsinline id="bgVideo">
-        <source src="assets/bg_video.mp4" type="video/mp4">
-    </video>
-</div>
-
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm py-1">
-      <div class="container">
-        <a class="navbar-brand d-flex align-items-center py-0" href="#" onclick="loadPage('characters')">
-            
-            <img src="https://static.vecteezy.com/system/resources/thumbnails/027/127/497/small_2x/genshin-impact-logo-genshin-impact-icon-transparent-free-png.png" 
-                 alt="Genshin Logo" 
-                 style="height: 100px; margin-top: -20px; margin-bottom: -20px;" 
-                 class="me-2">
-            Genshin Impact Archive
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: var(--theme-accent);">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" id="nav-home" onclick="loadPage('home')">Home</a></li>
-            <li class="nav-item"><a class="nav-link active" id="nav-characters" onclick="loadPage('characters')">Characters</a></li>
-            <li class="nav-item"><a class="nav-link" id="nav-weapons" onclick="loadPage('weapons')">Weapons</a></li>
-            <li class="nav-item"><a class="nav-link" id="nav-artifacts" onclick="loadPage('artifacts')">Artifacts</a></li>
-            <li class="nav-item"><a class="nav-link" id="nav-elements" onclick="loadPage('elements')">Elements</a></li>
-            <li class="nav-item"><a class="nav-link" id="nav-nations" onclick="loadPage('nations')">Nations</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
+    </style>   
+  </head>   
+  <body>     
+    <div class="video-bg-container">         
+      <video autoplay muted loop playsinline id="bgVideo">             
+        <source src="assets/bg_video.mp4" type="video/mp4">         
+      </video>     
+    </div>          
     
-    <header class="hero">
-      <div class="container">
-        <h1 id="pageTitle" class="display-4" style="color: var(--theme-accent); font-weight: 700;">Characters</h1>
-        <p id="pageSubtitle" class="lead text-light">Explore the heroes traversing the world of Genshin.</p>
-      </div>
-    </header>
-
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm py-1">       
+      <div class="container">         
+        <a class="navbar-brand d-flex align-items-center py-0" href="#" onclick="loadPage('home')">             
+          <img src="https://static.vecteezy.com/system/resources/thumbnails/027/127/497/small_2x/genshin-impact-logo-genshin-impact-icon-transparent-free-png.png"                   
+               alt="Genshin Logo"                   
+               style="height: 100px; margin-top: -20px; margin-bottom: -20px;"                   
+               class="me-3">             
+          <span class="ancient-modern-title fs-3 mt-2">Genshin Impact Archive</span>         
+        </a>         
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: var(--theme-accent);">           
+          <span class="navbar-toggler-icon"></span>         
+        </button>         
+        <div class="collapse navbar-collapse" id="navbarNav">           
+          <ul class="navbar-nav ms-auto">             
+            <li class="nav-item"><a class="nav-link active" id="nav-home" onclick="loadPage('home')">Home</a></li>             
+            <li class="nav-item"><a class="nav-link" id="nav-search" onclick="loadSearchPage()">Search</a></li>           
+          </ul>         
+        </div>       
+      </div>     
+    </nav>          
     
-    <main class="container my-5 flex-grow-1">
-      <div id="loader" class="text-center my-5">
-        <div class="spinner-border" role="status"></div>
-        <p class="mt-3" style="font-family: 'Montserrat', sans-serif;">Connecting to Irminsul...</p>
-      </div>
+    <header class="hero">       
+      <div class="container">         
+        <h1 id="pageTitle" class="display-4 ancient-modern-title">Welcome, Traveler!</h1>          
+        <p id="pageSubtitle" class="lead text-light">Ad Astra Abyssosque! Step into the vast world of Teyvat.</p>       
+      </div>     
+    </header>          
+    
+    <main class="container my-5 flex-grow-1">       
+      <div id="loader" class="text-center my-5">         
+        <div class="spinner-border" role="status"></div>         
+        <p class="mt-3" style="font-family: 'Montserrat', sans-serif;">Connecting to Irminsul...</p>       
+      </div>              
+      <div class="row g-4" id="dataGrid">         
+        <!-- JS will inject the API data here -->       
+      </div>     
+    </main>          
+    
+    <footer class="text-center py-4" style="background-color: var(--theme-card); border-top: 1px solid rgba(0, 180, 216, 0.3);">       
+      <p class="mb-0 small text-light opacity-75">Powered by genshin.jmp.blue API | Ad Astra Abyssosque</p>     
+    </footer>          
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>          
+    
+    <script>         
+      const baseUrl = 'https://genshin.jmp.blue';                       
+      const localDomainsData = {         
+        list: ["cecilia-garden", "domain-of-guyun", "midsummer-courtyard", "taishan-mansion"],         
+        details: {             
+          "cecilia-garden": {                 
+            name: "Cecilia Garden",                 
+            description: "The cecilia flowers that only grow on high cliffs once bloomed in the greenhouses here.",                 
+            nation: "Mondstadt",                 
+            recommended_ar: "15-40",                 
+            recommended_elements: ["Cryo", "Pyro", "Electro"]             
+          },             
+          "domain-of-guyun": {                 
+            name: "Domain of Guyun",                 
+            description: "This was once the place where the Geo Archon defeated the sea monster.",                 
+            nation: "Liyue",                 
+            recommended_ar: "22-45",                 
+            recommended_elements: ["Electro", "Cryo"]             
+          },             
+          "midsummer-courtyard": {                 
+            name: "Midsummer Courtyard",                 
+            description: "With the fall of the ancient fallen empire, the prosperous courtyard was buried deep underground.",                 
+            nation: "Mondstadt",                 
+            recommended_ar: "22-45",                 
+            recommended_elements: ["Pyro", "Cryo"]             
+          },             
+          "taishan-mansion": {                 
+            name: "Taishan Mansion",                 
+            description: "Once a place where people sought the adepti, it has now become a domain of trials.",                 
+            nation: "Liyue",                 
+            recommended_ar: "27-45",                 
+            recommended_elements: ["Hydro", "Cryo", "Electro"]             
+          }         
+        }     
+      };     
+
+      // Intercept API calls to serve local data for Domains     
+      const originalFetch = window.fetch;     
+      window.fetch = async (...args) => {         
+        const url = args[0];         
+        if (typeof url === 'string' && url.includes(baseUrl + '/domains')) {             
+          const path = url.replace(baseUrl + '/domains', '').replace(/\/$/, "");                          
+          if (path === '') {                 
+            return { json: async () => localDomainsData.list };             
+          }                                        
+          const itemMatch = path.match(/^\/([^\/]+)/);             
+          if (itemMatch) {                 
+            const item = itemMatch[1];                 
+            if (localDomainsData.details[item]) {                     
+              return { json: async () => localDomainsData.details[item] };                 
+            }             
+          }         
+        }         
+        return originalFetch(...args);     
+      };         
       
-      <div class="row g-4" id="dataGrid">
-        <!-- JS will inject the API data here -->
-      </div>
-    </main>
+      const dataGrid = document.getElementById('dataGrid');          
+      const loader = document.getElementById('loader');          
+      const pageTitle = document.getElementById('pageTitle');          
+      const pageSubtitle = document.getElementById('pageSubtitle');                   
+      let allDataCache = {};          
+      
+      const pageInfo = {             
+        home: { title: "Welcome, Traveler!", sub: "Ad Astra Abyssosque! Step into the vast world of Teyvat." },             
+        characters: { title: "Characters", sub: "Explore the heroes traversing the world of Teyvat." },             
+        weapons: { title: "Weapons", sub: "Discover the armaments forged for battle." },             
+        artifacts: { title: "Artifacts", sub: "Relics of the past that bestow great power." },             
+        elements: { title: "Elements", sub: "The fundamental powers that shape the world." },             
+        nations: { title: "Nations", sub: "The seven regions ruled by the Archons." },             
+        domains: { title: "Domains", sub: "Ancient ruins holding powerful rewards." },             
+        search: { title: "Archive Search", sub: "Search Irminsul for all knowledge."}         
+      };         
+      
+      async function fetchAllData() {             
+        if (Object.keys(allDataCache).length > 0) return;              
+        const categories = ['characters', 'weapons', 'artifacts', 'elements', 'nations', 'domains'];             
+        for (const cat of categories) {                 
+          try {                     
+            const response = await fetch(`${baseUrl}/${cat}`);                     
+            allDataCache[cat] = await response.json();                 
+          } catch (error) {                     
+            console.error("Failed to fetch search data for:", cat);                 
+          }             
+        }         
+      }         
+      
+      async function loadSearchPage() {             
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));             
+        document.getElementById('nav-search').classList.add('active');                          
+        pageTitle.textContent = pageInfo.search.title;             
+        pageSubtitle.textContent = pageInfo.search.sub;             
+        dataGrid.innerHTML = '';                          
+        
+        const searchUI = `                 
+          <div class="col-12 mb-4">                     
+            <div class="input-group input-group-lg shadow-sm" style="background: var(--theme-card); border-radius: 12px; border: 1px solid var(--theme-accent); overflow: hidden;">                         
+              <select id="searchFilter" class="form-select bg-dark text-light border-0" style="max-width: 200px; cursor:pointer;">                             
+                <option value="all">All Categories</option>                             
+                <option value="characters">Characters</option>                             
+                <option value="weapons">Weapons</option>                             
+                <option value="artifacts">Artifacts</option>                             
+                <option value="elements">Elements</option>                             
+                <option value="nations">Nations</option>                             
+                <option value="domains">Domains</option>                         
+              </select>                         
+              <input type="text" id="searchInput" class="form-control bg-dark text-light border-0" placeholder="Type a name to search..." onkeyup="if(event.key === 'Enter') executeSearch()">                         
+              <button class="btn btn-info text-dark fw-bold px-4" onclick="executeSearch()">Search</button>                         
+              <button class="btn btn-outline-danger px-4" onclick="clearSearch()">Clear</button>                     
+            </div>                 
+          </div>                 
+          <div id="searchResults" class="row g-4 w-100 m-0"></div>             
+        `;             
+        dataGrid.innerHTML = searchUI;             
+        loader.style.display = 'block';             
+        await fetchAllData();              
+        loader.style.display = 'none';         
+      }         
+      
+      function executeSearch() {             
+        const query = document.getElementById('searchInput').value.toLowerCase().trim();             
+        const filter = document.getElementById('searchFilter').value;             
+        const resultsContainer = document.getElementById('searchResults');                          
+        resultsContainer.innerHTML = '';                          
+        
+        if (!query) {                 
+          resultsContainer.innerHTML = '<div class="col-12 text-center text-light mt-4">Please enter a search term to query the Ley Lines.</div>';                 
+          return;             
+        }             
+        
+        let results = [];             
+        const categoriesToSearch = filter === 'all' ? Object.keys(allDataCache) : [filter];                          
+        categoriesToSearch.forEach(cat => {                 
+          if (allDataCache[cat]) {                     
+            const matches = allDataCache[cat].filter(item => typeof item === 'string' && item.toLowerCase().includes(query));                     
+            matches.forEach(match => {                         
+              results.push({ category: cat, item: match });                     
+            });                 
+          }             
+        });             
+        
+        if (results.length === 0) {                 
+          resultsContainer.innerHTML = '<div class="col-12 text-center text-light mt-4">No records found in the Irminsul tree.</div>';                 
+          return;             
+        }             
+        
+        results.forEach(res => {                 
+          let displayName = res.item.replace(/-/g, ' ').replace(/ s /g, "'s ");                 
+          let imageUrl = `${baseUrl}/${res.category}/${res.item}/icon`;                 
+          let fallbackUrl = `https://placehold.co/100x100/162447/00b4d8?text=Secured`;                                  
+          
+          if (res.category === 'artifacts') imageUrl = `${baseUrl}/${res.category}/${res.item}/flower-of-life`;                 
+          if (res.item === 'glacier-and-snowfield') imageUrl = `https://genshin.jmp.blue/artifacts/blizzard-strayer/flower-of-life`;                                  
+          
+          let imgHtml = `<img src="${imageUrl}" alt="${displayName}" class="item-icon" onerror="this.onerror=null; this.src='${fallbackUrl}';">`;
+          if (res.category === 'domains') {
+            imgHtml = ''; 
+          }
 
-    
-    <footer class="text-center py-4" style="background-color: var(--theme-card); border-top: 1px solid rgba(0, 180, 216, 0.3);">
-      <p class="mb-0 small text-light opacity-75">Powered by genshin.jmp.blue API | Ad Astra Abyssosque</p>
-    </footer>
-
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    
-    
-    <script>
-      const baseUrl = 'https://genshin.jmp.blue';
-const dataGrid = document.getElementById('dataGrid');
-const loader = document.getElementById('loader');
-const pageTitle = document.getElementById('pageTitle');
-const pageSubtitle = document.getElementById('pageSubtitle');
-
-const pageInfo = {
-    home: { title: "Welcome, Traveler!", sub: "Ad Astra Abyssosque! Step into the vast world of Teyvat." },
-    characters: { title: "Characters", sub: "Explore the heroes traversing the world of Teyvat." },
-    weapons: { title: "Weapons", sub: "Discover the armaments forged for battle." },
-    artifacts: { title: "Artifacts", sub: "Relics of the past that bestow great power." },
-    elements: { title: "Elements", sub: "The fundamental powers that shape the world." },
-    nations: { title: "Nations", sub: "The seven regions ruled by the Archons." }
-};
-
-// Function 1: Load Page (Home or Category)
-async function loadPage(endpoint) {
-    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-    document.getElementById(`nav-${endpoint}`).classList.add('active');
-    
-    pageTitle.textContent = pageInfo[endpoint].title;
-    pageSubtitle.textContent = pageInfo[endpoint].sub;
-    dataGrid.innerHTML = '';
-    loader.style.display = 'block';
-
-    try {
-        if (endpoint === 'home') {
-            // Home Logic: Fetch and Display All Categories
-            const categories = ['characters', 'weapons', 'artifacts', 'elements', 'nations'];
-            
-            for (const cat of categories) {
-                const response = await fetch(`${baseUrl}/${cat}`);
-                const items = await response.json();
-                
-                // Add Section Header for each category
-                const sectionTitle = `<div class="col-12 mt-5 mb-2"><h2 class="text-accent border-bottom border-info pb-2" style="text-transform: capitalize;">${cat}</h2></div>`;
-                dataGrid.insertAdjacentHTML('beforeend', sectionTitle);
-
-                // Display a few items for preview or change slice() to see more
-                items.slice(0, 4).forEach(item => {
-                    renderCard(cat, item);
-                });
-
-                // Add "View All" link per section
-                const viewAll = `<div class="col-12 text-end mb-4"><a href="#" class="text-info small text-decoration-none" onclick="loadPage('${cat}')">View all ${cat} →</a></div>`;
-                dataGrid.insertAdjacentHTML('beforeend', viewAll);
+          const card = `                     
+            <div class="col-6 col-md-4 col-lg-3">                         
+              <div class="genshin-card" style="cursor: pointer;" onclick="loadDetails('${res.category}', '${res.item}')">                             
+                <span class="badge bg-dark border border-info mb-2" style="font-size: 0.7rem; text-transform:uppercase;">${res.category}</span><br>                             
+                ${imgHtml}                             
+                <h3 class="item-name">${displayName}</h3>                         
+              </div>                     
+            </div>                 
+          `;                 
+          resultsContainer.insertAdjacentHTML('beforeend', card);             
+        });         
+      }         
+      
+      function clearSearch() {             
+        document.getElementById('searchInput').value = '';             
+        document.getElementById('searchFilter').value = 'all';             
+        document.getElementById('searchResults').innerHTML = '';         
+      }         
+      
+      // Inline Live Filter Functions for Categories
+      function filterCategory(containerId) {
+        const input = document.getElementById('categorySearchInput').value.toLowerCase().trim();
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        const cards = container.querySelectorAll('.card-item');
+        let visibleCount = 0;
+        
+        cards.forEach(card => {
+            const name = card.querySelector('.item-name').innerText.toLowerCase();
+            if (name.includes(input)) {
+                card.style.display = '';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
             }
-        } else {
-            // Individual Category View[cite: 2]
-            const response = await fetch(`${baseUrl}/${endpoint}`);
-            const items = await response.json();
-            items.forEach(item => renderCard(endpoint, item));
+        });
+      }
+
+      function clearCategorySearch(containerId) {
+        const input = document.getElementById('categorySearchInput');
+        if (input) input.value = '';
+        filterCategory(containerId);
+      }
+
+      async function loadPage(endpoint) {             
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));             
+        const navElement = document.getElementById(`nav-${endpoint === 'home' ? 'home' : 'search'}`);             
+        if(navElement) navElement.classList.add('active');                               
+        
+        const titleData = pageInfo[endpoint] || pageInfo['home'];             
+        pageTitle.textContent = titleData.title;             
+        pageSubtitle.textContent = titleData.sub;                          
+        dataGrid.innerHTML = '';             
+        loader.style.display = 'block';                          
+        
+        try {                 
+          if (endpoint === 'home') {                     
+            const categories = ['characters', 'weapons', 'artifacts', 'elements', 'nations', 'domains'];                                                       
+            for (const cat of categories) {                         
+              const response = await fetch(`${baseUrl}/${cat}`);                         
+              const items = await response.json();                                                  
+              const dashboardId = `home-dashboard-${cat}`;
+              
+              const sectionTitle = `                             
+                <div class="col-12 mt-5 mb-3 d-flex justify-content-between align-items-end border-bottom border-info pb-2">                                 
+                  <h2 class="text-accent mb-0 ancient-modern-title" style="text-transform: capitalize;">${cat.replace(/-/g, ' ')}</h2>                                 
+                  <button class="view-all-btn" onclick="loadPage('${cat}')">                                     
+                    View All <i class="bi bi-chevron-double-right"></i>                                 
+                  </button>                             
+                </div>                         
+                <div id="${dashboardId}" class="row g-4 w-100 m-0"></div>
+              `;                         
+              dataGrid.insertAdjacentHTML('beforeend', sectionTitle);                                                  
+              items.slice(0, 4).forEach(item => {                             
+                renderCard(cat, item, dashboardId);                         
+              });                     
+            }                 
+          } else {                     
+            const dashboardId = `dashboard-${endpoint}`;
+            const dashboardHeader = `                         
+              <div class="col-12 mb-4">                             
+                <div class="d-flex align-items-center border-bottom border-info pb-3 mb-4">                             
+                  <button class="back-btn me-3" onclick="loadPage('home')">                                 
+                    <i class="bi bi-arrow-left"></i> Back Home                             
+                  </button>                             
+                  <h2 class="text-accent mb-0 ancient-modern-title" style="text-transform: capitalize;">All ${endpoint.replace(/-/g, ' ')}</h2>                         
+                </div>
+                
+                <!-- Category Inline Search & Filter -->
+                <div class="input-group input-group-lg shadow-sm" style="background: var(--theme-card); border-radius: 12px; border: 1px solid var(--theme-accent); overflow: hidden;">                         
+                  <span class="input-group-text bg-dark text-info border-0"><i class="bi bi-search"></i></span>
+                  <input type="text" id="categorySearchInput" class="form-control bg-dark text-light border-0" placeholder="Filter ${endpoint.replace(/-/g, ' ')}..." onkeyup="filterCategory('${dashboardId}')">                         
+                  <button class="btn btn-outline-danger px-4" onclick="clearCategorySearch('${dashboardId}')">Clear</button>                     
+                </div>
+              </div>                     
+              <div id="${dashboardId}" class="row g-4 w-100 m-0"></div>
+            `;                     
+            dataGrid.insertAdjacentHTML('beforeend', dashboardHeader);                     
+            
+            const response = await fetch(`${baseUrl}/${endpoint}`);                     
+            const items = await response.json();                     
+            items.forEach(item => renderCard(endpoint, item, dashboardId));                 
+          }                 
+          loader.style.display = 'none';             
+        } catch (error) {                 
+          console.error("API Error:", error);                 
+          loader.style.display = 'none';                 
+          dataGrid.innerHTML = `<div class="col-12 text-center text-danger"><p>Failed to connect to the Ley Lines.</p></div>`;             
+        }         
+      }         
+      
+      function renderCard(endpoint, item, targetContainerId = null) {             
+        let displayName = typeof item === 'string' ? item.replace(/-/g, ' ').replace(/ s /g, "'s ") : 'Unknown';             
+        let imageUrl = `${baseUrl}/${endpoint}/${item}/icon`;             
+        let fallbackUrl = `https://placehold.co/100x100/162447/00b4d8?text=${displayName.split(' ')[0]}`;                           
+        
+        if (endpoint === 'artifacts') imageUrl = `${baseUrl}/${endpoint}/${item}/flower-of-life`;             
+        if (item === 'glacier-and-snowfield') imageUrl = `https://genshin.jmp.blue/artifacts/blizzard-strayer/flower-of-life`;             
+        
+        let imgHtml = `<img src="${imageUrl}" alt="${displayName}" class="item-icon" onerror="this.onerror=null; this.src='${fallbackUrl}';">`;
+        if (endpoint === 'domains') {
+          imgHtml = ''; // Remove image for domain cards
         }
-        loader.style.display = 'none';
-    } catch (error) {
-        console.error("API Error:", error);
-        loader.style.display = 'none';
-        dataGrid.innerHTML = `<div class="col-12 text-center text-danger"><p>Failed to connect to the Ley Lines.</p></div>`;
-    }
-}
 
-// Function 2: Helper to Render Individual Cards
-function renderCard(endpoint, item) {
-    let displayName = item.replace(/-/g, ' ').replace(/ s /g, "'s ");
-    let imageUrl = `${baseUrl}/${endpoint}/${item}/icon`;
-    let fallbackUrl = `https://placehold.co/100x100/162447/00b4d8?text=No+Data`; 
-
-    if (endpoint === 'artifacts') imageUrl = `${baseUrl}/${endpoint}/${item}/flower-of-life`;
-    if (item === 'glacier-and-snowfield') imageUrl = `https://genshin.jmp.blue/artifacts/blizzard-strayer/flower-of-life`;
-
-    const card = `
-        <div class="col-6 col-md-4 col-lg-3">
-            <div class="genshin-card" style="cursor: pointer;" onclick="loadDetails('${endpoint}', '${item}')">
-                <img src="${imageUrl}" alt="${displayName}" class="item-icon" onerror="this.onerror=null; this.src='${fallbackUrl}';">
-                <h3 class="item-name">${displayName}</h3>
-            </div>
-        </div>
-    `;
-    dataGrid.insertAdjacentHTML('beforeend', card);
-}
-
-// Function 3: Load Details
-async function loadDetails(endpoint, item) {
-    dataGrid.innerHTML = '';
-    loader.style.display = 'block';
-    window.scrollTo(0, 0);
-
-    try {
-        const response = await fetch(`${baseUrl}/${endpoint}/${item}`);
-        const data = await response.json();
-        let detailHtml = '';
-        const displayName = item.replace(/-/g, ' ');
-
-        // Image Handling
-        let detailImgUrl = `${baseUrl}/${endpoint}/${item}/icon`;
-        if (endpoint === 'characters') detailImgUrl = `${baseUrl}/characters/${item}/portrait`;
-        if (endpoint === 'artifacts') detailImgUrl = `${baseUrl}/artifacts/${item}/flower-of-life`;
-        const imgTag = `<img src="${detailImgUrl}" class="detail-img mb-4" onerror="this.src='https://placehold.co/200x200/162447/00b4d8?text=${displayName}'">`;
-
+        const card = `                 
+          <div class="col-6 col-md-4 col-lg-3 card-item">                     
+            <div class="genshin-card" style="cursor: pointer;" onclick="loadDetails('${endpoint}', '${item}')">                         
+              ${imgHtml}                         
+              <h3 class="item-name">${displayName}</h3>                     
+            </div>                 
+          </div>             
+        `;             
         
-        if (endpoint === 'nations') {
-            // Fetch characters to find who lives here
-            const charRes = await fetch(`${baseUrl}/characters`);
-            const allChars = await charRes.json();
-            const localPeople = allChars.filter(c => c.toLowerCase().includes(item.split('-')[0]) || c.toLowerCase() === item); 
-            // Note: Since API names vary, we'll show a "Loading residents..." or manual mapping if needed.
-            // For now, let's focus on the Nation Info:
-
-            detailHtml = `
-                <div class="col-12">
-                    <div class="detail-container text-center">
-                        ${imgTag}
-                        <h1 class="display-5 fw-bold text-accent">${data.name}</h1>
-                        <p class="lead mb-4">The ${data.name} is the home of the ${data.element} element, ruled by the Archon ${data.archon}.</p>
-                        
-                        <div class="row text-start justify-content-center">
-                            <div class="col-md-5">
-                                <div class="p-3 mb-3 rounded bg-dark border-start border-4 border-info">
-                                    <p class="mb-1"><span class="stat-label">Government:</span></p>
-                                    <p class="mb-0">${data.controlling_entity}</p>
-                                </div>
-                                <div class="p-3 mb-3 rounded bg-dark border-start border-4 border-info">
-                                    <p class="mb-1"><span class="stat-label">Ideal:</span></p>
-                                    <p class="mb-0">Known for their pursuit of <strong>${data.name === 'Mondstadt' ? 'Freedom' : data.name === 'Liyue' ? 'Contracts' : data.name === 'Inazuma' ? 'Eternity' : data.name === 'Sumeru' ? 'Wisdom' : 'Justice'}</strong>.</p>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="p-3 mb-3 rounded bg-dark border-start border-4 border-info">
-                                    <p class="mb-1"><span class="stat-label">Motto:</span></p>
-                                    <p class="mb-0"><em>"${data.motto}"</em></p>
-                                </div>
-                                <div class="p-3 mb-3 rounded bg-dark border-start border-4 border-info">
-                                    <p class="mb-1"><span class="stat-label">Notable People:</span></p>
-                                    <div id="peopleList" class="mt-2">
-                                        <span class="small opacity-75 text-light">Explore the characters list to see the heroes of this land.</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-        } 
+        if (targetContainerId) {
+            const container = document.getElementById(targetContainerId);
+            if (container) container.insertAdjacentHTML('beforeend', card);
+        } else {
+            dataGrid.insertAdjacentHTML('beforeend', card);         
+        }
+      }         
+      
+      async function loadDetails(endpoint, item) {             
+        dataGrid.innerHTML = '';             
+        loader.style.display = 'block';             
+        window.scrollTo(0, 0);                          
         
-        else if (endpoint === 'elements') {
-            const reactions = {
-                'Anemo': 'Swirl (Absorbs Pyro, Hydro, Cryo, or Electro to deal extra AoE damage).',
-                'Geo': 'Crystallize (Creates a shield when it hits Pyro, Hydro, Cryo, or Electro).',
-                'Electro': 'Overloaded (Pyro), Superconduct (Cryo), Electro-Charged (Hydro).',
-                'Dendro': 'Bloom (Hydro), Quicken (Electro), Burning (Pyro).',
-                'Hydro': 'Vaporize (Pyro), Frozen (Cryo), Electro-Charged (Electro).',
-                'Pyro': 'Vaporize (Hydro), Melt (Cryo), Overloaded (Electro), Burning (Dendro).',
-                'Cryo': 'Melt (Pyro), Frozen (Hydro), Superconduct (Electro).'
+        try {                 
+          const response = await fetch(`${baseUrl}/${endpoint}/${item}`);                 
+          const data = await response.json();                                  
+          let detailHtml = '';                 
+          const displayName = typeof item === 'string' ? item.replace(/-/g, ' ') : 'Unknown';                 
+          let detailImgUrl = `${baseUrl}/${endpoint}/${item}/icon`;                 
+          let fallbackUrl = `https://placehold.co/200x200/162447/00b4d8?text=${displayName.split(' ')[0]}`;                 
+          
+          if (endpoint === 'characters') detailImgUrl = `${baseUrl}/characters/${item}/portrait`;                 
+          if (endpoint === 'artifacts') detailImgUrl = `${baseUrl}/artifacts/${item}/flower-of-life`;                                  
+          
+          const imgTag = `<img src="${detailImgUrl}" class="detail-img mb-4" onerror="this.src='${fallbackUrl}'">`;                                           
+          
+          if (endpoint === 'nations') {                     
+            
+            // Custom lore dictionary to extend the nation description
+            const nationLore = {
+                "Mondstadt": "The city of freedom that lies in the northeast of Teyvat. From amongst mountains and wide-open plains, carefree breezes carry the scent of dandelions—a gift from the Anemo God, Barbatos—across Cider Lake to the island city that sits at the middle of the lake.",
+                "Liyue": "A bountiful harbor that lies in the east of Teyvat. Mountains stand tall and proud alongside the stone forest, that, together with the open plains and meandering rivers, make up Liyue's bountiful landscape, which shows its unique beauty through each of the four seasons.",
+                "Inazuma": "An isolated archipelago far to the east of Teyvat. Overcome endless thunderstorms and set foot on the islands of red maple and cherry blossoms. On winding shores and towering cliffs, you may witness the Eternity pursued by Her Excellency, the Almighty Narukami Ogosho.",
+                "Sumeru": "The city of scholars located in the west-central part of Teyvat. A fantastical nation of both lush rainforests and barren deserts, where countless fruits of wisdom grow and are buried within the Akademiya and beyond.",
+                "Fontaine": "A terrestrial sea in the center of Teyvat. Following the direction of the water currents, traversing the wilderness and the sea of sand, arriving at the origin of all the waters of the continent where justice reigns supreme.",
+                "Natlan": "The Nation of War located in the western part of Teyvat. Across the scorching deserts and past the jagged canyons lies the realm of the Pyro Archon, where tribes clash and forge legends in the heat of battle.",
+                "Snezhnaya": "The northernmost nation of Teyvat, a land of perpetual winter and harsh blizzards. Ruled by the Tsaritsa, it is a technologically advanced region known for its powerful military and the infamous Fatui organization."
             };
 
+            let loreText = nationLore[data.name] || `The ${data.name} is the home of the ${data.element} element, ruled by the Archon ${data.archon}.`;
+
+            detailHtml = `                         
+              <div class="col-12">                             
+                <div class="detail-container text-center">                                 
+                  ${imgTag}                                 
+                  <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>                                 
+                  <p class="lead mb-4 px-md-5 fst-italic">"${loreText}"</p>                                                                  
+                  
+                  <div class="mb-4">                                     
+                    <a href="https://act.hoyolab.com/ys/app/interactive-map/index.html?lang=en-us" target="_blank" class="btn btn-outline-info rounded-pill px-4 py-2" style="transition: all 0.3s;">                                         
+                      <i class="bi bi-map-fill me-2"></i> Open Interactive Map for ${data.name}                                     
+                    </a>                                 
+                  </div>                                                                  
+                  
+                  <div class="row text-start justify-content-center">                                     
+                    <div class="col-md-5 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">                                             
+                        <p class="mb-2"><span class="stat-label">Archon:</span> ${data.archon || 'Unknown'}</p>                                             
+                        <p class="mb-0"><span class="stat-label">Element:</span> ${data.element || 'Unknown'}</p>                                         
+                    </div>                                     
+                    <div class="col-md-5 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">                                             
+                        <p class="mb-2"><span class="stat-label">Government:</span> ${data.controlling_entity || 'Unknown'}</p>                                             
+                        <p class="mb-0"><span class="stat-label">Motto:</span> <em>"${data.motto || 'N/A'}"</em></p>                                         
+                    </div>                                 
+                  </div>                             
+                </div>                         
+              </div>`;                 
+          } else if (endpoint === 'domains') {                     
+            detailHtml = `                         
+              <div class="col-12">                             
+                <div class="detail-container text-center">                                 
+                  <!-- Domain Image Tag Removed Here -->                                 
+                  <h1 class="display-5 fw-bold text-accent ancient-modern-title">${data.name}</h1>                                 
+                  <p class="lead mb-3 text-light">${data.description || 'An ancient domain hiding powerful rewards.'}</p>                                 
+                  <p class="text-info mb-4"><span class="stat-label text-light">Nation:</span> ${data.nation || 'Unknown'}</p>                                                                  
+                  <div class="mb-4">                                     
+                    <a href="https://act.hoyolab.com/ys/app/interactive-map/index.html?lang=en-us" target="_blank" class="btn btn-outline-info rounded-pill px-4 py-2" style="transition: all 0.3s;">                                         
+                      <i class="bi bi-pin-map-fill me-2"></i> Locate Domain on Teyvat Map                                     
+                    </a>                                 
+                  </div>                                                                  
+                  <div class="row mt-4 text-start justify-content-center">                                     
+                    <div class="col-md-8 p-3 rounded bg-dark border border-info shadow">                                         
+                      <h5 class="text-accent mb-2"><i class="bi bi-gift"></i> Domain Details</h5>                                         
+                      <p class="mb-1 opacity-75 small">This domain tests your team's strength. Complete it to claim rewards using Original Resin.</p>                                         
+                      <p class="mt-3 stat-label">Required Adventure Rank: ${data.recommended_ar || 'Varies'}</p>                                         
+                      <p class="stat-label">Recommended Elements: <span class="text-light text-capitalize">${data.recommended_elements && data.recommended_elements.length > 0 ? data.recommended_elements.join(', ') : 'Any'}</span></p>                                     
+                    </div>                                 
+                  </div>                             
+                </div>                         
+              </div>`;                 
+          } else if (endpoint === 'elements') {                     
+            const reactions = {                         
+              'Anemo': 'Swirl (Absorbs Pyro, Hydro, Cryo, or Electro to deal extra AoE damage).',                         
+              'Geo': 'Crystallize (Creates a shield when it hits Pyro, Hydro, Cryo, or Electro).',                         
+              'Electro': 'Overloaded (Pyro), Superconduct (Cryo), Electro-Charged (Hydro).',                         
+              'Dendro': 'Bloom (Hydro), Quicken (Electro), Burning (Pyro).',                         
+              'Hydro': 'Vaporize (Pyro), Frozen (Cryo), Electro-Charged (Electro).',                         
+              'Pyro': 'Vaporize (Hydro), Melt (Cryo), Overloaded (Electro), Burning (Dendro).',                         
+              'Cryo': 'Melt (Pyro), Frozen (Hydro), Superconduct (Electro).'                     
+            };                     
+            detailHtml = `                         
+              <div class="col-12">                             
+                <div class="detail-container text-center">                                 
+                  ${imgTag}                                 
+                  <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+                  <p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"${data.description || 'The ' + data.name + ' element is a fundamental force in Teyvat.'}"</p>
+                  
+                  <div class="row mt-3 justify-content-center text-start">
+                    <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
+                        <h5 class="text-accent mb-3 border-bottom border-info pb-2"><i class="bi bi-magic me-2"></i>Common Reactions</h5>
+                        <div class="reaction-box mt-0 border-0 p-0" style="background: transparent;">
+                            <p class="text-light mb-0">${reactions[data.name] || 'Reacts with other elements to create powerful combat effects.'}</p>
+                        </div>
+                    </div>
+                  </div>
+                </div>                         
+              </div>`;                 
+          } else if (endpoint === 'characters') {                     
+            
+            // Build Skills HTML
+            let skillsHtml = '';
+            if (data.skillTalents && data.skillTalents.length > 0) {
+                skillsHtml += '<h4 class="text-accent mt-5 mb-3 border-bottom border-info pb-2"><i class="bi bi-crosshair me-2"></i>Combat Skills</h4><div class="row text-start">';
+                data.skillTalents.forEach(skill => {
+                    skillsHtml += `
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="p-3 bg-dark border border-secondary rounded h-100">
+                            <h6 class="text-info">${skill.name} <br><span class="text-muted small" style="font-weight: 400;">(${skill.unlock || skill.type || 'Skill'})</span></h6>
+                            <div class="custom-scroll" style="max-height: 120px; overflow-y: auto;">
+                                <p class="small text-light opacity-75 mb-0 pe-2">${skill.description}</p>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                skillsHtml += '</div>';
+            }
+
+            // Build Passives HTML
+            let passivesHtml = '';
+            if (data.passiveTalents && data.passiveTalents.length > 0) {
+                passivesHtml += '<h4 class="text-accent mt-4 mb-3 border-bottom border-info pb-2"><i class="bi bi-stars me-2"></i>Passive Talents</h4><div class="row text-start">';
+                data.passiveTalents.forEach(passive => {
+                    passivesHtml += `
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="p-3 bg-dark border border-secondary rounded h-100">
+                            <h6 class="text-info">${passive.name} <br><span class="text-muted small" style="font-weight: 400;">(${passive.unlock || 'Passive'})</span></h6>
+                            <div class="custom-scroll" style="max-height: 100px; overflow-y: auto;">
+                                <p class="small text-light opacity-75 mb-0 pe-2">${passive.description}</p>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                passivesHtml += '</div>';
+            }
+
+            // Build Constellations HTML
+            let constellationsHtml = '';
+            if (data.constellations && data.constellations.length > 0) {
+                constellationsHtml += '<h4 class="text-accent mt-4 mb-3 border-bottom border-info pb-2"><i class="bi bi-moon-stars me-2"></i>Constellations</h4><div class="row text-start">';
+                data.constellations.forEach(cons => {
+                    constellationsHtml += `
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="p-3 bg-dark border border-secondary rounded h-100">
+                            <h6 class="text-info">C${cons.level}: ${cons.name}</h6>
+                            <div class="custom-scroll" style="max-height: 100px; overflow-y: auto;">
+                                <p class="small text-light opacity-75 mb-0 pe-2">${cons.description}</p>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                constellationsHtml += '</div>';
+            }
+
+            let starRating = data.rarity ? '⭐'.repeat(data.rarity) : 'Unknown';
+
             detailHtml = `
-                <div class="col-12">
-                    <div class="detail-container text-center">
-                        ${imgTag}
-                        <h1 class="display-5 fw-bold text-accent">${data.name}</h1>
-                        <div class="row mt-4 justify-content-center text-start">
-                            <div class="col-md-8">
-                                <div class="p-4 rounded bg-dark border border-info shadow">
-                                    <h5 class="text-accent mb-3"><i class="bi bi-magic"></i> Elemental Mechanics</h5>
-                                    <p class="mb-3">The <strong>${data.name}</strong> element is a fundamental force in Teyvat.</p>
-                                    <div class="reaction-box">
-                                        <p class="stat-label mb-2">Common Reactions:</p>
-                                        <p class="text-light mb-0">${reactions[data.name] || 'Reacts with other elements to create powerful combat effects.'}</p>
-                                    </div>
-                                    <div class="mt-3">
-                                        <p class="small opacity-75">Used for exploration puzzles and triggering massive damage in battle.</p>
-                                    </div>
-                                </div>
+              <div class="col-12">
+                <div class="detail-container text-center">
+                  ${imgTag}
+                  <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+                  <p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"${data.description || 'No profile description available.'}"</p>
+                  
+                  <div class="row mt-4 text-start justify-content-center mb-4">
+                    <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                      <p class="mb-2"><span class="stat-label">Vision:</span> ${data.vision || 'Unknown'}</p>
+                      <p class="mb-2"><span class="stat-label">Weapon:</span> ${data.weapon || 'Unknown'}</p>
+                      <p class="mb-0"><span class="stat-label">Rarity:</span> ${starRating}</p>
+                    </div>
+                    <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                      <p class="mb-2"><span class="stat-label">Nation:</span> ${data.nation || 'Unknown'}</p>
+                      <p class="mb-2"><span class="stat-label">Affiliation:</span> ${data.affiliation || 'Unknown'}</p>
+                      <p class="mb-0"><span class="stat-label">Constellation:</span> ${data.constellation || 'Unknown'}</p>
+                    </div>
+                  </div>
+                  
+                  ${skillsHtml}
+                  ${passivesHtml}
+                  ${constellationsHtml}
+
+                </div>
+              </div>`;                 
+          } else if (endpoint === 'weapons') {
+            
+            let starRating = data.rarity ? '⭐'.repeat(data.rarity) : 'Unknown';
+            
+            let passiveHtml = '';
+            if (data.passiveName && data.passiveDesc) {
+                passiveHtml = `
+                <div class="row mt-4 justify-content-center text-start">
+                    <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
+                        <h5 class="text-accent mb-2"><i class="bi bi-shield-check me-2"></i>Passive: ${data.passiveName}</h5>
+                        <p class="small text-light opacity-75 mb-0">${data.passiveDesc}</p>
+                    </div>
+                </div>`;
+            }
+
+            let materialsHtml = '';
+            if (data.ascensionMaterial || data.bossMaterial || data.itemMaterial) {
+                materialsHtml = `
+                <div class="row mt-3 justify-content-center text-start">
+                    <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
+                        <h5 class="text-accent mb-2"><i class="bi bi-box-seam me-2"></i>Ascension Materials</h5>
+                        <ul class="list-unstyled mb-0 small text-light opacity-75">
+                            ${data.ascensionMaterial ? `<li><i class="bi bi-caret-right-fill text-info"></i> Weapon Ascension: <span class="text-capitalize">${data.ascensionMaterial.replace(/-/g, ' ')}</span></li>` : ''}
+                            ${data.bossMaterial ? `<li><i class="bi bi-caret-right-fill text-info"></i> Elite Enemy: <span class="text-capitalize">${data.bossMaterial.replace(/-/g, ' ')}</span></li>` : ''}
+                            ${data.itemMaterial ? `<li><i class="bi bi-caret-right-fill text-info"></i> Common Enemy: <span class="text-capitalize">${data.itemMaterial.replace(/-/g, ' ')}</span></li>` : ''}
+                        </ul>
+                    </div>
+                </div>`;
+            }
+
+            detailHtml = `
+            <div class="col-12">
+                <div class="detail-container text-center">
+                    ${imgTag}
+                    <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+                    ${data.description ? `<p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"${data.description}"</p>` : ''}
+                    
+                    <div class="row mt-4 text-start justify-content-center mb-4">
+                        <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                            <p class="mb-2"><span class="stat-label">Type:</span> ${data.type || data.weapontype || 'Unknown'}</p>
+                            <p class="mb-2"><span class="stat-label">Rarity:</span> ${starRating}</p>
+                            <p class="mb-0"><span class="stat-label">Obtained Via:</span> ${data.location || 'Unknown'}</p>
+                        </div>
+                        <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                            <p class="mb-2"><span class="stat-label">Base ATK:</span> ${data.baseAttack || data.baseAtk || 'Unknown'}</p>
+                            <p class="mb-0"><span class="stat-label">Sub Stat:</span> ${data.subStat || 'None'}</p>
+                        </div>
+                    </div>
+
+                    ${passiveHtml}
+                    ${materialsHtml}
+
+                </div>
+            </div>`;
+          } else if (endpoint === 'artifacts') {
+            
+            let starRating = data.max_rarity ? '⭐'.repeat(data.max_rarity) : 'Unknown';
+
+            detailHtml = `
+            <div class="col-12">
+                <div class="detail-container text-center">
+                    ${imgTag}
+                    <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+                    
+                    <div class="row mt-4 text-start justify-content-center mb-4">
+                        <div class="col-md-6 col-lg-5 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                            <p class="mb-0"><span class="stat-label">Max Rarity:</span> ${starRating}</p>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center text-start">
+                        <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
+                            <h5 class="text-accent mb-3 border-bottom border-info pb-2"><i class="bi bi-box-seam me-2"></i>Set Bonuses</h5>
+                            
+                            <div class="mb-3">
+                                <h6 class="text-info">2-Piece Set</h6>
+                                <p class="small text-light opacity-75 mb-0">${data['2-piece_bonus'] || 'No 2-piece bonus available.'}</p>
+                            </div>
+                            
+                            <div>
+                                <h6 class="text-info">4-Piece Set</h6>
+                                <p class="small text-light opacity-75 mb-0">${data['4-piece_bonus'] || 'No 4-piece bonus available.'}</p>
                             </div>
                         </div>
                     </div>
-                </div>`;
-        }
-        
-        else if (endpoint === 'characters') {
-            detailHtml = `<div class="col-12"><div class="detail-container text-center">${imgTag}<h1 class="display-5 fw-bold text-accent">${data.name}</h1><p class="lead">${data.description}</p><div class="row mt-4 text-start justify-content-center"><div class="col-md-4"><p><span class="stat-label">Vision:</span> ${data.vision}</p><p><span class="stat-label">Weapon:</span> ${data.weapon}</p></div><div class="col-md-4"><p><span class="stat-label">Nation:</span> ${data.nation}</p><p><span class="stat-label">Rarity:</span> ${data.rarity} Stars</p></div></div></div></div>`;
-        }
-        else {
-            detailHtml = `<div class="col-12"><div class="detail-container text-center">${imgTag}<h1 class="display-5 fw-bold text-accent">${data.name || displayName}</h1><p class="lead">${data.description || 'Data from the Irminsul tree.'}</p></div></div>`;
-        }
 
-        detailHtml += `<div class="col-12 text-center mt-4"><button class="btn back-btn px-5 py-2" onclick="loadPage('${endpoint}')">Back to ${endpoint}</button></div>`;
-        dataGrid.innerHTML = detailHtml;
-        loader.style.display = 'none';
-    } catch (error) {
-        console.error("Detail Fetch Error:", error);
-        loader.style.display = 'none';
-        dataGrid.innerHTML = `<div class="col-12 text-center text-danger"><p>Data error.</p><button class="btn back-btn" onclick="loadPage('${endpoint}')">Back</button></div>`;
-    }
-}
-
-window.onload = () => loadPage('home');
-    </script>
-    
-  </body>
+                </div>
+            </div>`;
+            
+          } else {                     
+            detailHtml = `<div class="col-12"><div class="detail-container text-center">${imgTag}<h1 class="display-5 fw-bold text-accent ancient-modern-title" style="text-transform: capitalize;">${data.name || displayName}</h1><p class="lead">${data.description || 'Data fetched from the Irminsul tree.'}</p></div></div>`;                 
+          }                                  
+          
+          detailHtml += `<div class="col-12 text-center mt-4"><button class="back-btn" onclick="loadPage('${endpoint}')"><i class="bi bi-arrow-left"></i> Back to ${endpoint.replace(/-/g, ' ')}</button></div>`;                 
+          dataGrid.innerHTML = detailHtml;                 
+          loader.style.display = 'none';             
+        } catch (error) {                 
+          console.error("Detail Fetch Error:", error);                 
+          loader.style.display = 'none';                 
+          dataGrid.innerHTML = `<div class="col-12 text-center text-danger"><p>Data error.</p><button class="back-btn" onclick="loadPage('home')">Back Home</button></div>`;             
+        }         
+      }                  
+      
+      window.onload = () => loadPage('home');     
+    </script>   
+  </body> 
 </html>

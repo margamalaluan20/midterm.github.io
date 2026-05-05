@@ -24,6 +24,6 @@ You can access the live website here: [Genshin Impact Archive](https://margamala
 * `README.md`: Project documentation.
 
 ## 👤 Author
-**Marga Malaluan** 
-*DIT 2-1*
+**Margaret Loraine Malaluan** 
+**DIT 2-1**
 
