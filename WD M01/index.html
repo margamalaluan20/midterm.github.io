@@ -233,7 +233,7 @@
         text-shadow: 0 0 30px rgba(144, 224, 239, 0.8);         
         transform: scale(1.02);       
       }
-      /* Custom Scrollbar for inner character description boxes */
+      /* Custom Scrollbar */
       .custom-scroll::-webkit-scrollbar {
         width: 6px;
       }
@@ -247,6 +247,33 @@
       }
       .custom-scroll::-webkit-scrollbar-thumb:hover {
         background: var(--theme-accent-hover); 
+      }
+      /* Missing Image / No Data Placeholder Styles */
+      .no-image-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0,0,0,0.3);
+        color: var(--theme-accent);
+        font-weight: bold;
+        text-transform: uppercase;
+        border: 1px dashed var(--theme-accent);
+        font-family: 'Inter', sans-serif;
+      }
+      .no-image-placeholder.icon-size {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin: 0 auto 1rem auto;
+        font-size: 0.8rem;
+      }
+      .no-image-placeholder.detail-size {
+        width: 200px;
+        height: 200px;
+        border-radius: 20px;
+        margin: 0 auto 1.5rem auto;
+        font-size: 1.5rem;
+        letter-spacing: 2px;
       }
     </style>   
   </head>   
@@ -370,13 +397,14 @@
         artifacts: { title: "Artifacts", sub: "Relics of the past that bestow great power." },             
         elements: { title: "Elements", sub: "The fundamental powers that shape the world." },             
         nations: { title: "Nations", sub: "The seven regions ruled by the Archons." },             
-        domains: { title: "Domains", sub: "Ancient ruins holding powerful rewards." },             
+        domains: { title: "Domains", sub: "Ancient ruins holding powerful rewards." },
+        enemies: { title: "Enemies", sub: "Formidable foes lurking across Teyvat." },
         search: { title: "Archive Search", sub: "Search Irminsul for all knowledge."}         
       };         
       
       async function fetchAllData() {             
         if (Object.keys(allDataCache).length > 0) return;              
-        const categories = ['characters', 'weapons', 'artifacts', 'elements', 'nations', 'domains'];             
+        const categories = ['characters', 'weapons', 'artifacts', 'elements', 'nations', 'domains', 'enemies'];             
         for (const cat of categories) {                 
           try {                     
             const response = await fetch(`${baseUrl}/${cat}`);                     
@@ -404,7 +432,8 @@
                 <option value="artifacts">Artifacts</option>                             
                 <option value="elements">Elements</option>                             
                 <option value="nations">Nations</option>                             
-                <option value="domains">Domains</option>                         
+                <option value="domains">Domains</option>
+                <option value="enemies">Enemies</option>
               </select>                         
               <input type="text" id="searchInput" class="form-control bg-dark text-light border-0" placeholder="Type a name to search..." onkeyup="if(event.key === 'Enter') executeSearch()">                         
               <button class="btn btn-info text-dark fw-bold px-4" onclick="executeSearch()">Search</button>                         
@@ -449,12 +478,11 @@
         results.forEach(res => {                 
           let displayName = res.item.replace(/-/g, ' ').replace(/ s /g, "'s ");                 
           let imageUrl = `${baseUrl}/${res.category}/${res.item}/icon`;                 
-          let fallbackUrl = `https://placehold.co/100x100/162447/00b4d8?text=Secured`;                                  
           
           if (res.category === 'artifacts') imageUrl = `${baseUrl}/${res.category}/${res.item}/flower-of-life`;                 
           if (res.item === 'glacier-and-snowfield') imageUrl = `https://genshin.jmp.blue/artifacts/blizzard-strayer/flower-of-life`;                                  
           
-          let imgHtml = `<img src="${imageUrl}" alt="${displayName}" class="item-icon" onerror="this.onerror=null; this.src='${fallbackUrl}';">`;
+          let imgHtml = `<img src="${imageUrl}" alt="${displayName}" class="item-icon" onerror="this.outerHTML='<div class=\\'no-image-placeholder icon-size\\'>No Data</div>'">`;
           if (res.category === 'domains') {
             imgHtml = ''; 
           }
@@ -517,7 +545,7 @@
         
         try {                 
           if (endpoint === 'home') {                     
-            const categories = ['characters', 'weapons', 'artifacts', 'elements', 'nations', 'domains'];                                                       
+            const categories = ['characters', 'weapons', 'artifacts', 'elements', 'nations', 'domains', 'enemies'];                                                       
             for (const cat of categories) {                         
               const response = await fetch(`${baseUrl}/${cat}`);                         
               const items = await response.json();                                                  
@@ -574,12 +602,11 @@
       function renderCard(endpoint, item, targetContainerId = null) {             
         let displayName = typeof item === 'string' ? item.replace(/-/g, ' ').replace(/ s /g, "'s ") : 'Unknown';             
         let imageUrl = `${baseUrl}/${endpoint}/${item}/icon`;             
-        let fallbackUrl = `https://placehold.co/100x100/162447/00b4d8?text=${displayName.split(' ')[0]}`;                           
         
         if (endpoint === 'artifacts') imageUrl = `${baseUrl}/${endpoint}/${item}/flower-of-life`;             
         if (item === 'glacier-and-snowfield') imageUrl = `https://genshin.jmp.blue/artifacts/blizzard-strayer/flower-of-life`;             
         
-        let imgHtml = `<img src="${imageUrl}" alt="${displayName}" class="item-icon" onerror="this.onerror=null; this.src='${fallbackUrl}';">`;
+        let imgHtml = `<img src="${imageUrl}" alt="${displayName}" class="item-icon" onerror="this.outerHTML='<div class=\\'no-image-placeholder icon-size\\'>No Data</div>'">`;
         if (endpoint === 'domains') {
           imgHtml = ''; // Remove image for domain cards
         }
@@ -612,12 +639,11 @@
           let detailHtml = '';                 
           const displayName = typeof item === 'string' ? item.replace(/-/g, ' ') : 'Unknown';                 
           let detailImgUrl = `${baseUrl}/${endpoint}/${item}/icon`;                 
-          let fallbackUrl = `https://placehold.co/200x200/162447/00b4d8?text=${displayName.split(' ')[0]}`;                 
           
           if (endpoint === 'characters') detailImgUrl = `${baseUrl}/characters/${item}/portrait`;                 
           if (endpoint === 'artifacts') detailImgUrl = `${baseUrl}/artifacts/${item}/flower-of-life`;                                  
           
-          const imgTag = `<img src="${detailImgUrl}" class="detail-img mb-4" onerror="this.src='${fallbackUrl}'">`;                                           
+          const imgTag = `<img src="${detailImgUrl}" class="detail-img mb-4" onerror="this.outerHTML='<div class=\\'no-image-placeholder detail-size\\'>No Data</div>'">`;                                           
           
           if (endpoint === 'nations') {                     
             
@@ -882,6 +908,58 @@
                 </div>
             </div>`;
             
+          } else if (endpoint === 'enemies') {
+            
+            let elementsHtml = 'None';
+            if (data.elements && data.elements.length > 0) {
+                elementsHtml = data.elements.join(', ');
+            }
+            
+            let dropsHtml = '';
+            let dropsList = data.drops || data.props || [];
+            if (dropsList.length > 0) {
+                dropsHtml = `<ul class="list-unstyled mb-0 small text-light opacity-75">`;
+                dropsList.forEach(drop => {
+                    let dropName = drop.name || drop;
+                    dropsHtml += `<li><i class="bi bi-caret-right-fill text-info"></i> <span class="text-capitalize">${dropName.replace(/-/g, ' ')}</span></li>`;
+                });
+                dropsHtml += `</ul>`;
+            } else {
+                dropsHtml = `<p class="small text-light opacity-75 mb-0">No specific drops documented.</p>`;
+            }
+
+            detailHtml = `
+            <div class="col-12">
+                <div class="detail-container text-center">
+                    ${imgTag}
+                    <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+                    
+                    <div class="row mt-4 text-start justify-content-center mb-4">
+                        <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                            <p class="mb-2"><span class="stat-label">Family:</span> ${data.family || 'Unknown'}</p>
+                            <p class="mb-0"><span class="stat-label">Faction:</span> ${data.faction || 'Unknown'}</p>
+                        </div>
+                        <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                            <p class="mb-0"><span class="stat-label">Elements:</span> <span class="text-capitalize">${elementsHtml}</span></p>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center text-start">
+                        <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow mb-3">
+                            <h5 class="text-accent mb-2"><i class="bi bi-journal-text me-2"></i>Profile</h5>
+                            <p class="small text-light opacity-75 mb-0">${data.description || 'No profile description available for this enemy.'}</p>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center text-start">
+                        <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
+                            <h5 class="text-accent mb-2"><i class="bi bi-box-seam me-2"></i>Props / Drops</h5>
+                            ${dropsHtml}
+                        </div>
+                    </div>
+
+                </div>
+            </div>`;
           } else {                     
             detailHtml = `<div class="col-12"><div class="detail-container text-center">${imgTag}<h1 class="display-5 fw-bold text-accent ancient-modern-title" style="text-transform: capitalize;">${data.name || displayName}</h1><p class="lead">${data.description || 'Data fetched from the Irminsul tree.'}</p></div></div>`;                 
           }                                  
