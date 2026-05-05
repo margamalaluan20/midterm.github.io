@@ -52,54 +52,62 @@
         background: radial-gradient(circle, var(--theme-card) 0%, var(--theme-dark) 100%);         
         padding: 3rem 0;         
         text-align: center;         
-        border-bottom: 1px solid rgba(0, 180, 216, 0.3); /* Transparent accent */         
+        border-bottom: 1px solid rgba(0, 180, 216, 0.3);         
         background: transparent !important;       
       }       
-      .genshin-card {         
-        background-color: var(--theme-card);         
-        border: 1px solid rgba(0, 180, 216, 0.3);         
-        border-radius: 12px;         
-        transition: transform 0.3s ease, box-shadow 0.3s ease;         
-        height: 100%;         
-        text-align: center;         
-        padding: 1.5rem 1rem;         
-        background-color: rgba(22, 36, 71, 0.7) !important;         
-        backdrop-filter: blur(10px);         
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }       
-      .genshin-card:hover {         
-        transform: translateY(-5px);         
-        border-color: var(--theme-accent);         
-        box-shadow: 0 8px 20px rgba(0, 180, 216, 0.2);       
-      }       
-      .item-icon {         
-        width: 100px;         
-        height: 100px;         
-        object-fit: contain;         
-        margin-bottom: 1rem;         
-        border-radius: 50%;         
-        background-color: rgba(0,0,0,0.3);         
-        padding: 5px;         
-        animation: float 3s ease-in-out infinite;          
-        transition: all 0.3s ease;       
-      }       
-      .genshin-card:hover .item-icon {         
-        animation: float 1.5s ease-in-out infinite;          
-        transform: scale(1.1);         
-        filter: drop-shadow(0 0 15px var(--theme-accent));       
-      }       
-      .item-name {         
-        color: var(--theme-accent);         
-        font-family: 'Montserrat', sans-serif;         
-        text-transform: capitalize;         
-        font-size: 1.1rem;         
-        font-weight: 600;
-        margin-bottom: 0;
-      }       
+      
+      /* --- SQUARE TILE STYLES --- */
+      .genshin-card {
+    background-color: rgba(22, 36, 71, 0.7) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 180, 216, 0.3);
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0.6rem; /* Binawasan mula 1.5rem 1rem[cite: 2] */
+    width: 100%;
+    aspect-ratio: 1 / 1; 
+    text-align: center;
+}
+
+.genshin-card:hover {
+    transform: translateY(-5px); 
+    border-color: var(--theme-accent);
+    box-shadow: 0 8px 20px rgba(0, 180, 216, 0.2);
+}
+
+.item-icon {
+    width: 95px; /* Pinalaki mula 65px/80px para mas lutang */
+    height: 95px; /* Pinalaki mula 65px/80px */
+    object-fit: contain;
+    margin-bottom: 0.8rem; 
+    border-radius: 50%;
+    background-color: rgba(0,0,0,0.3);
+    padding: 6px; /* Dinagdagan ang padding para sa glow effect[cite: 1] */
+    animation: float 3s ease-in-out infinite;
+    transition: all 0.3s ease;
+    flex-shrink: 0; 
+}
+
+
+.genshin-card:hover .item-icon {
+    transform: scale(1.15); /* Mas ramdam na paglaki sa hover[cite: 1] */
+    filter: drop-shadow(0 0 20px var(--theme-accent));
+}
+
+
+.no-image-placeholder.icon-size {
+    width: 95px; 
+    height: 95px; 
+    border-radius: 50%;
+    margin: 0 auto 0.8rem auto;
+    font-size: 0.6rem;
+}
+     
+
       #loader { display: none; color: var(--theme-accent); }       
       .video-bg-container {         
         position: fixed;         
@@ -171,7 +179,7 @@
       }       
       @keyframes float {         
         0% { transform: translateY(0px) rotate(0deg); }         
-        50% { transform: translateY(-10px) rotate(2deg); }         
+        50% { transform: translateY(-5px) rotate(2deg); }         
         100% { transform: translateY(0px) rotate(0deg); }       
       }       
       @keyframes breathingGlow {         
@@ -259,22 +267,44 @@
         text-transform: uppercase;
         border: 1px dashed var(--theme-accent);
         font-family: 'Inter', sans-serif;
+        text-align: center;
       }
       .no-image-placeholder.icon-size {
-        width: 100px;
-        height: 100px;
+        width: 80px; 
+        height: 80px; 
         border-radius: 50%;
         margin: 0 auto 1rem auto;
-        font-size: 0.8rem;
+        font-size: 0.6rem;
       }
       .no-image-placeholder.detail-size {
         width: 200px;
         height: 200px;
         border-radius: 20px;
         margin: 0 auto 1.5rem auto;
-        font-size: 1.5rem;
-        letter-spacing: 2px;
+        font-size: 1.2rem;
+        letter-spacing: 1px;
       }
+      body {
+    font-family: 'Inter', sans-serif; 
+}
+
+h1, h2, h3, .navbar-brand, .nav-link {
+    font-family: 'Montserrat', sans-serif; 
+}
+
+.ancient-modern-title {
+    font-family: 'Cinzel Decorative', serif !important; 
+}
+
+.item-name {
+    font-family: 'Montserrat', sans-serif; /* Ibinaba mula sa default para sa item labels */
+    color: var(--theme-accent);
+    text-transform: capitalize;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+}
     </style>   
   </head>   
   <body>     
@@ -330,59 +360,6 @@
     
     <script>         
       const baseUrl = 'https://genshin.jmp.blue';                       
-      const localDomainsData = {         
-        list: ["cecilia-garden", "domain-of-guyun", "midsummer-courtyard", "taishan-mansion"],         
-        details: {             
-          "cecilia-garden": {                 
-            name: "Cecilia Garden",                 
-            description: "The cecilia flowers that only grow on high cliffs once bloomed in the greenhouses here.",                 
-            nation: "Mondstadt",                 
-            recommended_ar: "15-40",                 
-            recommended_elements: ["Cryo", "Pyro", "Electro"]             
-          },             
-          "domain-of-guyun": {                 
-            name: "Domain of Guyun",                 
-            description: "This was once the place where the Geo Archon defeated the sea monster.",                 
-            nation: "Liyue",                 
-            recommended_ar: "22-45",                 
-            recommended_elements: ["Electro", "Cryo"]             
-          },             
-          "midsummer-courtyard": {                 
-            name: "Midsummer Courtyard",                 
-            description: "With the fall of the ancient fallen empire, the prosperous courtyard was buried deep underground.",                 
-            nation: "Mondstadt",                 
-            recommended_ar: "22-45",                 
-            recommended_elements: ["Pyro", "Cryo"]             
-          },             
-          "taishan-mansion": {                 
-            name: "Taishan Mansion",                 
-            description: "Once a place where people sought the adepti, it has now become a domain of trials.",                 
-            nation: "Liyue",                 
-            recommended_ar: "27-45",                 
-            recommended_elements: ["Hydro", "Cryo", "Electro"]             
-          }         
-        }     
-      };     
-
-      // Intercept API calls to serve local data for Domains     
-      const originalFetch = window.fetch;     
-      window.fetch = async (...args) => {         
-        const url = args[0];         
-        if (typeof url === 'string' && url.includes(baseUrl + '/domains')) {             
-          const path = url.replace(baseUrl + '/domains', '').replace(/\/$/, "");                          
-          if (path === '') {                 
-            return { json: async () => localDomainsData.list };             
-          }                                        
-          const itemMatch = path.match(/^\/([^\/]+)/);             
-          if (itemMatch) {                 
-            const item = itemMatch[1];                 
-            if (localDomainsData.details[item]) {                     
-              return { json: async () => localDomainsData.details[item] };                 
-            }             
-          }         
-        }         
-        return originalFetch(...args);     
-      };         
       
       const dataGrid = document.getElementById('dataGrid');          
       const loader = document.getElementById('loader');          
@@ -395,6 +372,7 @@
         characters: { title: "Characters", sub: "Explore the heroes traversing the world of Teyvat." },             
         weapons: { title: "Weapons", sub: "Discover the armaments forged for battle." },             
         artifacts: { title: "Artifacts", sub: "Relics of the past that bestow great power." },             
+        consumables: { title: "Consumables", sub: "Dishes and potions to aid your journey." },
         elements: { title: "Elements", sub: "The fundamental powers that shape the world." },             
         nations: { title: "Nations", sub: "The seven regions ruled by the Archons." },             
         domains: { title: "Domains", sub: "Ancient ruins holding powerful rewards." },
@@ -402,13 +380,116 @@
         search: { title: "Archive Search", sub: "Search Irminsul for all knowledge."}         
       };         
       
+
+      // ==========================================
+      // APEX SCRAPER: FETCH IMAGES FROM MIDTERM URL
+      // ==========================================
+      let midtermImageMap = {};
+
+      async function fetchMidtermImages() {
+          try {
+              // Fetch from the exact link provided
+              const targetUrl = 'https://byokuu.github.io/Midterm/HTML/consumables.html';
+              const proxyUrl = 'https://api.allorigins.win/get?url=';
+              
+              const response = await fetch(proxyUrl + encodeURIComponent(targetUrl));
+              const data = await response.json();
+              
+              const doc = new DOMParser().parseFromString(data.contents, 'text/html');
+              const imgs = doc.querySelectorAll('img');
+              
+              imgs.forEach(img => {
+                  let src = img.getAttribute('src');
+                  if (src) {
+                      let absoluteSrc = src.startsWith('http') ? src : new URL(src, targetUrl).href;
+                      let filename = absoluteSrc.split('/').pop().split('.')[0].toLowerCase().replace(/_/g, '-').replace(/\s+/g, '-');
+                      midtermImageMap[filename] = absoluteSrc;
+                  }
+              });
+              console.log("Apex Protocol: Successfully mapped images from Midterm URL.");
+          } catch (e) {
+              console.warn("Apex Scraper: Could not proxy HTML, will rely on direct path injection.", e);
+          }
+      }
+
+      // ==========================================
+      // APEX FALLBACK: MULTI-TIER IMAGE RESOLVER
+      // DIRECTLY TARGETS GITHUB PAGES REPO
+      // ==========================================
+      function getFallbackUrls(itemId) {
+          let formattedName = itemId.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('_');
+          let lowerUnderscore = itemId.replace(/-/g, '_');
+          let noDash = itemId.replace(/-/g, '');
+          
+          let urls = [];
+          
+          // 1. If the scraper found the exact image in the HTML, use it first!
+          if (midtermImageMap[itemId]) urls.push(midtermImageMap[itemId]);
+          if (midtermImageMap[lowerUnderscore]) urls.push(midtermImageMap[lowerUnderscore]);
+          if (midtermImageMap[noDash]) urls.push(midtermImageMap[noDash]);
+
+          // 2. Direct Path Injections for Byokuu Midterm (Images Folder Variations)
+          urls.push(`https://byokuu.github.io/Midterm/HTML/images/${itemId}.png`);
+          urls.push(`https://byokuu.github.io/Midterm/HTML/images/${itemId}.jpg`);
+          urls.push(`https://byokuu.github.io/Midterm/HTML/images/${lowerUnderscore}.png`);
+          urls.push(`https://byokuu.github.io/Midterm/HTML/images/Item_${formattedName}.png`);
+          urls.push(`https://byokuu.github.io/Midterm/images/${itemId}.png`);
+          urls.push(`https://byokuu.github.io/Midterm/images/Item_${formattedName}.png`);
+
+          // 3. Fandom Wiki Fallbacks
+          urls.push(`https://genshin-impact.fandom.com/wiki/Special:FilePath/Item_${formattedName}.png`);
+          urls.push(`https://genshin-impact.fandom.com/wiki/Special:FilePath/Item_Delicious_${formattedName}.png`);
+          urls.push(`https://genshin-impact.fandom.com/wiki/Special:FilePath/${formattedName}.png`);
+          
+          // Remove duplicates
+          return [...new Set(urls)];
+      }
+
+      window.handleImageFallback = function(img, itemId, isDetail) {
+          let attempt = parseInt(img.getAttribute('data-attempt') || '0');
+          let urls = getFallbackUrls(itemId);
+          
+          if (attempt < urls.length) {
+              img.src = urls[attempt];
+              img.setAttribute('data-attempt', attempt + 1);
+          } else {
+              img.outerHTML = `<div class='no-image-placeholder ${isDetail ? "detail-size" : "icon-size"}'>No Image</div>`;
+          }
+      };
+
+
+      // Standard APEX Fetcher for Data
+      async function fetchCategoryItems(cat) {
+          if (cat === 'consumables') {
+              const [fRes, pRes] = await Promise.all([
+                  fetch(`${baseUrl}/consumables/food`).catch(()=>null),
+                  fetch(`${baseUrl}/consumables/potions`).catch(()=>null)
+              ]);
+              let items = [];
+              if (fRes && fRes.ok) {
+                  let fData = await fRes.json();
+                  let keys = Array.isArray(fData) ? fData : (typeof fData === 'object' ? Object.keys(fData) : []);
+                  items = items.concat(keys.map(k => ({ id: k, subcat: 'food' })));
+              }
+              if (pRes && pRes.ok) {
+                  let pData = await pRes.json();
+                  let keys = Array.isArray(pData) ? pData : (typeof pData === 'object' ? Object.keys(pData) : []);
+                  items = items.concat(keys.map(k => ({ id: k, subcat: 'potions' })));
+              }
+              return items;
+          } else {
+              const res = await fetch(`${baseUrl}/${cat}`);
+              let data = await res.json();
+              return Array.isArray(data) ? data : (typeof data === 'object' ? Object.keys(data) : []);
+          }
+      }
+
       async function fetchAllData() {             
         if (Object.keys(allDataCache).length > 0) return;              
-        const categories = ['characters', 'weapons', 'artifacts', 'elements', 'nations', 'domains', 'enemies'];             
+        const categories = ['characters', 'weapons', 'artifacts', 'consumables', 'elements', 'nations', 'domains', 'enemies'];             
         for (const cat of categories) {                 
           try {                     
-            const response = await fetch(`${baseUrl}/${cat}`);                     
-            allDataCache[cat] = await response.json();                 
+            allDataCache[cat] = await fetchCategoryItems(cat);                 
           } catch (error) {                     
             console.error("Failed to fetch search data for:", cat);                 
           }             
@@ -420,24 +501,26 @@
         document.getElementById('nav-search').classList.add('active');                          
         pageTitle.textContent = pageInfo.search.title;             
         pageSubtitle.textContent = pageInfo.search.sub;             
+        
         dataGrid.innerHTML = '';                          
         
         const searchUI = `                 
-          <div class="col-12 mb-4">                     
-            <div class="input-group input-group-lg shadow-sm" style="background: var(--theme-card); border-radius: 12px; border: 1px solid var(--theme-accent); overflow: hidden;">                         
-              <select id="searchFilter" class="form-select bg-dark text-light border-0" style="max-width: 200px; cursor:pointer;">                             
+          <div class="col-12 mb-4 d-flex justify-content-center">                     
+            <div class="input-group shadow-sm" style="max-width: 600px; background: var(--theme-card); border-radius: 8px; border: 1px solid var(--theme-accent); overflow: hidden;">                         
+              <select id="searchFilter" class="form-select bg-dark text-light border-0" style="max-width: 150px; cursor:pointer; font-size: 0.95rem;">                             
                 <option value="all">All Categories</option>                             
                 <option value="characters">Characters</option>                             
                 <option value="weapons">Weapons</option>                             
                 <option value="artifacts">Artifacts</option>                             
+                <option value="consumables">Consumables</option>
                 <option value="elements">Elements</option>                             
                 <option value="nations">Nations</option>                             
                 <option value="domains">Domains</option>
                 <option value="enemies">Enemies</option>
               </select>                         
-              <input type="text" id="searchInput" class="form-control bg-dark text-light border-0" placeholder="Type a name to search..." onkeyup="if(event.key === 'Enter') executeSearch()">                         
-              <button class="btn btn-info text-dark fw-bold px-4" onclick="executeSearch()">Search</button>                         
-              <button class="btn btn-outline-danger px-4" onclick="clearSearch()">Clear</button>                     
+              <input type="text" id="searchInput" class="form-control bg-dark text-light border-0" placeholder="Type a category or item..." style="font-size: 0.95rem;" onkeyup="if(event.key === 'Enter') executeSearch()">                         
+              <button class="btn btn-info text-dark fw-bold px-3" style="font-size: 0.95rem;" onclick="executeSearch()">Search</button>                         
+              <button class="btn btn-outline-danger px-3" style="font-size: 0.95rem;" onclick="clearSearch()">Clear</button>                     
             </div>                 
           </div>                 
           <div id="searchResults" class="row g-4 w-100 m-0"></div>             
@@ -458,12 +541,32 @@
           resultsContainer.innerHTML = '<div class="col-12 text-center text-light mt-4">Please enter a search term to query the Ley Lines.</div>';                 
           return;             
         }             
+
+        let targetCategory = query;
+        if (query === 'character') targetCategory = 'characters';
+        if (query === 'weapon') targetCategory = 'weapons';
+        if (query === 'artifact') targetCategory = 'artifacts';
+        if (query === 'consumable' || query === 'food' || query === 'potion' || query === 'foods' || query === 'potions') targetCategory = 'consumables';
+        if (query === 'element') targetCategory = 'elements';
+        if (query === 'nation' || query === 'region' || query === 'regions') targetCategory = 'nations';
+        if (query === 'domain') targetCategory = 'domains';
+        if (query === 'enemy') targetCategory = 'enemies';
+
+        const validCategories = ['characters', 'weapons', 'artifacts', 'consumables', 'elements', 'nations', 'domains', 'enemies'];
+        if (validCategories.includes(targetCategory) && filter === 'all') {
+            loadPage(targetCategory);
+            return;
+        }
         
         let results = [];             
         const categoriesToSearch = filter === 'all' ? Object.keys(allDataCache) : [filter];                          
+        
         categoriesToSearch.forEach(cat => {                 
           if (allDataCache[cat]) {                     
-            const matches = allDataCache[cat].filter(item => typeof item === 'string' && item.toLowerCase().includes(query));                     
+            const matches = allDataCache[cat].filter(itemData => {
+                let itemStr = typeof itemData === 'object' ? itemData.id : itemData;
+                return typeof itemStr === 'string' && itemStr.toLowerCase().includes(query);
+            });                     
             matches.forEach(match => {                         
               results.push({ category: cat, item: match });                     
             });                 
@@ -476,23 +579,34 @@
         }             
         
         results.forEach(res => {                 
-          let displayName = res.item.replace(/-/g, ' ').replace(/ s /g, "'s ");                 
-          let imageUrl = `${baseUrl}/${res.category}/${res.item}/icon`;                 
+          let itemData = res.item;
+          let itemStr = typeof itemData === 'object' ? itemData.id : itemData;
+
+          let displayName = itemStr.replace(/-/g, ' ').replace(/ s /g, "'s ");                 
+          let imageUrl = `${baseUrl}/${res.category}/${itemStr}/icon`;                 
+          let fallbackHtml = `onerror="this.outerHTML='<div class=\\'no-image-placeholder icon-size\\'>No API Image</div>'"`;
           
-          if (res.category === 'artifacts') imageUrl = `${baseUrl}/${res.category}/${res.item}/flower-of-life`;                 
-          if (res.item === 'glacier-and-snowfield') imageUrl = `https://genshin.jmp.blue/artifacts/blizzard-strayer/flower-of-life`;                                  
+          if (res.category === 'artifacts') imageUrl = `${baseUrl}/${res.category}/${itemStr}/flower-of-life`;                 
+          if (itemStr === 'glacier-and-snowfield') imageUrl = `https://genshin.jmp.blue/artifacts/blizzard-strayer/flower-of-life`;                                  
           
-          let imgHtml = `<img src="${imageUrl}" alt="${displayName}" class="item-icon" onerror="this.outerHTML='<div class=\\'no-image-placeholder icon-size\\'>No Data</div>'">`;
+          if (res.category === 'consumables') {
+              // INITIATE APEX SEQUENCE: Midterm Failsafe
+              const urls = getFallbackUrls(itemStr);
+              imageUrl = urls[0] || `${baseUrl}/consumables/food/${itemStr}/icon`;
+              fallbackHtml = `onerror="handleImageFallback(this, '${itemStr}', false)"`;
+          }
+
+          let imgHtml = `<img src="${imageUrl}" alt="${displayName}" class="item-icon" ${fallbackHtml}>`;
           if (res.category === 'domains') {
             imgHtml = ''; 
           }
 
           const card = `                     
-            <div class="col-6 col-md-4 col-lg-3">                         
-              <div class="genshin-card" style="cursor: pointer;" onclick="loadDetails('${res.category}', '${res.item}')">                             
-                <span class="badge bg-dark border border-info mb-2" style="font-size: 0.7rem; text-transform:uppercase;">${res.category}</span><br>                             
+            <div class="col-6 col-md-4 col-lg-3 card-item">                         
+              <div class="genshin-card" style="cursor: pointer;" onclick="loadDetails('${res.category}', '${itemStr}')">                             
+                <span class="badge bg-dark border border-info mb-2" style="font-size: 0.6rem; text-transform:uppercase; width: fit-content;">${res.category}</span>
                 ${imgHtml}                             
-                <h3 class="item-name">${displayName}</h3>                         
+                <h3 class="item-name">${displayName}</h3>
               </div>                     
             </div>                 
           `;                 
@@ -506,20 +620,16 @@
         document.getElementById('searchResults').innerHTML = '';         
       }         
       
-      // Inline Live Filter Functions for Categories
       function filterCategory(containerId) {
         const input = document.getElementById('categorySearchInput').value.toLowerCase().trim();
         const container = document.getElementById(containerId);
         if (!container) return;
         
         const cards = container.querySelectorAll('.card-item');
-        let visibleCount = 0;
-        
         cards.forEach(card => {
             const name = card.querySelector('.item-name').innerText.toLowerCase();
             if (name.includes(input)) {
                 card.style.display = '';
-                visibleCount++;
             } else {
                 card.style.display = 'none';
             }
@@ -540,15 +650,15 @@
         const titleData = pageInfo[endpoint] || pageInfo['home'];             
         pageTitle.textContent = titleData.title;             
         pageSubtitle.textContent = titleData.sub;                          
+
         dataGrid.innerHTML = '';             
         loader.style.display = 'block';                          
         
         try {                 
           if (endpoint === 'home') {                     
-            const categories = ['characters', 'weapons', 'artifacts', 'elements', 'nations', 'domains', 'enemies'];                                                       
+            const categories = ['characters', 'weapons', 'artifacts', 'consumables', 'elements', 'nations', 'domains', 'enemies'];                                                       
             for (const cat of categories) {                         
-              const response = await fetch(`${baseUrl}/${cat}`);                         
-              const items = await response.json();                                                  
+              const items = await fetchCategoryItems(cat);                                                  
               const dashboardId = `home-dashboard-${cat}`;
               
               const sectionTitle = `                             
@@ -576,19 +686,19 @@
                   <h2 class="text-accent mb-0 ancient-modern-title" style="text-transform: capitalize;">All ${endpoint.replace(/-/g, ' ')}</h2>                         
                 </div>
                 
-                <!-- Category Inline Search & Filter -->
-                <div class="input-group input-group-lg shadow-sm" style="background: var(--theme-card); border-radius: 12px; border: 1px solid var(--theme-accent); overflow: hidden;">                         
-                  <span class="input-group-text bg-dark text-info border-0"><i class="bi bi-search"></i></span>
-                  <input type="text" id="categorySearchInput" class="form-control bg-dark text-light border-0" placeholder="Filter ${endpoint.replace(/-/g, ' ')}..." onkeyup="filterCategory('${dashboardId}')">                         
-                  <button class="btn btn-outline-danger px-4" onclick="clearCategorySearch('${dashboardId}')">Clear</button>                     
+                <div class="d-flex justify-content-start">
+                    <div class="input-group shadow-sm" style="max-width: 400px; background: var(--theme-card); border-radius: 8px; border: 1px solid var(--theme-accent); overflow: hidden;">                         
+                      <span class="input-group-text bg-dark text-info border-0"><i class="bi bi-search"></i></span>
+                      <input type="text" id="categorySearchInput" class="form-control bg-dark text-light border-0" style="font-size: 0.95rem;" placeholder="Filter ${endpoint.replace(/-/g, ' ')}..." onkeyup="filterCategory('${dashboardId}')">                         
+                      <button class="btn btn-outline-danger px-3" style="font-size: 0.95rem;" onclick="clearCategorySearch('${dashboardId}')">Clear</button>                     
+                    </div>
                 </div>
               </div>                     
               <div id="${dashboardId}" class="row g-4 w-100 m-0"></div>
             `;                     
             dataGrid.insertAdjacentHTML('beforeend', dashboardHeader);                     
             
-            const response = await fetch(`${baseUrl}/${endpoint}`);                     
-            const items = await response.json();                     
+            const items = await fetchCategoryItems(endpoint);                     
             items.forEach(item => renderCard(endpoint, item, dashboardId));                 
           }                 
           loader.style.display = 'none';             
@@ -599,16 +709,27 @@
         }         
       }         
       
-      function renderCard(endpoint, item, targetContainerId = null) {             
+      function renderCard(endpoint, itemData, targetContainerId = null) {             
+        let item = typeof itemData === 'object' ? itemData.id : itemData;
+        
         let displayName = typeof item === 'string' ? item.replace(/-/g, ' ').replace(/ s /g, "'s ") : 'Unknown';             
+        
         let imageUrl = `${baseUrl}/${endpoint}/${item}/icon`;             
+        let fallbackHtml = `onerror="this.outerHTML='<div class=\\'no-image-placeholder icon-size\\'>No API Image</div>'"`;
         
         if (endpoint === 'artifacts') imageUrl = `${baseUrl}/${endpoint}/${item}/flower-of-life`;             
         if (item === 'glacier-and-snowfield') imageUrl = `https://genshin.jmp.blue/artifacts/blizzard-strayer/flower-of-life`;             
         
-        let imgHtml = `<img src="${imageUrl}" alt="${displayName}" class="item-icon" onerror="this.outerHTML='<div class=\\'no-image-placeholder icon-size\\'>No Data</div>'">`;
+        if (endpoint === 'consumables') {
+            // INITIATE APEX SEQUENCE: Midterm Failsafe
+            const urls = getFallbackUrls(item);
+            imageUrl = urls[0] || `${baseUrl}/consumables/food/${item}/icon`;
+            fallbackHtml = `onerror="handleImageFallback(this, '${item}', false)"`;
+        }
+
+        let imgHtml = `<img src="${imageUrl}" alt="${displayName}" class="item-icon" ${fallbackHtml}>`;
         if (endpoint === 'domains') {
-          imgHtml = ''; // Remove image for domain cards
+          imgHtml = ''; 
         }
 
         const card = `                 
@@ -634,20 +755,94 @@
         window.scrollTo(0, 0);                          
         
         try {                 
-          const response = await fetch(`${baseUrl}/${endpoint}/${item}`);                 
-          const data = await response.json();                                  
+          let data;
+          let detailImgUrl = `${baseUrl}/${endpoint}/${item}/icon`;                 
+          let fallbackDetailHtml = `onerror="this.outerHTML='<div class=\\'no-image-placeholder detail-size\\'>No API Image</div>'"`;
+
+          if (endpoint === 'consumables') {
+              const [fRes, pRes] = await Promise.all([
+                  fetch(`${baseUrl}/consumables/food`).catch(()=>null),
+                  fetch(`${baseUrl}/consumables/potions`).catch(()=>null)
+              ]);
+              let fDict = fRes && fRes.ok ? await fRes.json() : {};
+              let pDict = pRes && pRes.ok ? await pRes.json() : {};
+
+              if (fDict[item]) {
+                  data = typeof fDict[item] === 'object' ? fDict[item] : { description: "A food item from Teyvat." };
+              } else if (pDict[item]) {
+                  data = typeof pDict[item] === 'object' ? pDict[item] : { description: "A crafted potion." };
+              } else {
+                  throw new Error("Consumable not found");
+              }
+
+              // INITIATE APEX SEQUENCE: Midterm Failsafe for Detail Image
+              const urls = getFallbackUrls(item);
+              detailImgUrl = urls[0] || `${baseUrl}/consumables/food/${item}/icon`;
+              fallbackDetailHtml = `onerror="handleImageFallback(this, '${item}', true)"`;
+
+              if (!data.name) data.name = item.replace(/-/g, ' ');
+
+          } else {
+              let response = await fetch(`${baseUrl}/${endpoint}/${item}`);
+              if (!response.ok) throw new Error("Item fetch failed");
+              data = await response.json();
+          }
+
           let detailHtml = '';                 
           const displayName = typeof item === 'string' ? item.replace(/-/g, ' ') : 'Unknown';                 
-          let detailImgUrl = `${baseUrl}/${endpoint}/${item}/icon`;                 
           
           if (endpoint === 'characters') detailImgUrl = `${baseUrl}/characters/${item}/portrait`;                 
           if (endpoint === 'artifacts') detailImgUrl = `${baseUrl}/artifacts/${item}/flower-of-life`;                                  
           
-          const imgTag = `<img src="${detailImgUrl}" class="detail-img mb-4" onerror="this.outerHTML='<div class=\\'no-image-placeholder detail-size\\'>No Data</div>'">`;                                           
+          const imgTag = `<img src="${detailImgUrl}" class="detail-img mb-4" ${fallbackDetailHtml}>`;                                           
           
-          if (endpoint === 'nations') {                     
+          if (endpoint === 'consumables') {
             
-            // Custom lore dictionary to extend the nation description
+            let recipeData = data.recipe || data.crafting || [];
+            let recipeHtml = '';
+
+            if (Array.isArray(recipeData) && recipeData.length > 0) {
+                recipeHtml = `<ul class="list-unstyled mb-0 small text-light opacity-75">`;
+                recipeData.forEach(ing => {
+                    let ingName = ing.item || 'Ingredient';
+                    recipeHtml += `<li><i class="bi bi-caret-right-fill text-info"></i> ${ing.quantity}x <span class="text-capitalize">${ingName.replace(/-/g, ' ')}</span></li>`;
+                });
+                recipeHtml += `</ul>`;
+            } else {
+                recipeHtml = `<p class="small text-light opacity-75 mb-0">No specific recipe or crafting data available. Likely obtained via shops, foraging, quests, or events.</p>`;
+            }
+
+            let extraDetailsHtml = (data.foodFilter || data.foodType) ? `<p class="mb-2"><span class="stat-label">Category:</span> ${(data.foodFilter || data.foodType).replace(/_/g, ' ')}</p>` : '';
+
+            detailHtml = `
+            <div class="col-12">
+                <div class="detail-container text-center">
+                    ${imgTag}
+                    <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+                    ${data.description ? `<p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"${data.description}"</p>` : ''}
+                    
+                    <div class="row mt-4 text-start justify-content-center mb-4">
+                        <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                            <p class="mb-2"><span class="stat-label">Type:</span> ${data.type || 'Consumable'}</p>
+                            ${extraDetailsHtml}
+                            <p class="mb-0"><span class="stat-label">Rarity:</span> ${data.rarity ? '⭐'.repeat(data.rarity) : 'Unknown'}</p>
+                        </div>
+                        <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                            <p class="mb-0"><span class="stat-label">Effect:</span> <span class="text-light">${data.effect || 'None'}</span></p>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 justify-content-center text-start">
+                        <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
+                            <h5 class="text-accent mb-2"><i class="bi bi-journal-text me-2"></i>Recipe / Sources</h5>
+                            ${recipeHtml}
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+
+          } else if (endpoint === 'nations') {                     
+            
             const nationLore = {
                 "Mondstadt": "The city of freedom that lies in the northeast of Teyvat. From amongst mountains and wide-open plains, carefree breezes carry the scent of dandelions—a gift from the Anemo God, Barbatos—across Cider Lake to the island city that sits at the middle of the lake.",
                 "Liyue": "A bountiful harbor that lies in the east of Teyvat. Mountains stand tall and proud alongside the stone forest, that, together with the open plains and meandering rivers, make up Liyue's bountiful landscape, which shows its unique beauty through each of the four seasons.",
@@ -688,8 +883,7 @@
           } else if (endpoint === 'domains') {                     
             detailHtml = `                         
               <div class="col-12">                             
-                <div class="detail-container text-center">                                 
-                  <!-- Domain Image Tag Removed Here -->                                 
+                <div class="detail-container text-center">                                                                  
                   <h1 class="display-5 fw-bold text-accent ancient-modern-title">${data.name}</h1>                                 
                   <p class="lead mb-3 text-light">${data.description || 'An ancient domain hiding powerful rewards.'}</p>                                 
                   <p class="text-info mb-4"><span class="stat-label text-light">Nation:</span> ${data.nation || 'Unknown'}</p>                                                                  
@@ -737,7 +931,6 @@
               </div>`;                 
           } else if (endpoint === 'characters') {                     
             
-            // Build Skills HTML
             let skillsHtml = '';
             if (data.skillTalents && data.skillTalents.length > 0) {
                 skillsHtml += '<h4 class="text-accent mt-5 mb-3 border-bottom border-info pb-2"><i class="bi bi-crosshair me-2"></i>Combat Skills</h4><div class="row text-start">';
@@ -755,7 +948,6 @@
                 skillsHtml += '</div>';
             }
 
-            // Build Passives HTML
             let passivesHtml = '';
             if (data.passiveTalents && data.passiveTalents.length > 0) {
                 passivesHtml += '<h4 class="text-accent mt-4 mb-3 border-bottom border-info pb-2"><i class="bi bi-stars me-2"></i>Passive Talents</h4><div class="row text-start">';
@@ -773,7 +965,6 @@
                 passivesHtml += '</div>';
             }
 
-            // Build Constellations HTML
             let constellationsHtml = '';
             if (data.constellations && data.constellations.length > 0) {
                 constellationsHtml += '<h4 class="text-accent mt-4 mb-3 border-bottom border-info pb-2"><i class="bi bi-moon-stars me-2"></i>Constellations</h4><div class="row text-start">';
@@ -974,7 +1165,10 @@
         }         
       }                  
       
-      window.onload = () => loadPage('home');     
+      window.onload = () => {
+          fetchMidtermImages();
+          loadPage('home');
+      };
     </script>   
   </body> 
 </html>
