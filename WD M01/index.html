@@ -53,7 +53,8 @@
         text-align: center;         
         border-bottom: 1px solid rgba(0, 180, 216, 0.3);         
         background: transparent !important;       
-      }           
+      }       
+      
       .genshin-card {
           background-color: rgba(22, 36, 71, 0.7) !important;
           backdrop-filter: blur(10px);
@@ -69,16 +70,19 @@
           aspect-ratio: 1 / 1; 
           text-align: center;
       }
+
       .domain-card {
           aspect-ratio: auto !important;
           min-height: 80px; 
           padding: 1rem 0.8rem !important;
       }
+
       .genshin-card:hover {
           transform: translateY(-5px); 
           border-color: var(--theme-accent);
           box-shadow: 0 8px 20px rgba(0, 180, 216, 0.2);
       }
+
       .item-icon {
           width: 95px;
           height: 95px; 
@@ -91,11 +95,13 @@
           transition: all 0.3s ease;
           flex-shrink: 0; 
       }
+
       .genshin-card:hover .item-icon {
           animation: float 1.5s ease-in-out infinite; 
           transform: scale(1.1);
           filter: drop-shadow(0 0 15px var(--theme-accent));
       }
+
       .item-name {
           color: var(--theme-accent);
           font-family: 'Montserrat', sans-serif;
@@ -109,6 +115,7 @@
           -webkit-box-orient: vertical;
           overflow: hidden;
       }
+
       #loader { display: none; color: var(--theme-accent); }       
       .video-bg-container {         
         position: fixed;         
@@ -357,32 +364,9 @@
         search: { title: "Archive Search", sub: "Search Irminsul for all knowledge."}         
       };         
       
-      let midtermImageMap = {};
-      async function fetchMidtermImages() {
-          try {
-              const targetUrl = 'https://byokuu.github.io/Midterm/HTML/consumables.html';
-              const proxyUrl = 'https://api.allorigins.win/get?url=';
-              const response = await fetch(proxyUrl + encodeURIComponent(targetUrl));
-              const data = await response.json();
-              const doc = new DOMParser().parseFromString(data.contents, 'text/html');
-              doc.querySelectorAll('img').forEach(img => {
-                  let src = img.getAttribute('src');
-                  if (src) {
-                      let absoluteSrc = src.startsWith('http') ? src : new URL(src, targetUrl).href;
-                      let filename = absoluteSrc.split('/').pop().split('.')[0].toLowerCase().replace(/_/g, '-').replace(/\s+/g, '-');
-                      midtermImageMap[filename] = absoluteSrc;
-                  }
-              });
-          } catch (e) {}
-      }
-
       function getFallbackUrls(itemId) {
           let formattedName = itemId.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('_');
-          let lowerUnderscore = itemId.replace(/-/g, '_');
           let urls = [];
-          if (midtermImageMap[itemId]) urls.push(midtermImageMap[itemId]);
-          urls.push(`https://byokuu.github.io/Midterm/HTML/images/${itemId}.png`);
-          urls.push(`https://byokuu.github.io/Midterm/HTML/images/${lowerUnderscore}.png`);
           urls.push(`https://genshin-impact.fandom.com/wiki/Special:FilePath/Item_${formattedName}.png`);
           return [...new Set(urls)];
       }
@@ -1242,15 +1226,13 @@
           dataGrid.innerHTML = detailHtml;                 
           loader.style.display = 'none';             
         } catch (error) {                 
+          console.error("Detail Fetch Error:", error);                 
           loader.style.display = 'none';                 
           dataGrid.innerHTML = `<div class="col-12 text-center text-danger"><p>Data error.</p><button class="back-btn" onclick="loadPage('home')">Back Home</button></div>`;             
         }         
       }                  
       
-      window.onload = () => {
-          fetchMidtermImages();
-          loadPage('home');
-      };
+      window.onload = () => loadPage('home');
     </script>   
   </body> 
 </html>
