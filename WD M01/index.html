@@ -1,1345 +1,1414 @@
-<!doctype html> 
-<html lang="en">   
-  <head>     
-    <meta charset="utf-8">     
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="no-referrer">
     
-    <title>Genshin Impact Archive</title>          
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">          
-    <style>       
-      :root {         
-        --theme-dark: #0a1128;                 
-        --theme-card: #162447;                
-        --theme-accent: #00b4d8;               
-        --theme-accent-hover: #90e0ef;         
-        --text-light: #ffffff;             
-      }              
-
-      /* APPLY ANCIENT FONT TO EVERYTHING */
-      * {
-        font-family: 'Cinzel Decorative', serif !important;
-      }
-
-      body {         
-        background-color: var(--theme-dark);         
-        color: var(--text-light) !important;         
-        min-height: 100vh;         
-        display: flex;         
-        flex-direction: column;         
-        background-color: transparent !important;       
-        transition: background-color 0.4s ease, color 0.4s ease;
-      }       
-      
-      .navbar {         
-        background-color: rgba(10, 17, 40, 0.95) !important;         
-        border-bottom: 2px solid var(--theme-accent);       
-        transition: background-color 0.4s ease;
-      }       
-      .navbar-brand {         
-        color: var(--theme-accent) !important;         
-        font-size: 1.8rem;         
-        font-weight: 700;       
-      }       
-      .nav-link {         
-        color: var(--text-light) !important;         
-        transition: color 0.3s;         
-        cursor: pointer;         
-        font-weight: 600;       
-      }       
-      .nav-link:hover, .nav-link.active {         
-        color: var(--theme-accent-hover) !important;       
-      }       
-      .hero {         
-        background: radial-gradient(circle, var(--theme-card) 0%, var(--theme-dark) 100%);         
-        padding: 3rem 0;         
-        text-align: center;         
-        border-bottom: 1px solid rgba(0, 180, 216, 0.3);         
-        background: transparent !important;       
-      }       
-      
-      .theme-toggle-btn {
-          background: transparent;
-          border: 1px solid var(--theme-accent);
-          color: var(--theme-accent);
-          width: 38px;
-          height: 38px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.3s ease;
-          font-size: 1.1rem;
-      }
-      .theme-toggle-btn:hover {
-          background: var(--theme-accent);
-          color: var(--theme-dark);
-          box-shadow: 0 0 10px rgba(0, 180, 216, 0.5);
-      }
-
-      /* ================= LIGHT MODE STYLES ================= */
-      body.light-mode {         
-        --theme-accent: #00b4d8;               
-        --theme-accent-hover: #0077b6;         
-        --text-light: #ffffff; /* Force white text */             
-      }
-      
-      /* Brighten the video background for day mode */
-      body.light-mode .video-bg-container::after {
-          content: "";
-          position: absolute;
-          top: 0; left: 0; right: 0; bottom: 0;
-          background-color: rgba(255, 255, 255, 0.4); 
-          z-index: -1;
-      }
-      body.light-mode #bgVideo {
-          filter: brightness(100%) contrast(100%);
-      }
-
-      /* Keep panels dark frosted glass so WHITE TEXT is readable */
-      body.light-mode .genshin-card {
-          background-color: rgba(10, 17, 40, 0.85) !important;
-          border-color: rgba(0, 180, 216, 0.5);
-      }
-      body.light-mode .detail-container {
-          background-color: rgba(10, 17, 40, 0.9);
-      }
-      body.light-mode .navbar {
-          background-color: rgba(10, 17, 40, 0.98) !important;
-      }
-      body.light-mode .bg-dark {
-          background-color: rgba(10, 17, 40, 0.85) !important;
-      }
-      body.light-mode .reaction-box {
-          background: rgba(10, 17, 40, 0.8);
-      }
-      body.light-mode .form-control, body.light-mode .form-select, body.light-mode .input-group-text {
-          background-color: rgba(10, 17, 40, 0.9) !important;
-          color: #ffffff !important;
-          border: 1px solid rgba(0, 180, 216, 0.4) !important;
-      }
-      body.light-mode .form-control::placeholder {
-          color: #b0c4de !important;
-      }
-      body.light-mode .badge.bg-dark {
-          background-color: rgba(10, 17, 40, 0.9) !important;
-          color: #ffffff !important;
-          border-color: rgba(0, 180, 216, 0.5) !important;
-      }
-      /* =================================================== */
-
-      .genshin-card {
-          background-color: rgba(22, 36, 71, 0.7) !important;
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(0, 180, 216, 0.3);
-          border-radius: 12px;
-          transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-          display: flex;
-          flex-direction: column; 
-          justify-content: center;
-          align-items: center;
-          padding: 1.5rem 1rem;
-          width: 100%;
-          aspect-ratio: 1 / 1; 
-          text-align: center;
-      }
-
-      .domain-card {
-          aspect-ratio: auto !important;
-          min-height: 80px; 
-          padding: 1rem 0.8rem !important;
-      }
-
-      .genshin-card:hover {
-          transform: translateY(-5px); 
-          border-color: var(--theme-accent);
-          box-shadow: 0 8px 20px rgba(0, 180, 216, 0.2);
-      }
-
-      .item-icon {
-          width: 95px;
-          height: 95px; 
-          object-fit: contain;
-          margin-bottom: 1rem; 
-          border-radius: 50%;
-          background-color: rgba(0,0,0,0.3);
-          padding: 5px;
-          animation: float 3s ease-in-out infinite;
-          transition: all 0.3s ease;
-          flex-shrink: 0; 
-      }
-
-      .genshin-card:hover .item-icon {
-          animation: float 1.5s ease-in-out infinite; 
-          transform: scale(1.1);
-          filter: drop-shadow(0 0 15px var(--theme-accent));
-      }
-
-      .item-name {
-          color: var(--theme-accent);
-          text-transform: capitalize;
-          font-size: 1.05rem;
-          font-weight: 600;
-          margin-bottom: 0;
-          text-align: center;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-      }
-
-      #loader { display: none; color: var(--theme-accent); }       
-      
-      .video-bg-container {         
-        position: fixed;         
-        top: 0;         
-        left: 0;         
-        width: 100%;         
-        height: 100%;         
-        z-index: -2;         
-        overflow: hidden;         
-        background-color: #0a1128;       
-      }       
-      
-      #bgVideo {         
-        width: 100vw;         
-        height: 100vh;         
-        object-fit: cover;         
-        filter: brightness(45%) contrast(110%);         
-        position: absolute;         
-        top: 50%;         
-        left: 50%;         
-        transform: translate(-50%, -50%);
-        transition: filter 0.4s ease;
-      }       
-      
-      .detail-container {         
-        background-color: rgba(22, 36, 71, 0.9);         
-        backdrop-filter: blur(15px);         
-        border-radius: 20px;         
-        padding: 2rem;         
-        border: 1px solid var(--theme-accent);         
-        animation: fadeIn 0.5s ease-in-out;       
-      }       
-      
-      .detail-img {         
-        width: 200px;         
-        height: 200px;         
-        object-fit: contain;         
-        filter: drop-shadow(0 0 15px var(--theme-accent));         
-        animation: float 4s ease-in-out infinite, breathingGlow 4s infinite;       
-      }       
-      
-      .stat-label {         
-        color: var(--theme-accent);         
-        font-weight: bold;         
-        text-transform: uppercase;         
-        font-size: 0.9rem;       
-      }       
-      
-      .back-btn {         
-        background-color: transparent;         
-        color: var(--theme-accent);         
-        border: 1px solid var(--theme-accent);         
-        border-radius: 30px;         
-        padding: 0.4rem 1.5rem;         
-        font-size: 0.85rem;         
-        font-weight: 600;         
-        text-transform: uppercase;         
-        letter-spacing: 1px;         
-        transition: all 0.3s ease;         
-        display: inline-flex;         
-        align-items: center;         
-        justify-content: center;         
-        gap: 8px;       
-      }       
-      
-      .back-btn:hover {         
-        background-color: var(--theme-accent);         
-        color: var(--theme-dark);         
-        box-shadow: 0 0 15px rgba(0, 180, 216, 0.6);         
-        transform: translateX(-5px);       
-      }       
-      
-      @keyframes fadeIn {         
-        from { opacity: 0; transform: translateY(20px); }         
-        to { opacity: 1; transform: translateY(0); }       
-      }       
-      @keyframes float {         
-        0% { transform: translateY(0px) rotate(0deg); }         
-        50% { transform: translateY(-5px) rotate(2deg); }         
-        100% { transform: translateY(0px) rotate(0deg); }       
-      }       
-      @keyframes breathingGlow {         
-        0% { filter: drop-shadow(0 0 5px var(--theme-accent)); }         
-        50% { filter: drop-shadow(0 0 20px var(--theme-accent-hover)); }         
-        100% { filter: drop-shadow(0 0 5px var(--theme-accent)); }       
-      }       
-      
-      .reaction-box {         
-        background: rgba(10, 17, 40, 0.6);         
-        border-radius: 10px;         
-        padding: 15px;         
-        margin-top: 10px;         
-        border: 1px dashed var(--theme-accent);       
-      }       
-      
-      .view-all-btn {         
-        color: var(--theme-accent);         
-        border: 1px solid var(--theme-accent);         
-        background: transparent;         
-        border-radius: 30px;         
-        padding: 0.3rem 1.2rem;         
-        font-size: 0.85rem;         
-        font-weight: 600;         
-        text-transform: uppercase;         
-        letter-spacing: 1px;         
-        transition: all 0.3s ease;       
-      }       
-      
-      .view-all-btn:hover {         
-        background: var(--theme-accent);         
-        color: var(--theme-dark);         
-        box-shadow: 0 0 15px rgba(0, 180, 216, 0.6);         
-        transform: translateX(5px);       
-      }       
-      
-      .ancient-modern-title {         
-        background: linear-gradient(45deg, var(--theme-accent), #ffffff, var(--theme-accent-hover));         
-        -webkit-background-clip: text;         
-        -webkit-text-fill-color: transparent;         
-        text-shadow: 0 0 20px rgba(0, 180, 216, 0.5);         
-        letter-spacing: 2px;         
-        font-weight: 700;         
-        transition: all 0.3s ease;       
-      }       
-      
-      .ancient-modern-title:hover {         
-        text-shadow: 0 0 30px rgba(144, 224, 239, 0.8);         
-        transform: scale(1.02);       
-      }
-      
-      .custom-scroll::-webkit-scrollbar {
-        width: 6px;
-      }
-      .custom-scroll::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.2); 
-        border-radius: 10px;
-      }
-      .custom-scroll::-webkit-scrollbar-thumb {
-        background: var(--theme-accent); 
-        border-radius: 10px;
-      }
-      .custom-scroll::-webkit-scrollbar-thumb:hover {
-        background: var(--theme-accent-hover); 
-      }
-      
-      .no-image-placeholder {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: rgba(0,0,0,0.3);
-        color: var(--theme-accent);
-        font-weight: bold;
-        text-transform: uppercase;
-        border: 1px dashed var(--theme-accent);
-        text-align: center;
-      }
-      .no-image-placeholder.icon-size {
-        width: 80px; 
-        height: 80px; 
-        border-radius: 50%;
-        margin: 0 auto 1rem auto;
-        font-size: 0.6rem;
-      }
-      .no-image-placeholder.detail-size {
-        width: 200px;
-        height: 200px;
-        border-radius: 20px;
-        margin: 0 auto 1.5rem auto;
-        font-size: 1.2rem;
-        letter-spacing: 1px;
-      }
-    </style>   
-  </head>   
-  <body>     
-    <div class="video-bg-container">         
-      <video autoplay muted loop playsinline id="bgVideo">             
-        <source src="assets/bg_video.mp4" type="video/mp4">         
-      </video>     
-    </div>          
+    <title>Genshin Impact Archive</title>
     
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm py-1">       
-      <div class="container">         
-        <a class="navbar-brand d-flex align-items-center py-0" href="#" onclick="loadPage('home')">             
-          <img src="https://static.vecteezy.com/system/resources/thumbnails/027/127/497/small_2x/genshin-impact-logo-genshin-impact-icon-transparent-free-png.png"                   
-               alt="Genshin Logo"                   
-               style="height: 100px; margin-top: -20px; margin-bottom: -20px;"                   
-               class="me-3">             
-          <span class="ancient-modern-title fs-3 mt-2">Genshin Impact Archive</span>         
-        </a>         
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: var(--theme-accent);">           
-          <span class="navbar-toggler-icon"></span>         
-        </button>         
-        <div class="collapse navbar-collapse" id="navbarNav">           
-          <ul class="navbar-nav ms-auto align-items-lg-center">             
-            <li class="nav-item"><a class="nav-link active" id="nav-home" onclick="loadPage('home')">Home</a></li>             
-            <li class="nav-item"><a class="nav-link" id="nav-search" onclick="loadSearchPage()">Search</a></li>           
-            <li class="nav-item ms-lg-3 mt-2 mt-lg-0 mb-2 mb-lg-0">
-                <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
-                  <i class="bi bi-brightness-high-fill" id="themeIcon"></i>
-                </button>
-            </li>
-          </ul>         
-        </div>       
-      </div>     
-    </nav>          
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
-    <header class="hero">       
-      <div class="container">         
-        <h1 id="pageTitle" class="display-4 ancient-modern-title">Welcome, Traveler!</h1>          
-        <p id="pageSubtitle" class="lead text-light">Ad Astra Abyssosque! Step into the vast world of Teyvat.</p>       
-      </div>     
-    </header>          
-    
-    <main class="container my-5 flex-grow-1">       
-      <div id="loader" class="text-center my-5">         
-        <div class="spinner-border" role="status"></div>         
-        <p class="mt-3">Connecting to Irminsul...</p>       
-      </div>              
-      <div class="row g-4" id="dataGrid">         
-      </div>     
-    </main>          
-    
-    <footer class="text-center py-4" style="background-color: var(--theme-card); border-top: 1px solid rgba(0, 180, 216, 0.3); transition: background-color 0.4s ease;">       
-      <p class="mb-0 small text-light opacity-75">Powered by genshin.jmp.blue API | Ad Astra Abyssosque</p>     
-    </footer>          
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>          
-    
-    <script>         
-      const baseUrl = 'https://genshin.jmp.blue';                       
-      
-      const dataGrid = document.getElementById('dataGrid');          
-      const loader = document.getElementById('loader');          
-      const pageTitle = document.getElementById('pageTitle');          
-      const pageSubtitle = document.getElementById('pageSubtitle');                   
-      let allDataCache = {};          
-      
-      const pageInfo = {             
-        home: { title: "Welcome, Traveler!", sub: "Ad Astra Abyssosque! Step into the vast world of Teyvat." },             
-        characters: { title: "Characters", sub: "Explore the heroes traversing the world of Teyvat." },             
-        weapons: { title: "Weapons", sub: "Discover the armaments forged for battle." },             
-        artifacts: { title: "Artifacts", sub: "Relics of the past that bestow great power." },             
-        consumables: { title: "Consumables", sub: "Dishes and potions to aid your journey." },
-        materials: { title: "Materials", sub: "Resources collected across Teyvat for ascensions and enhancements." },
-        elements: { title: "Elements", sub: "The fundamental powers that shape the world." },             
-        nations: { title: "Nations", sub: "The seven regions ruled by the Archons." },             
-        domains: { title: "Domains", sub: "Ancient ruins holding powerful rewards." },
-        enemies: { title: "Enemies", sub: "Formidable foes lurking across Teyvat." },
-        search: { title: "Archive Search", sub: "Search Irminsul for all knowledge."}         
-      };         
-      
-      // THEME INITIALIZATION AND TOGGLE
-      function initTheme() {
-          const savedTheme = localStorage.getItem('genshinTheme');
-          if (savedTheme === 'light') {
-              document.body.classList.add('light-mode');
-              const themeIcon = document.getElementById('themeIcon');
-              if (themeIcon) {
-                  themeIcon.classList.replace('bi-brightness-high-fill', 'bi-moon-fill');
-              }
-          }
-      }
-      
-      function toggleTheme() {
-          const body = document.body;
-          const themeIcon = document.getElementById('themeIcon');
-          body.classList.toggle('light-mode');
-          
-          if (body.classList.contains('light-mode')) {
-              themeIcon.classList.replace('bi-brightness-high-fill', 'bi-moon-fill');
-              localStorage.setItem('genshinTheme', 'light');
-          } else {
-              themeIcon.classList.replace('bi-moon-fill', 'bi-brightness-high-fill');
-              localStorage.setItem('genshinTheme', 'dark');
-          }
-      }
-
-      function getFallbackUrls(itemId) {
-          let formattedName = itemId.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('_');
-          let urls = [];
-          urls.push(`https://genshin-impact.fandom.com/wiki/Special:FilePath/Item_${formattedName}.png`);
-          return [...new Set(urls)];
-      }
-
-      window.handleImageFallback = function(img, itemId, isDetail) {
-          let attempt = parseInt(img.getAttribute('data-attempt') || '0');
-          let urls = getFallbackUrls(itemId);
-          if (attempt < urls.length) {
-              img.src = urls[attempt];
-              img.setAttribute('data-attempt', attempt + 1);
-          } else {
-              img.outerHTML = `<div class='no-image-placeholder ${isDetail ? "detail-size" : "icon-size"}'>No Image</div>`;
-          }
-      };
-
-      function flattenMaterials(data, subcat) {
-          let items = [];
-          if (!data) return items;
-          
-          const makeId = (name) => name.toLowerCase().replace(/[']/g, '').replace(/[^a-z0-9]+/g, '-');
-
-          const traverse = (obj, parentKey) => {
-              if (typeof obj === 'string') {
-                  items.push({ id: obj, subcat: subcat, details: { name: obj.replace(/-/g, ' '), description: 'A material from Teyvat.' } });
-                  return;
-              }
-              if (Array.isArray(obj)) {
-                  obj.forEach(v => traverse(v, parentKey));
-                  return;
-              }
-              if (typeof obj === 'object' && obj !== null) {
-                  if (obj.name) {
-                      let id = obj.id || makeId(obj.name);
-                      items.push({ id: id, subcat: subcat, details: obj });
-                  } else {
-                      for (let key in obj) {
-                          traverse(obj[key], key);
-                      }
-                  }
-              }
-          };
-          traverse(data, '');
-          return items;
-      }
-
-      async function fetchCategoryItems(cat) {
-          if (cat === 'materials') {
-              const subcats = ['boss-material', 'character-ascension', 'character-experience', 'common-ascension', 'local-specialties', 'talent-book', 'talent-boss', 'weapon-ascension', 'weapon-experience'];
-              let items = [];
-              await Promise.all(subcats.map(async (sub) => {
-                  try {
-                      const res = await fetch(`${baseUrl}/materials/${sub}`);
-                      if (res.ok) {
-                          const data = await res.json();
-                          items = items.concat(flattenMaterials(data, sub));
-                      }
-                  } catch(e) {}
-              }));
-              
-              const unique = [];
-              const map = new Set();
-              for (let item of items) {
-                  if (!map.has(item.id)) {
-                      map.add(item.id);
-                      unique.push(item);
-                  }
-              }
-              return unique;
-          } else if (cat === 'consumables') {
-              const [fRes, pRes] = await Promise.all([
-                  fetch(`${baseUrl}/consumables/food`).catch(()=>null),
-                  fetch(`${baseUrl}/consumables/potions`).catch(()=>null)
-              ]);
-              let items = [];
-              if (fRes && fRes.ok) {
-                  let fData = await fRes.json();
-                  let keys = Array.isArray(fData) ? fData : (typeof fData === 'object' ? Object.keys(fData) : []);
-                  items = items.concat(keys.map(k => ({ id: k, subcat: 'food' })));
-              }
-              if (pRes && pRes.ok) {
-                  let pData = await pRes.json();
-                  let keys = Array.isArray(pData) ? pData : (typeof pData === 'object' ? Object.keys(pData) : []);
-                  items = items.concat(keys.map(k => ({ id: k, subcat: 'potions' })));
-              }
-              return items;
-          } else {
-              const res = await fetch(`${baseUrl}/${cat}`);
-              let data = await res.json();
-              return Array.isArray(data) ? data : (typeof data === 'object' ? Object.keys(data) : []);
-          }
-      }
-
-      function getConsumableImageUrls(itemId) {
-          let formattedName = itemId.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('_');
-          return {
-              primary: `https://genshin-impact.fandom.com/wiki/Special:FilePath/Item_${formattedName}.png`,
-              secondary: `https://genshin-impact.fandom.com/wiki/Special:FilePath/${formattedName}.png`
-          };
-      }
-
-      async function fetchAllData() {             
-        if (Object.keys(allDataCache).length > 0) return;              
-        const categories = ['characters', 'weapons', 'artifacts', 'consumables', 'materials', 'elements', 'nations', 'domains', 'enemies'];             
-        for (const cat of categories) {                 
-          try {                     
-            allDataCache[cat] = await fetchCategoryItems(cat);                 
-          } catch (error) {}             
-        }         
-      }         
-      
-      async function loadSearchPage() {             
-        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));             
-        document.getElementById('nav-search').classList.add('active');                          
-        pageTitle.textContent = pageInfo.search.title;             
-        pageSubtitle.textContent = pageInfo.search.sub;             
-        
-        dataGrid.innerHTML = '';                          
-        
-        const searchUI = `                 
-          <div class="col-12 mb-4 d-flex justify-content-center">                     
-            <div class="input-group shadow-sm" style="max-width: 600px; border-radius: 8px; overflow: hidden;">                         
-              <select id="searchFilter" class="form-select bg-dark text-light border-0" style="max-width: 150px; cursor:pointer; font-size: 0.95rem;">                             
-                <option value="all">All Categories</option>                             
-                <option value="characters">Characters</option>                             
-                <option value="weapons">Weapons</option>                             
-                <option value="artifacts">Artifacts</option>                             
-                <option value="consumables">Consumables</option>
-                <option value="materials">Materials</option>
-                <option value="elements">Elements</option>                             
-                <option value="nations">Nations</option>                             
-                <option value="domains">Domains</option>
-                <option value="enemies">Enemies</option>
-              </select>                         
-              <input type="text" id="searchInput" class="form-control bg-dark text-light border-0" placeholder="Type a category or item..." style="font-size: 0.95rem;" onkeyup="if(event.key === 'Enter') executeSearch()">                         
-              <button class="btn btn-info text-dark fw-bold px-3" style="font-size: 0.95rem;" onclick="executeSearch()">Search</button>                         
-              <button class="btn btn-outline-danger px-3" style="font-size: 0.95rem;" onclick="clearSearch()">Clear</button>                     
-            </div>                 
-          </div>                 
-          <div id="searchResults" class="row g-4 w-100 m-0"></div>             
-        `;             
-        dataGrid.innerHTML = searchUI;             
-        loader.style.display = 'block';             
-        await fetchAllData();              
-        loader.style.display = 'none';         
-      }         
-      
-      function executeSearch() {             
-        const query = document.getElementById('searchInput').value.toLowerCase().trim();             
-        const filter = document.getElementById('searchFilter').value;             
-        const resultsContainer = document.getElementById('searchResults');                          
-        resultsContainer.innerHTML = '';                          
-        
-        if (!query) {                 
-          resultsContainer.innerHTML = '<div class="col-12 text-center text-light mt-4">Please enter a search term to query the Ley Lines.</div>';                 
-          return;             
-        }             
-
-        let targetCategory = query;
-        if (query === 'character') targetCategory = 'characters';
-        if (query === 'weapon') targetCategory = 'weapons';
-        if (query === 'artifact') targetCategory = 'artifacts';
-        if (query === 'consumable' || query === 'food' || query === 'potion' || query === 'foods' || query === 'potions') targetCategory = 'consumables';
-        if (query === 'material') targetCategory = 'materials';
-        if (query === 'element') targetCategory = 'elements';
-        if (query === 'nation' || query === 'region' || query === 'regions') targetCategory = 'nations';
-        if (query === 'domain') targetCategory = 'domains';
-        if (query === 'enemy') targetCategory = 'enemies';
-
-        const validCategories = ['characters', 'weapons', 'artifacts', 'consumables', 'materials', 'elements', 'nations', 'domains', 'enemies'];
-        if (validCategories.includes(targetCategory) && filter === 'all') {
-            loadPage(targetCategory);
-            return;
+    <style>
+        :root {
+            --theme-dark: #0a1128;
+            --theme-card: #162447;
+            --theme-accent: #00b4d8;
+            --theme-accent-hover: #90e0ef;
+            --text-light: #ffffff;
         }
-        
-        let results = [];             
-        const categoriesToSearch = filter === 'all' ? Object.keys(allDataCache) : [filter];                          
-        
-        categoriesToSearch.forEach(cat => {                 
-          if (allDataCache[cat]) {                     
-            const matches = allDataCache[cat].filter(itemData => {
-                let itemStr = typeof itemData === 'object' ? (itemData.details && itemData.details.name ? itemData.details.name.toLowerCase() : itemData.id) : itemData;
-                return typeof itemStr === 'string' && itemStr.includes(query);
-            });                     
-            matches.forEach(match => {                         
-              results.push({ category: cat, item: match });                     
-            });                 
-          }             
-        });             
-        
-        if (results.length === 0) {                 
-          resultsContainer.innerHTML = '<div class="col-12 text-center text-light mt-4">No records found in the Irminsul tree.</div>';                 
-          return;             
-        }             
-        
-        results.forEach(res => {                 
-          let itemData = res.item;
-          let itemStr = typeof itemData === 'object' ? itemData.id : itemData;
 
-          let displayName = typeof itemData === 'object' && itemData.details && itemData.details.name 
-              ? itemData.details.name 
-              : (typeof itemStr === 'string' ? itemStr.replace(/-/g, ' ').replace(/ s /g, "'s ") : 'Unknown');                 
-          
-          let imageUrl = `${baseUrl}/${res.category}/${itemStr}/icon`;                 
-          let fallbackHtml = `onerror="this.outerHTML='<div class=\\'no-image-placeholder icon-size\\'>No Image</div>'"`;
-          
-          if (res.category === 'artifacts') imageUrl = `${baseUrl}/${res.category}/${itemStr}/flower-of-life`;                 
-          if (itemStr === 'glacier-and-snowfield') imageUrl = `https://genshin.jmp.blue/artifacts/blizzard-strayer/flower-of-life`;                                  
-          
-          if (res.category === 'consumables' || res.category === 'materials') {
-              const urls = getConsumableImageUrls(itemStr);
-              imageUrl = urls.primary;
-              fallbackHtml = `onerror="this.onerror=null; this.src='${urls.secondary}'; this.addEventListener('error', function() { this.outerHTML='<div class=\\'no-image-placeholder icon-size\\'>No Image</div>' });"`;
-          }
+        /* Fonts */
+        * {
+            font-family: 'Cinzel Decorative', serif !important;
+        }
 
-          let imgHtml = `<img src="${imageUrl}" alt="${displayName}" class="item-icon" ${fallbackHtml}>`;
-          
-          let domainClass = "";
-          if (res.category === 'domains') {
-            imgHtml = ''; 
-            domainClass = "domain-card";
-          }
+        body {
+            background-color: var(--theme-dark);
+            color: var(--text-light) !important;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: transparent !important;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
 
-          const card = `                     
-            <div class="col-6 col-md-4 col-lg-3 card-item">                         
-              <div class="genshin-card ${domainClass}" style="cursor: pointer;" onclick="loadDetails('${res.category}', '${itemStr}')">                             
-                <span class="badge bg-dark border border-info mb-2" style="font-size: 0.6rem; text-transform:uppercase; width: fit-content;">${res.category}</span>
-                ${imgHtml}                             
-                <h3 class="item-name">${displayName}</h3>
-              </div>                     
-            </div>                 
-          `;                 
-          resultsContainer.insertAdjacentHTML('beforeend', card);             
-        });         
-      }         
-      
-      function clearSearch() {             
-        document.getElementById('searchInput').value = '';             
-        document.getElementById('searchFilter').value = 'all';             
-        document.getElementById('searchResults').innerHTML = '';         
-      }         
-      
-      function filterCategory(containerId) {
-        const input = document.getElementById('categorySearchInput').value.toLowerCase().trim();
-        const container = document.getElementById(containerId);
-        if (!container) return;
+        .navbar {
+            background-color: rgba(10, 17, 40, 0.95) !important;
+            border-bottom: 2px solid var(--theme-accent);
+            transition: background-color 0.4s ease;
+        }
+
+        .navbar-brand {
+            color: var(--theme-accent) !important;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .nav-link {
+            color: var(--text-light) !important;
+            transition: color 0.3s;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--theme-accent-hover) !important;
+        }
+
+        .hero {
+            background: radial-gradient(circle, var(--theme-card) 0%, var(--theme-dark) 100%);
+            padding: 3rem 0;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 180, 216, 0.3);
+            background: transparent !important;
+        }
+
+        .theme-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--theme-accent);
+            color: var(--theme-accent);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .theme-toggle-btn:hover {
+            background: var(--theme-accent);
+            color: var(--theme-dark);
+            box-shadow: 0 0 10px rgba(0, 180, 216, 0.5);
+        }
+
+        /* Light Mode */
+        body.light-mode {
+            --theme-accent: #00b4d8;
+            --theme-accent-hover: #0077b6;
+            --text-light: #ffffff;
+        }
+
+        body.light-mode .video-bg-container::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255, 255, 255, 0.4);
+            z-index: -1;
+        }
+
+        body.light-mode #bgVideo {
+            filter: brightness(100%) contrast(100%);
+        }
+
+        body.light-mode .genshin-card {
+            background-color: rgba(10, 17, 40, 0.85) !important;
+            border-color: rgba(0, 180, 216, 0.5);
+        }
+
+        body.light-mode .detail-container {
+            background-color: rgba(10, 17, 40, 0.9);
+        }
+
+        body.light-mode .navbar {
+            background-color: rgba(10, 17, 40, 0.98) !important;
+        }
+
+        body.light-mode .bg-dark {
+            background-color: rgba(10, 17, 40, 0.85) !important;
+        }
+
+        body.light-mode .reaction-box {
+            background: rgba(10, 17, 40, 0.8);
+        }
+
+        body.light-mode .form-control,
+        body.light-mode .form-select,
+        body.light-mode .input-group-text {
+            background-color: rgba(10, 17, 40, 0.9) !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(0, 180, 216, 0.4) !important;
+        }
+
+        body.light-mode .form-control::placeholder {
+            color: #b0c4de !important;
+        }
+
+        body.light-mode .badge.bg-dark {
+            background-color: rgba(10, 17, 40, 0.9) !important;
+            color: #ffffff !important;
+            border-color: rgba(0, 180, 216, 0.5) !important;
+        }
+
+        .genshin-card {
+            background-color: rgba(22, 36, 71, 0.7) !important;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 180, 216, 0.3);
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem 1rem;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            text-align: center;
+        }
+
+        .domain-card {
+            aspect-ratio: auto !important;
+            min-height: 80px;
+            padding: 1rem 0.8rem !important;
+        }
+
+        .genshin-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--theme-accent);
+            box-shadow: 0 8px 20px rgba(0, 180, 216, 0.2);
+        }
+
+        .item-icon {
+            width: 95px;
+            height: 95px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+            border-radius: 50%;
+            background-color: rgba(0,0,0,0.3);
+            padding: 5px;
+            animation: float 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .genshin-card:hover .item-icon {
+            animation: float 1.5s ease-in-out infinite;
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 15px var(--theme-accent));
+        }
+
+        .item-name {
+            color: var(--theme-accent);
+            text-transform: capitalize;
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0;
+            text-align: center;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        #loader {
+            display: none;
+            color: var(--theme-accent);
+        }
+
+        .video-bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            background-color: #0a1128;
+        }
+
+        #bgVideo {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            filter: brightness(45%) contrast(110%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: filter 0.4s ease;
+        }
+
+        .detail-container {
+            background-color: rgba(22, 36, 71, 0.9);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--theme-accent);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .detail-img {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 15px var(--theme-accent));
+            animation: float 4s ease-in-out infinite, breathingGlow 4s infinite;
+        }
+
+        .stat-label {
+            color: var(--theme-accent);
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .back-btn {
+            background-color: transparent;
+            color: var(--theme-accent);
+            border: 1px solid var(--theme-accent);
+            border-radius: 30px;
+            padding: 0.4rem 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background-color: var(--theme-accent);
+            color: var(--theme-dark);
+            box-shadow: 0 0 15px rgba(0, 180, 216, 0.6);
+            transform: translateX(-5px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        @keyframes breathingGlow {
+            0% { filter: drop-shadow(0 0 5px var(--theme-accent)); }
+            50% { filter: drop-shadow(0 0 20px var(--theme-accent-hover)); }
+            100% { filter: drop-shadow(0 0 5px var(--theme-accent)); }
+        }
+
+        .reaction-box {
+            background: rgba(10, 17, 40, 0.6);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+            border: 1px dashed var(--theme-accent);
+        }
+
+        .view-all-btn {
+            color: var(--theme-accent);
+            border: 1px solid var(--theme-accent);
+            background: transparent;
+            border-radius: 30px;
+            padding: 0.3rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .view-all-btn:hover {
+            background: var(--theme-accent);
+            color: var(--theme-dark);
+            box-shadow: 0 0 15px rgba(0, 180, 216, 0.6);
+            transform: translateX(5px);
+        }
+
+        .ancient-modern-title {
+            background: linear-gradient(45deg, var(--theme-accent), #ffffff, var(--theme-accent-hover));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 180, 216, 0.5);
+            letter-spacing: 2px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .ancient-modern-title:hover {
+            text-shadow: 0 0 30px rgba(144, 224, 239, 0.8);
+            transform: scale(1.02);
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: var(--theme-accent);
+            border-radius: 10px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: var(--theme-accent-hover);
+        }
+
+        .no-image-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0,0,0,0.3);
+            color: var(--theme-accent);
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 1px dashed var(--theme-accent);
+            text-align: center;
+        }
+
+        .no-image-placeholder.icon-size {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1rem auto;
+            font-size: 0.6rem;
+        }
+
+        .no-image-placeholder.detail-size {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            margin: 0 auto 1.5rem auto;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-bg-container">
+        <video autoplay muted loop playsinline id="bgVideo">
+            <source src="assets/bg_video.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm py-1">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center py-0" href="#" onclick="loadPage('home')">
+                <img src="https://static.vecteezy.com/system/resources/thumbnails/027/127/497/small_2x/genshin-impact-logo-genshin-impact-icon-transparent-free-png.png" alt="Genshin Logo" style="height: 100px; margin-top: -20px; margin-bottom: -20px;" class="me-3">
+                <span class="ancient-modern-title fs-3 mt-2">Genshin Impact Archive</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: var(--theme-accent);">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="nav-home" onclick="loadPage('home')">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav-search" onclick="loadSearchPage()">Search</a>
+                    </li>
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0 mb-2 mb-lg-0">
+                        <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
+                            <i class="bi bi-brightness-high-fill" id="themeIcon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <h1 id="pageTitle" class="display-4 ancient-modern-title">Welcome, Traveler!</h1>
+            <p id="pageSubtitle" class="lead text-light">Ad Astra Abyssosque! Step into the vast world of Teyvat.</p>
+        </div>
+    </header>
+
+    <main class="container my-5 flex-grow-1">
+        <div id="loader" class="text-center my-5">
+            <div class="spinner-border" role="status"></div>
+            <p class="mt-3">Connecting to Irminsul...</p>
+        </div>
         
-        const cards = container.querySelectorAll('.card-item');
-        cards.forEach(card => {
-            const name = card.querySelector('.item-name').innerText.toLowerCase();
-            if (name.includes(input)) {
-                card.style.display = '';
-            } else {
-                card.style.display = 'none';
+        <div class="row g-4" id="dataGrid"></div>
+    </main>
+
+    <footer class="text-center py-4" style="background-color: var(--theme-card); border-top: 1px solid rgba(0, 180, 216, 0.3); transition: background-color 0.4s ease;">
+        <p class="mb-0 small text-light opacity-75">Powered by genshin.jmp.blue API | Ad Astra Abyssosque</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+    <script>
+        const baseUrl = 'https://genshin.jmp.blue';
+        const dataGrid = document.getElementById('dataGrid');
+        const loader = document.getElementById('loader');
+        const pageTitle = document.getElementById('pageTitle');
+        const pageSubtitle = document.getElementById('pageSubtitle');
+        
+        let allDataCache = {};
+
+        const pageInfo = {
+            home: { title: "Welcome, Traveler!", sub: "Ad Astra Abyssosque! Step into the vast world of Teyvat." },
+            characters: { title: "Characters", sub: "Explore the heroes traversing the world of Teyvat." },
+            weapons: { title: "Weapons", sub: "Discover the armaments forged for battle." },
+            artifacts: { title: "Artifacts", sub: "Relics of the past that bestow great power." },
+            consumables: { title: "Consumables", sub: "Dishes and potions to aid your journey." },
+            materials: { title: "Materials", sub: "Resources collected across Teyvat for ascensions and enhancements." },
+            elements: { title: "Elements", sub: "The fundamental powers that shape the world." },
+            nations: { title: "Nations", sub: "The seven regions ruled by the Archons." },
+            domains: { title: "Domains", sub: "Ancient ruins holding powerful rewards." },
+            enemies: { title: "Enemies", sub: "Formidable foes lurking across Teyvat." },
+            search: { title: "Archive Search", sub: "Search Irminsul for all knowledge." }
+        };
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('genshinTheme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                const themeIcon = document.getElementById('themeIcon');
+                if (themeIcon) {
+                    themeIcon.classList.replace('bi-brightness-high-fill', 'bi-moon-fill');
+                }
             }
-        });
-      }
+        }
 
-      function clearCategorySearch(containerId) {
-        const input = document.getElementById('categorySearchInput');
-        if (input) input.value = '';
-        filterCategory(containerId);
-      }
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                themeIcon.classList.replace('bi-brightness-high-fill', 'bi-moon-fill');
+                localStorage.setItem('genshinTheme', 'light');
+            } else {
+                themeIcon.classList.replace('bi-moon-fill', 'bi-brightness-high-fill');
+                localStorage.setItem('genshinTheme', 'dark');
+            }
+        }
 
-      async function loadPage(endpoint) {             
-        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));             
-        let navId = endpoint === 'home' ? 'nav-home' : 'nav-search';
-        const navElement = document.getElementById(navId);             
-        if(navElement) navElement.classList.add('active');                               
-        
-        const titleData = pageInfo[endpoint] || pageInfo['home'];             
-        pageTitle.textContent = titleData.title;             
-        pageSubtitle.textContent = titleData.sub;                          
+        function getFallbackUrls(itemId) {
+            let formattedName = itemId.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('_');
+            let urls = [];
+            urls.push(`https://genshin-impact.fandom.com/wiki/Special:FilePath/Item_${formattedName}.png`);
+            return [...new Set(urls)];
+        }
 
-        dataGrid.innerHTML = '';             
-        loader.style.display = 'block';                          
-        
-        try {                 
-          if (endpoint === 'home') {                     
-            const categories = ['characters', 'weapons', 'artifacts', 'consumables', 'materials', 'elements', 'nations', 'domains', 'enemies'];                                                       
-            for (const cat of categories) {                         
-              const items = await fetchCategoryItems(cat);                                                  
-              const dashboardId = `home-dashboard-${cat}`;
-              
-              const sectionTitle = `                             
-                <div class="col-12 mt-5 mb-3 d-flex justify-content-between align-items-end border-bottom border-info pb-2">                                 
-                  <h2 class="text-accent mb-0 ancient-modern-title" style="text-transform: capitalize;">${cat.replace(/-/g, ' ')}</h2>                                 
-                  <button class="view-all-btn" onclick="loadPage('${cat}')">                                     
-                    View All <i class="bi bi-chevron-double-right"></i>                                 
-                  </button>                             
-                </div>                         
-                <div id="${dashboardId}" class="row g-4 w-100 m-0"></div>
-              `;                         
-              dataGrid.insertAdjacentHTML('beforeend', sectionTitle);                                                  
-              items.slice(0, 4).forEach(item => {                             
-                renderCard(cat, item, dashboardId);                         
-              });                     
-            }                 
-          } else {                     
-            const dashboardId = `dashboard-${endpoint}`;
-            const dashboardHeader = `                         
-              <div class="col-12 mb-4">                             
-                <div class="d-flex align-items-center border-bottom border-info pb-3 mb-4">                             
-                  <button class="back-btn me-3" onclick="loadPage('home')">                                 
-                    <i class="bi bi-arrow-left"></i> Back Home                             
-                  </button>                             
-                  <h2 class="text-accent mb-0 ancient-modern-title" style="text-transform: capitalize;">All ${endpoint.replace(/-/g, ' ')}</h2>                         
-                </div>
+        window.handleImageFallback = function(img, itemId, isDetail) {
+            let attempt = parseInt(img.getAttribute('data-attempt') || '0');
+            let urls = getFallbackUrls(itemId);
+            
+            if (attempt < urls.length) {
+                img.src = urls[attempt];
+                img.setAttribute('data-attempt', attempt + 1);
+            } else {
+                img.outerHTML = `<div class='no-image-placeholder ${isDetail ? "detail-size" : "icon-size"}'>No Image</div>`;
+            }
+        };
+
+        function flattenMaterials(data, subcat) {
+            let items = [];
+            if (!data) return items;
+            
+            const makeId = (name) => name.toLowerCase().replace(/[']/g, '').replace(/[^a-z0-9]+/g, '-');
+
+            const traverse = (obj, parentKey) => {
+                if (typeof obj === 'string') {
+                    items.push({ id: obj, subcat: subcat, details: { name: obj.replace(/-/g, ' '), description: 'A material from Teyvat.' } });
+                    return;
+                }
                 
-                <div class="d-flex justify-content-start">
-                    <div class="input-group shadow-sm" style="max-width: 400px; border-radius: 8px; overflow: hidden;">                         
-                      <span class="input-group-text bg-dark text-info border-0"><i class="bi bi-search"></i></span>
-                      <input type="text" id="categorySearchInput" class="form-control bg-dark text-light border-0" style="font-size: 0.95rem;" placeholder="Filter ${endpoint.replace(/-/g, ' ')}..." onkeyup="filterCategory('${dashboardId}')">                         
-                      <button class="btn btn-outline-danger px-3" style="font-size: 0.95rem;" onclick="clearCategorySearch('${dashboardId}')">Clear</button>                     
-                    </div>
-                </div>
-              </div>                     
-              <div id="${dashboardId}" class="row g-4 w-100 m-0"></div>
-            `;                     
-            dataGrid.insertAdjacentHTML('beforeend', dashboardHeader);                     
-            
-            const items = await fetchCategoryItems(endpoint);                     
-            items.forEach(item => renderCard(endpoint, item, dashboardId));                 
-          }                 
-          loader.style.display = 'none';             
-        } catch (error) {                 
-          loader.style.display = 'none';                 
-          dataGrid.innerHTML = `<div class="col-12 text-center text-danger"><p>Failed to connect to the Ley Lines.</p></div>`;             
-        }         
-      }         
-      
-      function renderCard(endpoint, itemData, targetContainerId = null) {             
-        let item = typeof itemData === 'object' ? itemData.id : itemData;
-        
-        let displayName = typeof itemData === 'object' && itemData.details && itemData.details.name 
-            ? itemData.details.name 
-            : (typeof item === 'string' ? item.replace(/-/g, ' ').replace(/ s /g, "'s ") : 'Unknown');             
-        
-        let imageUrl = `${baseUrl}/${endpoint}/${item}/icon`;             
-        let fallbackHtml = `onerror="this.outerHTML='<div class=\\'no-image-placeholder icon-size\\'>No Image</div>'"`;
-        
-        if (endpoint === 'artifacts') imageUrl = `${baseUrl}/${endpoint}/${item}/flower-of-life`;             
-        if (item === 'glacier-and-snowfield') imageUrl = `https://genshin.jmp.blue/artifacts/blizzard-strayer/flower-of-life`;             
-        
-        if (endpoint === 'consumables' || endpoint === 'materials') {
-            const urls = getConsumableImageUrls(item);
-            imageUrl = urls.primary;
-            fallbackHtml = `onerror="this.onerror=null; this.src='${urls.secondary}'; this.addEventListener('error', function() { this.outerHTML='<div class=\\'no-image-placeholder icon-size\\'>No Image</div>' });"`;
-        }
-
-        let imgHtml = `<img src="${imageUrl}" alt="${displayName}" class="item-icon" ${fallbackHtml}>`;
-        
-        let domainClass = "";
-        if (endpoint === 'domains') {
-          imgHtml = ''; 
-          domainClass = "domain-card";
-        }
-
-        const card = `                 
-          <div class="col-6 col-md-4 col-lg-3 card-item">                     
-            <div class="genshin-card ${domainClass}" style="cursor: pointer;" onclick="loadDetails('${endpoint}', '${item}')">                         
-              ${imgHtml}                         
-              <h3 class="item-name">${displayName}</h3>                     
-            </div>                 
-          </div>             
-        `;             
-        
-        if (targetContainerId) {
-            const container = document.getElementById(targetContainerId);
-            if (container) container.insertAdjacentHTML('beforeend', card);
-        } else {
-            dataGrid.insertAdjacentHTML('beforeend', card);         
-        }
-      }         
-      
-      async function loadDetails(endpoint, item) {             
-        dataGrid.innerHTML = '';             
-        loader.style.display = 'block';             
-        window.scrollTo(0, 0);                          
-        
-        try {                 
-          let data;
-          let detailImgUrl = `${baseUrl}/${endpoint}/${item}/icon`;                 
-          let fallbackDetailHtml = `onerror="this.outerHTML='<div class=\\'no-image-placeholder detail-size\\'>No Image</div>'"`;
-
-          if (endpoint === 'materials') {
-              let cached = allDataCache['materials'] ? allDataCache['materials'].find(m => m.id === item) : null;
-              if (cached && cached.details) {
-                  data = cached.details;
-                  data.materialType = cached.subcat;
-              } else {
-                  throw new Error("Material not found");
-              }
-
-              const urls = getConsumableImageUrls(item);
-              detailImgUrl = urls.primary;
-              fallbackDetailHtml = `onerror="this.onerror=null; this.src='${urls.secondary}'; this.addEventListener('error', function() { this.outerHTML='<div class=\\'no-image-placeholder detail-size\\'>No Image</div>' });"`;
-              if (!data.name) data.name = item.replace(/-/g, ' ');
-
-          } else if (endpoint === 'consumables') {
-              const [fRes, pRes] = await Promise.all([
-                  fetch(`${baseUrl}/consumables/food`).catch(()=>null),
-                  fetch(`${baseUrl}/consumables/potions`).catch(()=>null)
-              ]);
-              let fDict = fRes && fRes.ok ? await fRes.json() : {};
-              let pDict = pRes && pRes.ok ? await pRes.json() : {};
-
-              if (fDict[item]) {
-                  data = typeof fDict[item] === 'object' ? fDict[item] : { description: "A food item from Teyvat." };
-              } else if (pDict[item]) {
-                  data = typeof pDict[item] === 'object' ? pDict[item] : { description: "A crafted potion." };
-              } else {
-                  throw new Error("Consumable not found");
-              }
-
-              const urls = getConsumableImageUrls(item);
-              detailImgUrl = urls.primary;
-              fallbackDetailHtml = `onerror="this.onerror=null; this.src='${urls.secondary}'; this.addEventListener('error', function() { this.outerHTML='<div class=\\'no-image-placeholder detail-size\\'>No Image</div>' });"`;
-              if (!data.name) data.name = item.replace(/-/g, ' ');
-
-          } else {
-              let response = await fetch(`${baseUrl}/${endpoint}/${item}`);
-              if (!response.ok) throw new Error("Item fetch failed");
-              data = await response.json();
-          }
-
-          let detailHtml = '';                 
-          const displayName = typeof item === 'string' ? item.replace(/-/g, ' ') : 'Unknown';                 
-          
-          if (endpoint === 'characters') detailImgUrl = `${baseUrl}/characters/${item}/portrait`;                 
-          if (endpoint === 'artifacts') detailImgUrl = `${baseUrl}/artifacts/${item}/flower-of-life`;                                  
-          
-          const imgTag = `<img src="${detailImgUrl}" class="detail-img mb-4" ${fallbackDetailHtml}>`;                                           
-          
-          if (endpoint === 'materials') {
-              
-            let sourceHtml = '';
-            let sourceData = data.source || data.sources || [];
-            if (typeof sourceData === 'string') sourceData = [sourceData];
-
-            if (sourceData.length > 0) {
-                sourceHtml = `<ul class="list-unstyled mb-0 small text-light opacity-75">`;
-                sourceData.forEach(src => {
-                    sourceHtml += `<li><i class="bi bi-caret-right-fill text-info"></i> ${src}</li>`;
-                });
-                sourceHtml += `</ul>`;
-            } else {
-                sourceHtml = `<p class="small text-light opacity-75 mb-0">No specific source data provided.</p>`;
-            }
-
-            let dropLocHtml = '';
-            let dropLocData = data.drop || data.location || [];
-            if (typeof dropLocData === 'string') dropLocData = [dropLocData];
-
-            if (dropLocData.length > 0) {
-                dropLocHtml = `<ul class="list-unstyled mb-0 small text-light opacity-75">`;
-                dropLocData.forEach(dl => {
-                    dropLocHtml += `<li><i class="bi bi-caret-right-fill text-info"></i> ${dl}</li>`;
-                });
-                dropLocHtml += `</ul>`;
-            } else {
-                dropLocHtml = `<p class="small text-light opacity-75 mb-0">Can be found exploring the open world of Teyvat.</p>`;
-            }
-            
-            detailHtml = `
-            <div class="col-12">
-                <div class="detail-container text-center">
-                    ${imgTag}
-                    <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
-                    ${data.description ? `<p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"${data.description}"</p>` : '<p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"A resource found across Teyvat."</p>'}
-                    
-                    <div class="row mt-4 text-start justify-content-center mb-4">
-                        <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
-                            <p class="mb-2"><span class="stat-label">Category:</span> <span class="text-capitalize">${(data.materialType || 'Material').replace(/-/g, ' ')}</span></p>
-                            <p class="mb-0"><span class="stat-label">Type:</span> ${data.type || 'Resource'}</p>
-                        </div>
-                        <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
-                            <p class="mb-0"><span class="stat-label">Rarity:</span> ${data.rarity ? '⭐'.repeat(data.rarity) : 'Unknown'}</p>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3 justify-content-center text-start">
-                        <div class="col-md-5 col-lg-4 p-3 bg-dark border border-secondary rounded shadow mb-3 mx-2">
-                            <h5 class="text-accent mb-2"><i class="bi bi-box-seam me-2"></i>Primary Source</h5>
-                            ${sourceHtml}
-                        </div>
-                        <div class="col-md-5 col-lg-4 p-3 bg-dark border border-secondary rounded shadow mb-3 mx-2">
-                            <h5 class="text-accent mb-2"><i class="bi bi-geo-alt-fill me-2"></i>Drops & Location</h5>
-                            ${dropLocHtml}
-                            <div class="mt-3 p-2 bg-dark border border-info rounded" style="font-size: 0.8rem;">
-                                <i class="bi bi-info-circle text-info me-1"></i> <span class="text-light opacity-75">Check the Adventurer Handbook or Interactive Map for precise coordinates.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>`;
-
-          } else if (endpoint === 'consumables') {
-            
-            let recipeData = data.recipe || data.crafting || [];
-            let recipeHtml = '';
-
-            if (Array.isArray(recipeData) && recipeData.length > 0) {
-                recipeHtml = `<ul class="list-unstyled mb-0 small text-light opacity-75">`;
-                recipeData.forEach(ing => {
-                    let ingName = ing.item || 'Ingredient';
-                    recipeHtml += `<li><i class="bi bi-caret-right-fill text-info"></i> ${ing.quantity}x <span class="text-capitalize">${ingName.replace(/-/g, ' ')}</span></li>`;
-                });
-                recipeHtml += `</ul>`;
-            } else {
-                recipeHtml = `<p class="small text-light opacity-75 mb-0">No specific recipe or crafting data available. Likely obtained via shops, foraging, quests, or events.</p>`;
-            }
-
-            let extraDetailsHtml = (data.foodFilter || data.foodType) ? `<p class="mb-2"><span class="stat-label">Category:</span> ${(data.foodFilter || data.foodType).replace(/_/g, ' ')}</p>` : '';
-
-            detailHtml = `
-            <div class="col-12">
-                <div class="detail-container text-center">
-                    ${imgTag}
-                    <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
-                    ${data.description ? `<p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"${data.description}"</p>` : ''}
-                    
-                    <div class="row mt-4 text-start justify-content-center mb-4">
-                        <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
-                            <p class="mb-2"><span class="stat-label">Type:</span> ${data.type || 'Consumable'}</p>
-                            ${extraDetailsHtml}
-                            <p class="mb-0"><span class="stat-label">Rarity:</span> ${data.rarity ? '⭐'.repeat(data.rarity) : 'Unknown'}</p>
-                        </div>
-                        <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
-                            <p class="mb-0"><span class="stat-label">Effect:</span> <span class="text-light">${data.effect || 'None'}</span></p>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3 justify-content-center text-start">
-                        <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
-                            <h5 class="text-accent mb-2"><i class="bi bi-journal-text me-2"></i>Recipe / Sources</h5>
-                            ${recipeHtml}
-                        </div>
-                    </div>
-                </div>
-            </div>`;
-
-          } else if (endpoint === 'nations') {                     
-            
-            const nationLore = {
-                "Mondstadt": "The city of freedom that lies in the northeast of Teyvat. From amongst mountains and wide-open plains, carefree breezes carry the scent of dandelions—a gift from the Anemo God, Barbatos—across Cider Lake to the island city that sits at the middle of the lake.",
-                "Liyue": "A bountiful harbor that lies in the east of Teyvat. Mountains stand tall and proud alongside the stone forest, that, together with the open plains and meandering rivers, make up Liyue's bountiful landscape, which shows its unique beauty through each of the four seasons.",
-                "Inazuma": "An isolated archipelago far to the east of Teyvat. Overcome endless thunderstorms and set foot on the islands of red maple and cherry blossoms. On winding shores and towering cliffs, you may witness the Eternity pursued by Her Excellency, the Almighty Narukami Ogosho.",
-                "Sumeru": "The city of scholars located in the west-central part of Teyvat. A fantastical nation of both lush rainforests and barren deserts, where countless fruits of wisdom grow and are buried within the Akademiya and beyond.",
-                "Fontaine": "A terrestrial sea in the center of Teyvat. Following the direction of the water currents, traversing the wilderness and the sea of sand, arriving at the origin of all the waters of the continent where justice reigns supreme.",
-                "Natlan": "The Nation of War located in the western part of Teyvat. Across the scorching deserts and past the jagged canyons lies the realm of the Pyro Archon, where tribes clash and forge legends in the heat of battle.",
-                "Snezhnaya": "The northernmost nation of Teyvat, a land of perpetual winter and harsh blizzards. Ruled by the Tsaritsa, it is a technologically advanced region known for its powerful military and the infamous Fatui organization."
+                if (Array.isArray(obj)) {
+                    obj.forEach(v => traverse(v, parentKey));
+                    return;
+                }
+                
+                if (typeof obj === 'object' && obj !== null) {
+                    if (obj.name) {
+                        let id = obj.id || makeId(obj.name);
+                        items.push({ id: id, subcat: subcat, details: obj });
+                    } else {
+                        for (let key in obj) {
+                            traverse(obj[key], key);
+                        }
+                    }
+                }
             };
-
-            let loreText = nationLore[data.name] || `The ${data.name} is the home of the ${data.element} element, ruled by the Archon ${data.archon}.`;
-
-            detailHtml = `                         
-              <div class="col-12">                             
-                <div class="detail-container text-center">                                 
-                  ${imgTag}                                 
-                  <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>                                 
-                  <p class="lead mb-4 px-md-5 fst-italic">"${loreText}"</p>                                                                  
-                  
-                  <div class="mb-4">                                     
-                    <a href="https://act.hoyolab.com/ys/app/interactive-map/index.html?lang=en-us" target="_blank" class="btn btn-outline-info rounded-pill px-4 py-2" style="transition: all 0.3s;">                                         
-                      <i class="bi bi-map-fill me-2"></i> Open Interactive Map for ${data.name}                                     
-                    </a>                                 
-                  </div>                                                                  
-                  
-                  <div class="row text-start justify-content-center">                                     
-                    <div class="col-md-5 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">                                             
-                        <p class="mb-2"><span class="stat-label">Archon:</span> ${data.archon || 'Unknown'}</p>                                             
-                        <p class="mb-0"><span class="stat-label">Element:</span> ${data.element || 'Unknown'}</p>                                         
-                    </div>                                     
-                    <div class="col-md-5 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">                                             
-                        <p class="mb-2"><span class="stat-label">Government:</span> ${data.controlling_entity || 'Unknown'}</p>                                             
-                        <p class="mb-0"><span class="stat-label">Motto:</span> <em>"${data.motto || 'N/A'}"</em></p>                                         
-                    </div>                                 
-                  </div>                             
-                </div>                         
-              </div>`;                 
-          } else if (endpoint === 'domains') {                     
-            detailHtml = `                         
-              <div class="col-12">                             
-                <div class="detail-container text-center">                                                                  
-                  <h1 class="display-5 fw-bold text-accent ancient-modern-title">${data.name}</h1>                                 
-                  <p class="lead mb-3 text-light">${data.description || 'An ancient domain hiding powerful rewards.'}</p>                                 
-                  <p class="text-info mb-4"><span class="stat-label text-light">Nation:</span> ${data.nation || 'Unknown'}</p>                                                                  
-                  <div class="mb-4">                                     
-                    <a href="https://act.hoyolab.com/ys/app/interactive-map/index.html?lang=en-us" target="_blank" class="btn btn-outline-info rounded-pill px-4 py-2" style="transition: all 0.3s;">                                         
-                      <i class="bi bi-pin-map-fill me-2"></i> Locate Domain on Teyvat Map                                     
-                    </a>                                 
-                  </div>                                                                  
-                  <div class="row mt-4 text-start justify-content-center">                                     
-                    <div class="col-md-8 p-3 rounded bg-dark border border-info shadow">                                         
-                      <h5 class="text-accent mb-2"><i class="bi bi-gift"></i> Domain Details</h5>                                         
-                      <p class="mb-1 opacity-75 small">This domain tests your team's strength. Complete it to claim rewards using Original Resin.</p>                                         
-                      <p class="mt-3 stat-label">Required Adventure Rank: ${data.recommended_ar || 'Varies'}</p>                                         
-                      <p class="stat-label">Recommended Elements: <span class="text-light text-capitalize">${data.recommended_elements && data.recommended_elements.length > 0 ? data.recommended_elements.join(', ') : 'Any'}</span></p>                                     
-                    </div>                                 
-                  </div>                             
-                </div>                         
-              </div>`;                 
-          } else if (endpoint === 'elements') {                     
-            const reactions = {                         
-              'Anemo': 'Swirl (Absorbs Pyro, Hydro, Cryo, or Electro to deal extra AoE damage).',                         
-              'Geo': 'Crystallize (Creates a shield when it hits Pyro, Hydro, Cryo, or Electro).',                         
-              'Electro': 'Overloaded (Pyro), Superconduct (Cryo), Electro-Charged (Hydro).',                         
-              'Dendro': 'Bloom (Hydro), Quicken (Electro), Burning (Pyro).',                         
-              'Hydro': 'Vaporize (Pyro), Frozen (Cryo), Electro-Charged (Electro).',                         
-              'Pyro': 'Vaporize (Hydro), Melt (Cryo), Overloaded (Electro), Burning (Dendro).',                         
-              'Cryo': 'Melt (Pyro), Frozen (Hydro), Superconduct (Electro).'                     
-            };                     
-            detailHtml = `                         
-              <div class="col-12">                             
-                <div class="detail-container text-center">                                 
-                  ${imgTag}                                 
-                  <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
-                  <p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"${data.description || 'The ' + data.name + ' element is a fundamental force in Teyvat.'}"</p>
-                  
-                  <div class="row mt-3 justify-content-center text-start">
-                    <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
-                        <h5 class="text-accent mb-3 border-bottom border-info pb-2"><i class="bi bi-magic me-2"></i>Common Reactions</h5>
-                        <div class="reaction-box mt-0 border-0 p-0" style="background: transparent;">
-                            <p class="text-light mb-0">${reactions[data.name] || 'Reacts with other elements to create powerful combat effects.'}</p>
-                        </div>
-                    </div>
-                  </div>
-                </div>                         
-              </div>`;                 
-          } else if (endpoint === 'characters') {                     
             
-            let skillsHtml = '';
-            if (data.skillTalents && data.skillTalents.length > 0) {
-                skillsHtml += '<h4 class="text-accent mt-5 mb-3 border-bottom border-info pb-2"><i class="bi bi-crosshair me-2"></i>Combat Skills</h4><div class="row text-start">';
-                data.skillTalents.forEach(skill => {
-                    skillsHtml += `
-                    <div class="col-md-6 col-lg-4 mb-3">
-                        <div class="p-3 bg-dark border border-secondary rounded h-100">
-                            <h6 class="text-info">${skill.name} <br><span class="text-muted small" style="font-weight: 400;">(${skill.unlock || skill.type || 'Skill'})</span></h6>
-                            <div class="custom-scroll" style="max-height: 120px; overflow-y: auto;">
-                                <p class="small text-light opacity-75 mb-0 pe-2">${skill.description}</p>
-                            </div>
-                        </div>
-                    </div>`;
-                });
-                skillsHtml += '</div>';
-            }
+            traverse(data, '');
+            return items;
+        }
 
-            let passivesHtml = '';
-            if (data.passiveTalents && data.passiveTalents.length > 0) {
-                passivesHtml += '<h4 class="text-accent mt-4 mb-3 border-bottom border-info pb-2"><i class="bi bi-stars me-2"></i>Passive Talents</h4><div class="row text-start">';
-                data.passiveTalents.forEach(passive => {
-                    passivesHtml += `
-                    <div class="col-md-6 col-lg-4 mb-3">
-                        <div class="p-3 bg-dark border border-secondary rounded h-100">
-                            <h6 class="text-info">${passive.name} <br><span class="text-muted small" style="font-weight: 400;">(${passive.unlock || 'Passive'})</span></h6>
-                            <div class="custom-scroll" style="max-height: 100px; overflow-y: auto;">
-                                <p class="small text-light opacity-75 mb-0 pe-2">${passive.description}</p>
-                            </div>
-                        </div>
-                    </div>`;
-                });
-                passivesHtml += '</div>';
-            }
-
-            let constellationsHtml = '';
-            if (data.constellations && data.constellations.length > 0) {
-                constellationsHtml += '<h4 class="text-accent mt-4 mb-3 border-bottom border-info pb-2"><i class="bi bi-moon-stars me-2"></i>Constellations</h4><div class="row text-start">';
-                data.constellations.forEach(cons => {
-                    constellationsHtml += `
-                    <div class="col-md-6 col-lg-4 mb-3">
-                        <div class="p-3 bg-dark border border-secondary rounded h-100">
-                            <h6 class="text-info">C${cons.level}: ${cons.name}</h6>
-                            <div class="custom-scroll" style="max-height: 100px; overflow-y: auto;">
-                                <p class="small text-light opacity-75 mb-0 pe-2">${cons.description}</p>
-                            </div>
-                        </div>
-                    </div>`;
-                });
-                constellationsHtml += '</div>';
-            }
-
-            let starRating = data.rarity ? '⭐'.repeat(data.rarity) : 'Unknown';
-
-            detailHtml = `
-              <div class="col-12">
-                <div class="detail-container text-center">
-                  ${imgTag}
-                  <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
-                  <p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"${data.description || 'No profile description available.'}"</p>
-                  
-                  <div class="row mt-4 text-start justify-content-center mb-4">
-                    <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
-                      <p class="mb-2"><span class="stat-label">Vision:</span> ${data.vision || 'Unknown'}</p>
-                      <p class="mb-2"><span class="stat-label">Weapon:</span> ${data.weapon || 'Unknown'}</p>
-                      <p class="mb-0"><span class="stat-label">Rarity:</span> ${starRating}</p>
-                    </div>
-                    <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
-                      <p class="mb-2"><span class="stat-label">Nation:</span> ${data.nation || 'Unknown'}</p>
-                      <p class="mb-2"><span class="stat-label">Affiliation:</span> ${data.affiliation || 'Unknown'}</p>
-                      <p class="mb-0"><span class="stat-label">Constellation:</span> ${data.constellation || 'Unknown'}</p>
-                    </div>
-                  </div>
-                  
-                  ${skillsHtml}
-                  ${passivesHtml}
-                  ${constellationsHtml}
-
-                </div>
-              </div>`;                 
-          } else if (endpoint === 'weapons') {
-            
-            let starRating = data.rarity ? '⭐'.repeat(data.rarity) : 'Unknown';
-            
-            let passiveHtml = '';
-            if (data.passiveName && data.passiveDesc) {
-                passiveHtml = `
-                <div class="row mt-4 justify-content-center text-start">
-                    <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
-                        <h5 class="text-accent mb-2"><i class="bi bi-shield-check me-2"></i>Passive: ${data.passiveName}</h5>
-                        <p class="small text-light opacity-75 mb-0">${data.passiveDesc}</p>
-                    </div>
-                </div>`;
-            }
-
-            let materialsHtml = '';
-            if (data.ascensionMaterial || data.bossMaterial || data.itemMaterial) {
-                materialsHtml = `
-                <div class="row mt-3 justify-content-center text-start">
-                    <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
-                        <h5 class="text-accent mb-2"><i class="bi bi-box-seam me-2"></i>Ascension Materials</h5>
-                        <ul class="list-unstyled mb-0 small text-light opacity-75">
-                            ${data.ascensionMaterial ? `<li><i class="bi bi-caret-right-fill text-info"></i> Weapon Ascension: <span class="text-capitalize">${data.ascensionMaterial.replace(/-/g, ' ')}</span></li>` : ''}
-                            ${data.bossMaterial ? `<li><i class="bi bi-caret-right-fill text-info"></i> Elite Enemy: <span class="text-capitalize">${data.bossMaterial.replace(/-/g, ' ')}</span></li>` : ''}
-                            ${data.itemMaterial ? `<li><i class="bi bi-caret-right-fill text-info"></i> Common Enemy: <span class="text-capitalize">${data.itemMaterial.replace(/-/g, ' ')}</span></li>` : ''}
-                        </ul>
-                    </div>
-                </div>`;
-            }
-
-            detailHtml = `
-            <div class="col-12">
-                <div class="detail-container text-center">
-                    ${imgTag}
-                    <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
-                    ${data.description ? `<p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"${data.description}"</p>` : ''}
-                    
-                    <div class="row mt-4 text-start justify-content-center mb-4">
-                        <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
-                            <p class="mb-2"><span class="stat-label">Type:</span> ${data.type || data.weapontype || 'Unknown'}</p>
-                            <p class="mb-2"><span class="stat-label">Rarity:</span> ${starRating}</p>
-                            <p class="mb-0"><span class="stat-label">Obtained Via:</span> ${data.location || 'Unknown'}</p>
-                        </div>
-                        <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
-                            <p class="mb-2"><span class="stat-label">Base ATK:</span> ${data.baseAttack || data.baseAtk || 'Unknown'}</p>
-                            <p class="mb-0"><span class="stat-label">Sub Stat:</span> ${data.subStat || 'None'}</p>
-                        </div>
-                    </div>
-
-                    ${passiveHtml}
-                    ${materialsHtml}
-
-                </div>
-            </div>`;
-          } else if (endpoint === 'artifacts') {
-            
-            let starRating = data.max_rarity ? '⭐'.repeat(data.max_rarity) : 'Unknown';
-
-            detailHtml = `
-            <div class="col-12">
-                <div class="detail-container text-center">
-                    ${imgTag}
-                    <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
-                    
-                    <div class="row mt-4 text-start justify-content-center mb-4">
-                        <div class="col-md-6 col-lg-5 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
-                            <p class="mb-0"><span class="stat-label">Max Rarity:</span> ${starRating}</p>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3 justify-content-center text-start">
-                        <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
-                            <h5 class="text-accent mb-3 border-bottom border-info pb-2"><i class="bi bi-box-seam me-2"></i>Set Bonuses</h5>
-                            
-                            <div class="mb-3">
-                                <h6 class="text-info">2-Piece Set</h6>
-                                <p class="small text-light opacity-75 mb-0">${data['2-piece_bonus'] || 'No 2-piece bonus available.'}</p>
-                            </div>
-                            
-                            <div>
-                                <h6 class="text-info">4-Piece Set</h6>
-                                <p class="small text-light opacity-75 mb-0">${data['4-piece_bonus'] || 'No 4-piece bonus available.'}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>`;
-            
-          } else if (endpoint === 'enemies') {
-            
-            let elementsHtml = 'None';
-            if (data.elements && data.elements.length > 0) {
-                elementsHtml = data.elements.join(', ');
-            }
-            
-            let dropsHtml = '';
-            let dropsList = data.drops || data.props || [];
-            if (dropsList.length > 0) {
-                dropsHtml = `<ul class="list-unstyled mb-0 small text-light opacity-75">`;
-                dropsList.forEach(drop => {
-                    let dropName = drop.name || drop;
-                    dropsHtml += `<li><i class="bi bi-caret-right-fill text-info"></i> <span class="text-capitalize">${dropName.replace(/-/g, ' ')}</span></li>`;
-                });
-                dropsHtml += `</ul>`;
+        async function fetchCategoryItems(cat) {
+            if (cat === 'materials') {
+                const subcats = ['boss-material', 'character-ascension', 'character-experience', 'common-ascension', 'local-specialties', 'talent-book', 'talent-boss', 'weapon-ascension', 'weapon-experience'];
+                let items = [];
+                
+                await Promise.all(subcats.map(async (sub) => {
+                    try {
+                        const res = await fetch(`${baseUrl}/materials/${sub}`);
+                        if (res.ok) {
+                            const data = await res.json();
+                            items = items.concat(flattenMaterials(data, sub));
+                        }
+                    } catch(e) {}
+                }));
+                
+                const unique = [];
+                const map = new Set();
+                for (let item of items) {
+                    if (!map.has(item.id)) {
+                        map.add(item.id);
+                        unique.push(item);
+                    }
+                }
+                return unique;
+                
+            } else if (cat === 'consumables') {
+                const [fRes, pRes] = await Promise.all([
+                    fetch(`${baseUrl}/consumables/food`).catch(()=>null),
+                    fetch(`${baseUrl}/consumables/potions`).catch(()=>null)
+                ]);
+                
+                let items = [];
+                if (fRes && fRes.ok) {
+                    let fData = await fRes.json();
+                    let keys = Array.isArray(fData) ? fData : (typeof fData === 'object' ? Object.keys(fData) : []);
+                    items = items.concat(keys.map(k => ({ id: k, subcat: 'food' })));
+                }
+                if (pRes && pRes.ok) {
+                    let pData = await pRes.json();
+                    let keys = Array.isArray(pData) ? pData : (typeof pData === 'object' ? Object.keys(pData) : []);
+                    items = items.concat(keys.map(k => ({ id: k, subcat: 'potions' })));
+                }
+                return items;
+                
             } else {
-                dropsHtml = `<p class="small text-light opacity-75 mb-0">No specific drops documented.</p>`;
+                const res = await fetch(`${baseUrl}/${cat}`);
+                let data = await res.json();
+                return Array.isArray(data) ? data : (typeof data === 'object' ? Object.keys(data) : []);
+            }
+        }
+
+        function getConsumableImageUrls(itemId) {
+            let formattedName = itemId.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('_');
+            return {
+                primary: `https://genshin-impact.fandom.com/wiki/Special:FilePath/Item_${formattedName}.png`,
+                secondary: `https://genshin-impact.fandom.com/wiki/Special:FilePath/${formattedName}.png`
+            };
+        }
+
+        async function fetchAllData() {
+            if (Object.keys(allDataCache).length > 0) return;
+            const categories = ['characters', 'weapons', 'artifacts', 'consumables', 'materials', 'elements', 'nations', 'domains', 'enemies'];
+            
+            for (const cat of categories) {
+                try {
+                    allDataCache[cat] = await fetchCategoryItems(cat);
+                } catch (error) {}
+            }
+        }
+
+        async function loadSearchPage() {
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.getElementById('nav-search').classList.add('active');
+            
+            pageTitle.textContent = pageInfo.search.title;
+            pageSubtitle.textContent = pageInfo.search.sub;
+            dataGrid.innerHTML = '';
+            
+            const searchUI = `
+                <div class="col-12 mb-4 d-flex justify-content-center">
+                    <div class="input-group shadow-sm" style="max-width: 600px; border-radius: 8px; overflow: hidden;">
+                        <select id="searchFilter" class="form-select bg-dark text-light border-0" style="max-width: 150px; cursor:pointer; font-size: 0.95rem;">
+                            <option value="all">All Categories</option>
+                            <option value="characters">Characters</option>
+                            <option value="weapons">Weapons</option>
+                            <option value="artifacts">Artifacts</option>
+                            <option value="consumables">Consumables</option>
+                            <option value="materials">Materials</option>
+                            <option value="elements">Elements</option>
+                            <option value="nations">Nations</option>
+                            <option value="domains">Domains</option>
+                            <option value="enemies">Enemies</option>
+                        </select>
+                        <input type="text" id="searchInput" class="form-control bg-dark text-light border-0" placeholder="Type a category or item..." style="font-size: 0.95rem;" onkeyup="if(event.key === 'Enter') executeSearch()">
+                        <button class="btn btn-info text-dark fw-bold px-3" style="font-size: 0.95rem;" onclick="executeSearch()">Search</button>
+                        <button class="btn btn-outline-danger px-3" style="font-size: 0.95rem;" onclick="clearSearch()">Clear</button>
+                    </div>
+                </div>
+                <div id="searchResults" class="row g-4 w-100 m-0"></div>
+            `;
+            
+            dataGrid.innerHTML = searchUI;
+            loader.style.display = 'block';
+            await fetchAllData();
+            loader.style.display = 'none';
+        }
+
+        function executeSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const filter = document.getElementById('searchFilter').value;
+            const resultsContainer = document.getElementById('searchResults');
+            
+            resultsContainer.innerHTML = '';
+            
+            if (!query) {
+                resultsContainer.innerHTML = '<div class="col-12 text-center text-light mt-4">Please enter a search term to query the Ley Lines.</div>';
+                return;
             }
 
-            detailHtml = `
-            <div class="col-12">
-                <div class="detail-container text-center">
-                    ${imgTag}
-                    <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+            let targetCategory = query;
+            if (query === 'character') targetCategory = 'characters';
+            if (query === 'weapon') targetCategory = 'weapons';
+            if (query === 'artifact') targetCategory = 'artifacts';
+            if (query === 'consumable' || query === 'food' || query === 'potion' || query === 'foods' || query === 'potions') targetCategory = 'consumables';
+            if (query === 'material') targetCategory = 'materials';
+            if (query === 'element') targetCategory = 'elements';
+            if (query === 'nation' || query === 'region' || query === 'regions') targetCategory = 'nations';
+            if (query === 'domain') targetCategory = 'domains';
+            if (query === 'enemy') targetCategory = 'enemies';
+
+            const validCategories = ['characters', 'weapons', 'artifacts', 'consumables', 'materials', 'elements', 'nations', 'domains', 'enemies'];
+            if (validCategories.includes(targetCategory) && filter === 'all') {
+                loadPage(targetCategory);
+                return;
+            }
+            
+            let results = [];
+            const categoriesToSearch = filter === 'all' ? Object.keys(allDataCache) : [filter];
+            
+            categoriesToSearch.forEach(cat => {
+                if (allDataCache[cat]) {
+                    const matches = allDataCache[cat].filter(itemData => {
+                        let itemStr = typeof itemData === 'object' ? (itemData.details && itemData.details.name ? itemData.details.name.toLowerCase() : itemData.id) : itemData;
+                        return typeof itemStr === 'string' && itemStr.includes(query);
+                    });
                     
-                    <div class="row mt-4 text-start justify-content-center mb-4">
-                        <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
-                            <p class="mb-2"><span class="stat-label">Family:</span> ${data.family || 'Unknown'}</p>
-                            <p class="mb-0"><span class="stat-label">Faction:</span> ${data.faction || 'Unknown'}</p>
-                        </div>
-                        <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
-                            <p class="mb-0"><span class="stat-label">Elements:</span> <span class="text-capitalize">${elementsHtml}</span></p>
+                    matches.forEach(match => {
+                        results.push({ category: cat, item: match });
+                    });
+                }
+            });
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<div class="col-12 text-center text-light mt-4">No records found in the Irminsul tree.</div>';
+                return;
+            }
+            
+            results.forEach(res => {
+                let itemData = res.item;
+                let itemStr = typeof itemData === 'object' ? itemData.id : itemData;
+
+                let displayName = typeof itemData === 'object' && itemData.details && itemData.details.name 
+                    ? itemData.details.name 
+                    : (typeof itemStr === 'string' ? itemStr.replace(/-/g, ' ').replace(/ s /g, "'s ") : 'Unknown');
+                
+                let imageUrl = `${baseUrl}/${res.category}/${itemStr}/icon`;
+                let fallbackHtml = `onerror="this.outerHTML='<div class=\\'no-image-placeholder icon-size\\'>No Image</div>'"`;
+                
+                if (res.category === 'artifacts') {
+                    imageUrl = `${baseUrl}/${res.category}/${itemStr}/flower-of-life`;
+                }
+                
+                if (itemStr === 'glacier-and-snowfield') {
+                    imageUrl = `https://genshin.jmp.blue/artifacts/blizzard-strayer/flower-of-life`;
+                }
+                
+                if (res.category === 'consumables' || res.category === 'materials') {
+                    const urls = getConsumableImageUrls(itemStr);
+                    imageUrl = urls.primary;
+                    fallbackHtml = `onerror="this.onerror=null; this.src='${urls.secondary}'; this.addEventListener('error', function() { this.outerHTML='<div class=\\'no-image-placeholder icon-size\\'>No Image</div>' });"`;
+                }
+
+                let imgHtml = `<img src="${imageUrl}" alt="${displayName}" class="item-icon" ${fallbackHtml}>`;
+                let domainClass = "";
+                
+                if (res.category === 'domains') {
+                    imgHtml = '';
+                    domainClass = "domain-card";
+                }
+
+                const card = `
+                    <div class="col-6 col-md-4 col-lg-3 card-item">
+                        <div class="genshin-card ${domainClass}" style="cursor: pointer;" onclick="loadDetails('${res.category}', '${itemStr}')">
+                            <span class="badge bg-dark border border-info mb-2" style="font-size: 0.6rem; text-transform:uppercase; width: fit-content;">${res.category}</span>
+                            ${imgHtml}
+                            <h3 class="item-name">${displayName}</h3>
                         </div>
                     </div>
+                `;
+                resultsContainer.insertAdjacentHTML('beforeend', card);
+            });
+        }
 
-                    <div class="row mt-3 justify-content-center text-start">
-                        <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow mb-3">
-                            <h5 class="text-accent mb-2"><i class="bi bi-journal-text me-2"></i>Profile</h5>
-                            <p class="small text-light opacity-75 mb-0">${data.description || 'No profile description available for this enemy.'}</p>
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchFilter').value = 'all';
+            document.getElementById('searchResults').innerHTML = '';
+        }
+
+        function filterCategory(containerId) {
+            const input = document.getElementById('categorySearchInput').value.toLowerCase().trim();
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            const cards = container.querySelectorAll('.card-item');
+            cards.forEach(card => {
+                const name = card.querySelector('.item-name').innerText.toLowerCase();
+                if (name.includes(input)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function clearCategorySearch(containerId) {
+            const input = document.getElementById('categorySearchInput');
+            if (input) input.value = '';
+            filterCategory(containerId);
+        }
+
+        async function loadPage(endpoint) {
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            let navId = endpoint === 'home' ? 'nav-home' : 'nav-search';
+            const navElement = document.getElementById(navId);
+            if(navElement) navElement.classList.add('active');
+            
+            const titleData = pageInfo[endpoint] || pageInfo['home'];
+            pageTitle.textContent = titleData.title;
+            pageSubtitle.textContent = titleData.sub;
+
+            dataGrid.innerHTML = '';
+            loader.style.display = 'block';
+            
+            try {
+                if (endpoint === 'home') {
+                    const categories = ['characters', 'weapons', 'artifacts', 'consumables', 'materials', 'elements', 'nations', 'domains', 'enemies'];
+                    
+                    for (const cat of categories) {
+                        const items = await fetchCategoryItems(cat);
+                        const dashboardId = `home-dashboard-${cat}`;
+                        
+                        const sectionTitle = `
+                            <div class="col-12 mt-5 mb-3 d-flex justify-content-between align-items-end border-bottom border-info pb-2">
+                                <h2 class="text-accent mb-0 ancient-modern-title" style="text-transform: capitalize;">${cat.replace(/-/g, ' ')}</h2>
+                                <button class="view-all-btn" onclick="loadPage('${cat}')">
+                                    View All <i class="bi bi-chevron-double-right"></i>
+                                </button>
+                            </div>
+                            <div id="${dashboardId}" class="row g-4 w-100 m-0"></div>
+                        `;
+                        dataGrid.insertAdjacentHTML('beforeend', sectionTitle);
+                        
+                        items.slice(0, 4).forEach(item => {
+                            renderCard(cat, item, dashboardId);
+                        });
+                    }
+                } else {
+                    const dashboardId = `dashboard-${endpoint}`;
+                    const dashboardHeader = `
+                        <div class="col-12 mb-4">
+                            <div class="d-flex align-items-center border-bottom border-info pb-3 mb-4">
+                                <button class="back-btn me-3" onclick="loadPage('home')">
+                                    <i class="bi bi-arrow-left"></i> Back Home
+                                </button>
+                                <h2 class="text-accent mb-0 ancient-modern-title" style="text-transform: capitalize;">All ${endpoint.replace(/-/g, ' ')}</h2>
+                            </div>
+                            
+                            <div class="d-flex justify-content-start">
+                                <div class="input-group shadow-sm" style="max-width: 400px; border-radius: 8px; overflow: hidden;">
+                                    <span class="input-group-text bg-dark text-info border-0"><i class="bi bi-search"></i></span>
+                                    <input type="text" id="categorySearchInput" class="form-control bg-dark text-light border-0" style="font-size: 0.95rem;" placeholder="Filter ${endpoint.replace(/-/g, ' ')}..." onkeyup="filterCategory('${dashboardId}')">
+                                    <button class="btn btn-outline-danger px-3" style="font-size: 0.95rem;" onclick="clearCategorySearch('${dashboardId}')">Clear</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <div id="${dashboardId}" class="row g-4 w-100 m-0"></div>
+                    `;
+                    dataGrid.insertAdjacentHTML('beforeend', dashboardHeader);
+                    
+                    const items = await fetchCategoryItems(endpoint);
+                    items.forEach(item => renderCard(endpoint, item, dashboardId));
+                }
+                loader.style.display = 'none';
+                
+            } catch (error) {
+                loader.style.display = 'none';
+                dataGrid.innerHTML = `<div class="col-12 text-center text-danger"><p>Failed to connect to the Ley Lines.</p></div>`;
+            }
+        }
 
-                    <div class="row mt-3 justify-content-center text-start">
-                        <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
-                            <h5 class="text-accent mb-2"><i class="bi bi-box-seam me-2"></i>Props / Drops</h5>
-                            ${dropsHtml}
-                        </div>
-                    </div>
+        function renderCard(endpoint, itemData, targetContainerId = null) {
+            let item = typeof itemData === 'object' ? itemData.id : itemData;
+            
+            let displayName = typeof itemData === 'object' && itemData.details && itemData.details.name 
+                ? itemData.details.name 
+                : (typeof item === 'string' ? item.replace(/-/g, ' ').replace(/ s /g, "'s ") : 'Unknown');
+            
+            let imageUrl = `${baseUrl}/${endpoint}/${item}/icon`;
+            let fallbackHtml = `onerror="this.outerHTML='<div class=\\'no-image-placeholder icon-size\\'>No Image</div>'"`;
+            
+            if (endpoint === 'artifacts') {
+                imageUrl = `${baseUrl}/${endpoint}/${item}/flower-of-life`;
+            }
+            if (item === 'glacier-and-snowfield') {
+                imageUrl = `https://genshin.jmp.blue/artifacts/blizzard-strayer/flower-of-life`;
+            }
+            
+            if (endpoint === 'consumables' || endpoint === 'materials') {
+                const urls = getConsumableImageUrls(item);
+                imageUrl = urls.primary;
+                fallbackHtml = `onerror="this.onerror=null; this.src='${urls.secondary}'; this.addEventListener('error', function() { this.outerHTML='<div class=\\'no-image-placeholder icon-size\\'>No Image</div>' });"`;
+            }
 
+            let imgHtml = `<img src="${imageUrl}" alt="${displayName}" class="item-icon" ${fallbackHtml}>`;
+            let domainClass = "";
+            
+            if (endpoint === 'domains') {
+                imgHtml = '';
+                domainClass = "domain-card";
+            }
+
+            const card = `
+                <div class="col-6 col-md-4 col-lg-3 card-item">
+                    <div class="genshin-card ${domainClass}" style="cursor: pointer;" onclick="loadDetails('${endpoint}', '${item}')">
+                        ${imgHtml}
+                        <h3 class="item-name">${displayName}</h3>
+                    </div>
                 </div>
-            </div>`;
-          } else {                     
-            detailHtml = `<div class="col-12"><div class="detail-container text-center">${imgTag}<h1 class="display-5 fw-bold text-accent ancient-modern-title" style="text-transform: capitalize;">${data.name || displayName}</h1><p class="lead">${data.description || 'Data fetched from the Irminsul tree.'}</p></div></div>`;                 
-          }                                  
-          
-          detailHtml += `<div class="col-12 text-center mt-4"><button class="back-btn" onclick="loadPage('${endpoint}')"><i class="bi bi-arrow-left"></i> Back to ${endpoint.replace(/-/g, ' ')}</button></div>`;                 
-          dataGrid.innerHTML = detailHtml;                 
-          loader.style.display = 'none';             
-        } catch (error) {                 
-          console.error("Detail Fetch Error:", error);                 
-          loader.style.display = 'none';                 
-          dataGrid.innerHTML = `<div class="col-12 text-center text-danger"><p>Data error.</p><button class="back-btn" onclick="loadPage('home')">Back Home</button></div>`;             
-        }         
-      }                  
-      
-      window.onload = () => {
-          initTheme();
-          loadPage('home');
-      };
-    </script>   
-  </body> 
+            `;
+            
+            if (targetContainerId) {
+                const container = document.getElementById(targetContainerId);
+                if (container) container.insertAdjacentHTML('beforeend', card);
+            } else {
+                dataGrid.insertAdjacentHTML('beforeend', card);
+            }
+        }
+
+        async function loadDetails(endpoint, item) {
+            dataGrid.innerHTML = '';
+            loader.style.display = 'block';
+            window.scrollTo(0, 0);
+            
+            try {
+                let data;
+                let detailImgUrl = `${baseUrl}/${endpoint}/${item}/icon`;
+                let fallbackDetailHtml = `onerror="this.outerHTML='<div class=\\'no-image-placeholder detail-size\\'>No Image</div>'"`;
+
+                if (endpoint === 'materials') {
+                    let cached = allDataCache['materials'] ? allDataCache['materials'].find(m => m.id === item) : null;
+                    if (cached && cached.details) {
+                        data = cached.details;
+                        data.materialType = cached.subcat;
+                    } else {
+                        throw new Error("Material not found");
+                    }
+
+                    const urls = getConsumableImageUrls(item);
+                    detailImgUrl = urls.primary;
+                    fallbackDetailHtml = `onerror="this.onerror=null; this.src='${urls.secondary}'; this.addEventListener('error', function() { this.outerHTML='<div class=\\'no-image-placeholder detail-size\\'>No Image</div>' });"`;
+                    if (!data.name) data.name = item.replace(/-/g, ' ');
+
+                } else if (endpoint === 'consumables') {
+                    const [fRes, pRes] = await Promise.all([
+                        fetch(`${baseUrl}/consumables/food`).catch(()=>null),
+                        fetch(`${baseUrl}/consumables/potions`).catch(()=>null)
+                    ]);
+                    
+                    let fDict = fRes && fRes.ok ? await fRes.json() : {};
+                    let pDict = pRes && pRes.ok ? await pRes.json() : {};
+
+                    if (fDict[item]) {
+                        data = typeof fDict[item] === 'object' ? fDict[item] : { description: "A food item from Teyvat." };
+                    } else if (pDict[item]) {
+                        data = typeof pDict[item] === 'object' ? pDict[item] : { description: "A crafted potion." };
+                    } else {
+                        throw new Error("Consumable not found");
+                    }
+
+                    const urls = getConsumableImageUrls(item);
+                    detailImgUrl = urls.primary;
+                    fallbackDetailHtml = `onerror="this.onerror=null; this.src='${urls.secondary}'; this.addEventListener('error', function() { this.outerHTML='<div class=\\'no-image-placeholder detail-size\\'>No Image</div>' });"`;
+                    if (!data.name) data.name = item.replace(/-/g, ' ');
+
+                } else {
+                    let response = await fetch(`${baseUrl}/${endpoint}/${item}`);
+                    if (!response.ok) throw new Error("Item fetch failed");
+                    data = await response.json();
+                }
+
+                let detailHtml = '';
+                const displayName = typeof item === 'string' ? item.replace(/-/g, ' ') : 'Unknown';
+                
+                if (endpoint === 'characters') detailImgUrl = `${baseUrl}/characters/${item}/portrait`;
+                if (endpoint === 'artifacts') detailImgUrl = `${baseUrl}/artifacts/${item}/flower-of-life`;
+                
+                const imgTag = `<img src="${detailImgUrl}" class="detail-img mb-4" ${fallbackDetailHtml}>`;
+                
+                if (endpoint === 'materials') {
+                    let sourceHtml = '';
+                    let sourceData = data.source || data.sources || [];
+                    if (typeof sourceData === 'string') sourceData = [sourceData];
+
+                    if (sourceData.length > 0) {
+                        sourceHtml = `<ul class="list-unstyled mb-0 small text-light opacity-75">`;
+                        sourceData.forEach(src => {
+                            sourceHtml += `<li><i class="bi bi-caret-right-fill text-info"></i> ${src}</li>`;
+                        });
+                        sourceHtml += `</ul>`;
+                    } else {
+                        sourceHtml = `<p class="small text-light opacity-75 mb-0">No specific source data provided.</p>`;
+                    }
+
+                    let dropLocHtml = '';
+                    let dropLocData = data.drop || data.location || [];
+                    if (typeof dropLocData === 'string') dropLocData = [dropLocData];
+
+                    if (dropLocData.length > 0) {
+                        dropLocHtml = `<ul class="list-unstyled mb-0 small text-light opacity-75">`;
+                        dropLocData.forEach(dl => {
+                            dropLocHtml += `<li><i class="bi bi-caret-right-fill text-info"></i> ${dl}</li>`;
+                        });
+                        dropLocHtml += `</ul>`;
+                    } else {
+                        dropLocHtml = `<p class="small text-light opacity-75 mb-0">Can be found exploring the open world of Teyvat.</p>`;
+                    }
+                    
+                    detailHtml = `
+                        <div class="col-12">
+                            <div class="detail-container text-center">
+                                ${imgTag}
+                                <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+                                ${data.description ? `<p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"${data.description}"</p>` : '<p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"A resource found across Teyvat."</p>'}
+                                
+                                <div class="row mt-4 text-start justify-content-center mb-4">
+                                    <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                                        <p class="mb-2"><span class="stat-label">Category:</span> <span class="text-capitalize">${(data.materialType || 'Material').replace(/-/g, ' ')}</span></p>
+                                        <p class="mb-0"><span class="stat-label">Type:</span> ${data.type || 'Resource'}</p>
+                                    </div>
+                                    <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                                        <p class="mb-0"><span class="stat-label">Rarity:</span> ${data.rarity ? '⭐'.repeat(data.rarity) : 'Unknown'}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3 justify-content-center text-start">
+                                    <div class="col-md-5 col-lg-4 p-3 bg-dark border border-secondary rounded shadow mb-3 mx-2">
+                                        <h5 class="text-accent mb-2"><i class="bi bi-box-seam me-2"></i>Primary Source</h5>
+                                        ${sourceHtml}
+                                    </div>
+                                    <div class="col-md-5 col-lg-4 p-3 bg-dark border border-secondary rounded shadow mb-3 mx-2">
+                                        <h5 class="text-accent mb-2"><i class="bi bi-geo-alt-fill me-2"></i>Drops & Location</h5>
+                                        ${dropLocHtml}
+                                        <div class="mt-3 p-2 bg-dark border border-info rounded" style="font-size: 0.8rem;">
+                                            <i class="bi bi-info-circle text-info me-1"></i> <span class="text-light opacity-75">Check the Adventurer Handbook or Interactive Map for precise coordinates.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+
+                } else if (endpoint === 'consumables') {
+                    let recipeData = data.recipe || data.crafting || [];
+                    let recipeHtml = '';
+
+                    if (Array.isArray(recipeData) && recipeData.length > 0) {
+                        recipeHtml = `<ul class="list-unstyled mb-0 small text-light opacity-75">`;
+                        recipeData.forEach(ing => {
+                            let ingName = ing.item || 'Ingredient';
+                            recipeHtml += `<li><i class="bi bi-caret-right-fill text-info"></i> ${ing.quantity}x <span class="text-capitalize">${ingName.replace(/-/g, ' ')}</span></li>`;
+                        });
+                        recipeHtml += `</ul>`;
+                    } else {
+                        recipeHtml = `<p class="small text-light opacity-75 mb-0">No specific recipe or crafting data available. Likely obtained via shops, foraging, quests, or events.</p>`;
+                    }
+
+                    let extraDetailsHtml = (data.foodFilter || data.foodType) ? `<p class="mb-2"><span class="stat-label">Category:</span> ${(data.foodFilter || data.foodType).replace(/_/g, ' ')}</p>` : '';
+
+                    detailHtml = `
+                        <div class="col-12">
+                            <div class="detail-container text-center">
+                                ${imgTag}
+                                <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+                                ${data.description ? `<p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"${data.description}"</p>` : ''}
+                                
+                                <div class="row mt-4 text-start justify-content-center mb-4">
+                                    <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                                        <p class="mb-2"><span class="stat-label">Type:</span> ${data.type || 'Consumable'}</p>
+                                        ${extraDetailsHtml}
+                                        <p class="mb-0"><span class="stat-label">Rarity:</span> ${data.rarity ? '⭐'.repeat(data.rarity) : 'Unknown'}</p>
+                                    </div>
+                                    <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                                        <p class="mb-0"><span class="stat-label">Effect:</span> <span class="text-light">${data.effect || 'None'}</span></p>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3 justify-content-center text-start">
+                                    <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
+                                        <h5 class="text-accent mb-2"><i class="bi bi-journal-text me-2"></i>Recipe / Sources</h5>
+                                        ${recipeHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+
+                } else if (endpoint === 'nations') {
+                    const nationLore = {
+                        "Mondstadt": "The city of freedom that lies in the northeast of Teyvat. From amongst mountains and wide-open plains, carefree breezes carry the scent of dandelions—a gift from the Anemo God, Barbatos—across Cider Lake to the island city that sits at the middle of the lake.",
+                        "Liyue": "A bountiful harbor that lies in the east of Teyvat. Mountains stand tall and proud alongside the stone forest, that, together with the open plains and meandering rivers, make up Liyue's bountiful landscape, which shows its unique beauty through each of the four seasons.",
+                        "Inazuma": "An isolated archipelago far to the east of Teyvat. Overcome endless thunderstorms and set foot on the islands of red maple and cherry blossoms. On winding shores and towering cliffs, you may witness the Eternity pursued by Her Excellency, the Almighty Narukami Ogosho.",
+                        "Sumeru": "The city of scholars located in the west-central part of Teyvat. A fantastical nation of both lush rainforests and barren deserts, where countless fruits of wisdom grow and are buried within the Akademiya and beyond.",
+                        "Fontaine": "A terrestrial sea in the center of Teyvat. Following the direction of the water currents, traversing the wilderness and the sea of sand, arriving at the origin of all the waters of the continent where justice reigns supreme.",
+                        "Natlan": "The Nation of War located in the western part of Teyvat. Across the scorching deserts and past the jagged canyons lies the realm of the Pyro Archon, where tribes clash and forge legends in the heat of battle.",
+                        "Snezhnaya": "The northernmost nation of Teyvat, a land of perpetual winter and harsh blizzards. Ruled by the Tsaritsa, it is a technologically advanced region known for its powerful military and the infamous Fatui organization."
+                    };
+
+                    let loreText = nationLore[data.name] || `The ${data.name} is the home of the ${data.element} element, ruled by the Archon ${data.archon}.`;
+
+                    detailHtml = `
+                        <div class="col-12">
+                            <div class="detail-container text-center">
+                                ${imgTag}
+                                <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+                                <p class="lead mb-4 px-md-5 fst-italic">"${loreText}"</p>
+                                
+                                <div class="mb-4">
+                                    <a href="https://act.hoyolab.com/ys/app/interactive-map/index.html?lang=en-us" target="_blank" class="btn btn-outline-info rounded-pill px-4 py-2" style="transition: all 0.3s;">
+                                        <i class="bi bi-map-fill me-2"></i> Open Interactive Map for ${data.name}
+                                    </a>
+                                </div>
+                                
+                                <div class="row text-start justify-content-center">
+                                    <div class="col-md-5 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                                        <p class="mb-2"><span class="stat-label">Archon:</span> ${data.archon || 'Unknown'}</p>
+                                        <p class="mb-0"><span class="stat-label">Element:</span> ${data.element || 'Unknown'}</p>
+                                    </div>
+                                    <div class="col-md-5 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                                        <p class="mb-2"><span class="stat-label">Government:</span> ${data.controlling_entity || 'Unknown'}</p>
+                                        <p class="mb-0"><span class="stat-label">Motto:</span> <em>"${data.motto || 'N/A'}"</em></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+
+                } else if (endpoint === 'domains') {
+                    detailHtml = `
+                        <div class="col-12">
+                            <div class="detail-container text-center">
+                                <h1 class="display-5 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+                                <p class="lead mb-3 text-light">${data.description || 'An ancient domain hiding powerful rewards.'}</p>
+                                <p class="text-info mb-4"><span class="stat-label text-light">Nation:</span> ${data.nation || 'Unknown'}</p>
+                                
+                                <div class="mb-4">
+                                    <a href="https://act.hoyolab.com/ys/app/interactive-map/index.html?lang=en-us" target="_blank" class="btn btn-outline-info rounded-pill px-4 py-2" style="transition: all 0.3s;">
+                                        <i class="bi bi-pin-map-fill me-2"></i> Locate Domain on Teyvat Map
+                                    </a>
+                                </div>
+                                
+                                <div class="row mt-4 text-start justify-content-center">
+                                    <div class="col-md-8 p-3 rounded bg-dark border border-info shadow">
+                                        <h5 class="text-accent mb-2"><i class="bi bi-gift"></i> Domain Details</h5>
+                                        <p class="mb-1 opacity-75 small">This domain tests your team's strength. Complete it to claim rewards using Original Resin.</p>
+                                        <p class="mt-3 stat-label">Required Adventure Rank: ${data.recommended_ar || 'Varies'}</p>
+                                        <p class="stat-label">Recommended Elements: <span class="text-light text-capitalize">${data.recommended_elements && data.recommended_elements.length > 0 ? data.recommended_elements.join(', ') : 'Any'}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+
+                } else if (endpoint === 'elements') {
+                    const reactions = {
+                        'Anemo': 'Swirl (Absorbs Pyro, Hydro, Cryo, or Electro to deal extra AoE damage).',
+                        'Geo': 'Crystallize (Creates a shield when it hits Pyro, Hydro, Cryo, or Electro).',
+                        'Electro': 'Overloaded (Pyro), Superconduct (Cryo), Electro-Charged (Hydro).',
+                        'Dendro': 'Bloom (Hydro), Quicken (Electro), Burning (Pyro).',
+                        'Hydro': 'Vaporize (Pyro), Frozen (Cryo), Electro-Charged (Electro).',
+                        'Pyro': 'Vaporize (Hydro), Melt (Cryo), Overloaded (Electro), Burning (Dendro).',
+                        'Cryo': 'Melt (Pyro), Frozen (Hydro), Superconduct (Electro).'
+                    };
+                    
+                    detailHtml = `
+                        <div class="col-12">
+                            <div class="detail-container text-center">
+                                ${imgTag}
+                                <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+                                <p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"${data.description || 'The ' + data.name + ' element is a fundamental force in Teyvat.'}"</p>
+                                
+                                <div class="row mt-3 justify-content-center text-start">
+                                    <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
+                                        <h5 class="text-accent mb-3 border-bottom border-info pb-2"><i class="bi bi-magic me-2"></i>Common Reactions</h5>
+                                        <div class="reaction-box mt-0 border-0 p-0" style="background: transparent;">
+                                            <p class="text-light mb-0">${reactions[data.name] || 'Reacts with other elements to create powerful combat effects.'}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+
+                } else if (endpoint === 'characters') {
+                    let skillsHtml = '';
+                    if (data.skillTalents && data.skillTalents.length > 0) {
+                        skillsHtml += '<h4 class="text-accent mt-5 mb-3 border-bottom border-info pb-2"><i class="bi bi-crosshair me-2"></i>Combat Skills</h4><div class="row text-start">';
+                        data.skillTalents.forEach(skill => {
+                            skillsHtml += `
+                                <div class="col-md-6 col-lg-4 mb-3">
+                                    <div class="p-3 bg-dark border border-secondary rounded h-100">
+                                        <h6 class="text-info">${skill.name} <br><span class="text-muted small" style="font-weight: 400;">(${skill.unlock || skill.type || 'Skill'})</span></h6>
+                                        <div class="custom-scroll" style="max-height: 120px; overflow-y: auto;">
+                                            <p class="small text-light opacity-75 mb-0 pe-2">${skill.description}</p>
+                                        </div>
+                                    </div>
+                                </div>`;
+                        });
+                        skillsHtml += '</div>';
+                    }
+
+                    let passivesHtml = '';
+                    if (data.passiveTalents && data.passiveTalents.length > 0) {
+                        passivesHtml += '<h4 class="text-accent mt-4 mb-3 border-bottom border-info pb-2"><i class="bi bi-stars me-2"></i>Passive Talents</h4><div class="row text-start">';
+                        data.passiveTalents.forEach(passive => {
+                            passivesHtml += `
+                                <div class="col-md-6 col-lg-4 mb-3">
+                                    <div class="p-3 bg-dark border border-secondary rounded h-100">
+                                        <h6 class="text-info">${passive.name} <br><span class="text-muted small" style="font-weight: 400;">(${passive.unlock || 'Passive'})</span></h6>
+                                        <div class="custom-scroll" style="max-height: 100px; overflow-y: auto;">
+                                            <p class="small text-light opacity-75 mb-0 pe-2">${passive.description}</p>
+                                        </div>
+                                    </div>
+                                </div>`;
+                        });
+                        passivesHtml += '</div>';
+                    }
+
+                    let constellationsHtml = '';
+                    if (data.constellations && data.constellations.length > 0) {
+                        constellationsHtml += '<h4 class="text-accent mt-4 mb-3 border-bottom border-info pb-2"><i class="bi bi-moon-stars me-2"></i>Constellations</h4><div class="row text-start">';
+                        data.constellations.forEach(cons => {
+                            constellationsHtml += `
+                                <div class="col-md-6 col-lg-4 mb-3">
+                                    <div class="p-3 bg-dark border border-secondary rounded h-100">
+                                        <h6 class="text-info">C${cons.level}: ${cons.name}</h6>
+                                        <div class="custom-scroll" style="max-height: 100px; overflow-y: auto;">
+                                            <p class="small text-light opacity-75 mb-0 pe-2">${cons.description}</p>
+                                        </div>
+                                    </div>
+                                </div>`;
+                        });
+                        constellationsHtml += '</div>';
+                    }
+
+                    let starRating = data.rarity ? '⭐'.repeat(data.rarity) : 'Unknown';
+
+                    detailHtml = `
+                        <div class="col-12">
+                            <div class="detail-container text-center">
+                                ${imgTag}
+                                <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+                                <p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"${data.description || 'No profile description available.'}"</p>
+                                
+                                <div class="row mt-4 text-start justify-content-center mb-4">
+                                    <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                                        <p class="mb-2"><span class="stat-label">Vision:</span> ${data.vision || 'Unknown'}</p>
+                                        <p class="mb-2"><span class="stat-label">Weapon:</span> ${data.weapon || 'Unknown'}</p>
+                                        <p class="mb-0"><span class="stat-label">Rarity:</span> ${starRating}</p>
+                                    </div>
+                                    <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                                        <p class="mb-2"><span class="stat-label">Nation:</span> ${data.nation || 'Unknown'}</p>
+                                        <p class="mb-2"><span class="stat-label">Affiliation:</span> ${data.affiliation || 'Unknown'}</p>
+                                        <p class="mb-0"><span class="stat-label">Constellation:</span> ${data.constellation || 'Unknown'}</p>
+                                    </div>
+                                </div>
+                                
+                                ${skillsHtml}
+                                ${passivesHtml}
+                                ${constellationsHtml}
+                            </div>
+                        </div>`;
+
+                } else if (endpoint === 'weapons') {
+                    let starRating = data.rarity ? '⭐'.repeat(data.rarity) : 'Unknown';
+                    let passiveHtml = '';
+                    
+                    if (data.passiveName && data.passiveDesc) {
+                        passiveHtml = `
+                            <div class="row mt-4 justify-content-center text-start">
+                                <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
+                                    <h5 class="text-accent mb-2"><i class="bi bi-shield-check me-2"></i>Passive: ${data.passiveName}</h5>
+                                    <p class="small text-light opacity-75 mb-0">${data.passiveDesc}</p>
+                                </div>
+                            </div>`;
+                    }
+
+                    let materialsHtml = '';
+                    if (data.ascensionMaterial || data.bossMaterial || data.itemMaterial) {
+                        materialsHtml = `
+                            <div class="row mt-3 justify-content-center text-start">
+                                <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
+                                    <h5 class="text-accent mb-2"><i class="bi bi-box-seam me-2"></i>Ascension Materials</h5>
+                                    <ul class="list-unstyled mb-0 small text-light opacity-75">
+                                        ${data.ascensionMaterial ? `<li><i class="bi bi-caret-right-fill text-info"></i> Weapon Ascension: <span class="text-capitalize">${data.ascensionMaterial.replace(/-/g, ' ')}</span></li>` : ''}
+                                        ${data.bossMaterial ? `<li><i class="bi bi-caret-right-fill text-info"></i> Elite Enemy: <span class="text-capitalize">${data.bossMaterial.replace(/-/g, ' ')}</span></li>` : ''}
+                                        ${data.itemMaterial ? `<li><i class="bi bi-caret-right-fill text-info"></i> Common Enemy: <span class="text-capitalize">${data.itemMaterial.replace(/-/g, ' ')}</span></li>` : ''}
+                                    </ul>
+                                </div>
+                            </div>`;
+                    }
+
+                    detailHtml = `
+                        <div class="col-12">
+                            <div class="detail-container text-center">
+                                ${imgTag}
+                                <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+                                ${data.description ? `<p class="lead mb-4 fst-italic" style="max-width: 800px; margin: 0 auto;">"${data.description}"</p>` : ''}
+                                
+                                <div class="row mt-4 text-start justify-content-center mb-4">
+                                    <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                                        <p class="mb-2"><span class="stat-label">Type:</span> ${data.type || data.weapontype || 'Unknown'}</p>
+                                        <p class="mb-2"><span class="stat-label">Rarity:</span> ${starRating}</p>
+                                        <p class="mb-0"><span class="stat-label">Obtained Via:</span> ${data.location || 'Unknown'}</p>
+                                    </div>
+                                    <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                                        <p class="mb-2"><span class="stat-label">Base ATK:</span> ${data.baseAttack || data.baseAtk || 'Unknown'}</p>
+                                        <p class="mb-0"><span class="stat-label">Sub Stat:</span> ${data.subStat || 'None'}</p>
+                                    </div>
+                                </div>
+                                
+                                ${passiveHtml}
+                                ${materialsHtml}
+                            </div>
+                        </div>`;
+
+                } else if (endpoint === 'artifacts') {
+                    let starRating = data.max_rarity ? '⭐'.repeat(data.max_rarity) : 'Unknown';
+
+                    detailHtml = `
+                        <div class="col-12">
+                            <div class="detail-container text-center">
+                                ${imgTag}
+                                <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+                                
+                                <div class="row mt-4 text-start justify-content-center mb-4">
+                                    <div class="col-md-6 col-lg-5 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                                        <p class="mb-0"><span class="stat-label">Max Rarity:</span> ${starRating}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3 justify-content-center text-start">
+                                    <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
+                                        <h5 class="text-accent mb-3 border-bottom border-info pb-2"><i class="bi bi-box-seam me-2"></i>Set Bonuses</h5>
+                                        
+                                        <div class="mb-3">
+                                            <h6 class="text-info">2-Piece Set</h6>
+                                            <p class="small text-light opacity-75 mb-0">${data['2-piece_bonus'] || 'No 2-piece bonus available.'}</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <h6 class="text-info">4-Piece Set</h6>
+                                            <p class="small text-light opacity-75 mb-0">${data['4-piece_bonus'] || 'No 4-piece bonus available.'}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                        
+                } else if (endpoint === 'enemies') {
+                    let elementsHtml = 'None';
+                    if (data.elements && data.elements.length > 0) {
+                        elementsHtml = data.elements.join(', ');
+                    }
+                    
+                    let dropsHtml = '';
+                    let dropsList = data.drops || data.props || [];
+                    
+                    if (dropsList.length > 0) {
+                        dropsHtml = `<ul class="list-unstyled mb-0 small text-light opacity-75">`;
+                        dropsList.forEach(drop => {
+                            let dropName = drop.name || drop;
+                            dropsHtml += `<li><i class="bi bi-caret-right-fill text-info"></i> <span class="text-capitalize">${dropName.replace(/-/g, ' ')}</span></li>`;
+                        });
+                        dropsHtml += `</ul>`;
+                    } else {
+                        dropsHtml = `<p class="small text-light opacity-75 mb-0">No specific drops documented.</p>`;
+                    }
+
+                    detailHtml = `
+                        <div class="col-12">
+                            <div class="detail-container text-center">
+                                ${imgTag}
+                                <h1 class="display-4 fw-bold text-accent ancient-modern-title">${data.name}</h1>
+                                
+                                <div class="row mt-4 text-start justify-content-center mb-4">
+                                    <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                                        <p class="mb-2"><span class="stat-label">Family:</span> ${data.family || 'Unknown'}</p>
+                                        <p class="mb-0"><span class="stat-label">Faction:</span> ${data.faction || 'Unknown'}</p>
+                                    </div>
+                                    <div class="col-md-5 col-lg-4 p-3 rounded bg-dark border-start border-4 border-info m-2 shadow">
+                                        <p class="mb-0"><span class="stat-label">Elements:</span> <span class="text-capitalize">${elementsHtml}</span></p>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3 justify-content-center text-start">
+                                    <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow mb-3">
+                                        <h5 class="text-accent mb-2"><i class="bi bi-journal-text me-2"></i>Profile</h5>
+                                        <p class="small text-light opacity-75 mb-0">${data.description || 'No profile description available for this enemy.'}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3 justify-content-center text-start">
+                                    <div class="col-md-10 col-lg-8 p-3 bg-dark border border-secondary rounded shadow">
+                                        <h5 class="text-accent mb-2"><i class="bi bi-box-seam me-2"></i>Props / Drops</h5>
+                                        ${dropsHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                        
+                } else {
+                    detailHtml = `
+                        <div class="col-12">
+                            <div class="detail-container text-center">
+                                ${imgTag}
+                                <h1 class="display-5 fw-bold text-accent ancient-modern-title" style="text-transform: capitalize;">${data.name || displayName}</h1>
+                                <p class="lead">${data.description || 'Data fetched from the Irminsul tree.'}</p>
+                            </div>
+                        </div>`;
+                }
+                
+                detailHtml += `
+                    <div class="col-12 text-center mt-4">
+                        <button class="back-btn" onclick="loadPage('${endpoint}')">
+                            <i class="bi bi-arrow-left"></i> Back to ${endpoint.replace(/-/g, ' ')}
+                        </button>
+                    </div>`;
+                    
+                dataGrid.innerHTML = detailHtml;
+                loader.style.display = 'none';
+                
+            } catch (error) {
+                console.error("Detail Fetch Error:", error);
+                loader.style.display = 'none';
+                dataGrid.innerHTML = `
+                    <div class="col-12 text-center text-danger">
+                        <p>Data error.</p>
+                        <button class="back-btn" onclick="loadPage('home')">Back Home</button>
+                    </div>`;
+            }
+        }
+        
+        window.onload = () => {
+            initTheme();
+            loadPage('home');
+        };
+    </script>
+</body>
 </html>
