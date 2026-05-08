@@ -1,1 +1,4 @@
-* linguist-language=Apex
+*.html linguist-language=HTML
+*.js linguist-language=JavaScript
+*.cls linguist-language=Apex
+*.trigger linguist-language=Apex
