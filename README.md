@@ -8,13 +8,14 @@ You can access the live website here: [Genshin Impact Archive](https://margamala
 ## ✨ Features
 * **Dynamic Home Dashboard**: Features a welcome message and a simultaneous preview of all categories on a single page.
 * **Real-time API Integration**: Utilizes the `genshin.jmp.blue` API for the latest information on characters, weapons, and artifacts.
+* **Theme Toggle (Dark/Light Mode)**: Built-in theme switcher allowing users to seamlessly transition between a sleek, cinematic dark aesthetic and a clean light interface based on their preference.
 * **Animated UI**: Equipped with "floating" and "breathing" CSS animations for a more lifelike visual experience of icons and portraits.
 * **Detailed Encyclopedia**: Contains in-depth details such as Elemental Reactions, Nation Archons, Ideals, and comprehensive weapon stats.
 * **Immersive Design**: Uses a cinematic video background and glassmorphism design (translucent cards) for a modern gaming aesthetic.
 
 ## 🛠️ Tech Stack
-* **HTML5 & CSS3**: For the structural foundation and custom "Blue Theme" styling.
-* **JavaScript (ES6+)**: The primary logic for API data fetching, dynamic DOM manipulation, and page navigation.
+* **HTML5 & CSS3**: For the structural foundation, layout, and custom theme styling.
+* **JavaScript (ES6+)**: The primary logic for API data fetching, theme switching functionality, dynamic DOM manipulation, and page navigation.
 * **Bootstrap 5**: Used for a fast, responsive grid system and navigation components.
 * **Genshin Data API**: The open-source API providing all in-game content.
 
@@ -23,7 +24,6 @@ You can access the live website here: [Genshin Impact Archive](https://margamala
 * `assets/`: Folder for local resources such as the background video.
 * `README.md`: Project documentation.
 
-## 👤 Author
+## 👤 Prepared By:
 **Margaret Loraine Malaluan** 
 **DIT 2-1**
-
